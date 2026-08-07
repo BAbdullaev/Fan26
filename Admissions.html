@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="Admissions at Falah Academy of Nashville — three simple steps, key dates, tuition, and answers to common questions.">
 <style>
 html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
 a{color:#1B7A40}
@@ -36,11 +38,13 @@ details[open] .faq-plus{transform:rotate(45deg)}
 .footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
 .footer-muted-link:hover{color:#F7941D}
 </style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
 </head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
@@ -55,7 +59,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
       <a href="Admissions.html" class="nav-link active">Admissions</a>
       <a href="Contact.html" class="nav-link">Contact</a>
     </nav>
-    <a href="Contact.html" class="cta-pill">Schedule a Tour</a>
+    <a href="Apply.html" class="cta-pill">Join the waitlist</a>
   </div>
 </header>
 
@@ -65,7 +69,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
   <p style="font:600 19px/1.65 'Nunito',sans-serif;color:#41573F;max-width:560px;margin:0 auto;text-wrap:pretty">Enrolling now for PreK and Kindergarten. Three simple steps to join our family.</p>
 </section>
 
-<section style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+<section class="rg3" style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;row-gap:40px">
   <div style="background:#fff;border-radius:28px;padding:34px 30px;box-shadow:0 4px 16px rgba(20,60,35,.08);position:relative">
     <div style="position:absolute;top:-18px;left:28px;width:52px;height:52px;border-radius:50%;background:#1B7A40;color:#fff;font:600 24px 'Fredoka',sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 #12522B;transform:rotate(-4deg)">1</div>
     <h3 style="font:600 24px 'Fredoka',sans-serif;color:#153A26;margin:16px 0 10px">Visit</h3>
@@ -87,7 +91,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
 </section>
 
 <section style="max-width:1180px;margin:0 auto;padding:64px 24px 0">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start">
+  <div class="rg2" style="display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start">
     <div style="background:#fff;border-radius:30px;padding:36px;box-shadow:0 6px 20px rgba(20,60,35,.10)">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
         <div style="width:46px;height:46px;border-radius:50%;background:#E9F3EB;display:flex;align-items:center;justify-content:center;font:600 18px 'Fredoka',sans-serif;color:#1B7A40">26</div>
@@ -110,7 +114,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
         <div style="width:46px;height:46px;border-radius:50%;background:#FDEBD2;display:flex;align-items:center;justify-content:center;font:600 18px 'Fredoka',sans-serif;color:#E07C00">$</div>
         <h2 style="font:600 28px 'Fredoka',sans-serif;color:#153A26;margin:0">Tuition &amp; fees</h2>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="fldg" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
         <div style="border:3px solid #1B7A40;border-radius:22px;padding:22px;text-align:center">
           <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#166B38;margin-bottom:6px">PreK</div>
           <div style="font:600 38px 'Fredoka',sans-serif;color:#153A26">$8,500</div>
@@ -183,7 +187,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
 </section>
 
 <footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
-  <div style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">

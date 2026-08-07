@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="Contact Falah Academy of Nashville — ask questions, schedule a campus tour, or say hello. We love meeting new families.">
 <style>
 html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
 a{color:#1B7A40}
@@ -40,11 +42,13 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 .footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
 .footer-muted-link:hover{color:#F7941D}
 </style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
 </head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
@@ -69,7 +73,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   <p style="font:600 19px/1.65 'Nunito',sans-serif;color:#41573F;max-width:560px;margin:0 auto;text-wrap:pretty">Ask questions, schedule a visit, or just introduce yourself. We love meeting new families.</p>
 </section>
 
-<section style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+<section class="rg4" style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
   <div style="background:#fff;border-radius:24px;padding:26px;box-shadow:0 4px 16px rgba(20,60,35,.08);text-align:center">
     <div style="width:48px;height:48px;border-radius:50%;background:#E9F3EB;margin:0 auto 12px;display:flex;align-items:center;justify-content:center"><div style="width:18px;height:18px;background:#1B7A40;transform:rotate(45deg);border-radius:4px"></div></div>
     <div style="font:600 17px 'Fredoka',sans-serif;color:#153A26;margin-bottom:6px">Address</div>
@@ -92,14 +96,14 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   </div>
 </section>
 
-<section style="max-width:1180px;margin:0 auto;padding:48px 24px 8px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start">
+<section class="rg2" style="max-width:1180px;margin:0 auto;padding:48px 24px 8px;display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start">
   <div style="background:#fff;border-radius:30px;padding:40px;box-shadow:0 6px 20px rgba(20,60,35,.10)">
 
     <form id="tour-form" onsubmit="return false">
       <div id="tour-form-view">
         <h2 style="font:600 30px 'Fredoka',sans-serif;color:#153A26;margin:0 0 8px">Schedule a tour</h2>
         <p style="font:600 15px/1.6 'Nunito',sans-serif;color:#41573F;margin:0 0 26px">Tell us a little about your family and we'll reach out within two school days to set a time.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="fldg" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <label style="display:flex;flex-direction:column;gap:6px;font:800 13px 'Nunito',sans-serif;color:#153A26">Your name
             <input id="tour-name" placeholder="e.g. Jordan Carter" style="border:2px solid #D5E5D9;border-radius:14px;padding:12px 14px;font:600 15px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB">
           </label>
@@ -140,8 +144,44 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 
   </div>
   <div style="display:flex;flex-direction:column;gap:24px">
-    <div style="height:280px;border-radius:28px;background:repeating-linear-gradient(45deg,#E9F3EB 0 16px,#F6FAF4 16px 32px);border:3px dashed #9CC3A6;display:flex;align-items:center;justify-content:center">
-      <span style="font:600 13px monospace;color:#4C7A5B;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #C9DECD">[ map: Nashville, TN 37211 ]</span>
+    <div style="height:280px;border-radius:28px;border:3px solid #9CC3A6;overflow:hidden;background:#F6FAF4">
+      <svg viewBox="0 0 420 300" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" role="img" aria-label="Stylized map of Nashville, TN 37211">
+        <rect width="420" height="300" fill="#F6FAF4"/>
+        <!-- park blocks -->
+        <rect x="20" y="20" width="110" height="80" rx="14" fill="#E9F3EB"/>
+        <rect x="300" y="180" width="100" height="96" rx="14" fill="#E9F3EB"/>
+        <circle cx="60" cy="52" r="10" fill="#4C9A66"/><circle cx="92" cy="70" r="8" fill="#4C9A66"/>
+        <circle cx="340" cy="216" r="10" fill="#4C9A66"/><circle cx="368" cy="244" r="8" fill="#4C9A66"/>
+        <!-- creek -->
+        <path d="M-10 210 Q80 180 160 214 Q250 250 430 200" stroke="#9CC3A6" stroke-width="22" fill="none" opacity=".55"/>
+        <!-- roads -->
+        <g stroke="#fff" stroke-width="16" fill="none">
+          <path d="M160 -10 L160 310"/>
+          <path d="M-10 130 L430 130"/>
+          <path d="M300 -10 L300 180"/>
+        </g>
+        <g stroke="#D5E5D9" stroke-width="3" stroke-dasharray="10 10" fill="none">
+          <path d="M160 -10 L160 310"/>
+          <path d="M-10 130 L430 130"/>
+          <path d="M300 -10 L300 180"/>
+        </g>
+        <!-- little buildings -->
+        <rect x="190" y="40" width="34" height="26" rx="6" fill="#FBD79E"/>
+        <rect x="236" y="52" width="28" height="22" rx="6" fill="#F0B45B"/>
+        <rect x="40" y="160" width="34" height="24" rx="6" fill="#FBD79E"/>
+        <rect x="330" y="60" width="30" height="24" rx="6" fill="#F0B45B"/>
+        <!-- school pin -->
+        <g transform="translate(230,150)">
+          <path d="M0 46 C-26 18 -30 4 -30 -8 A30 30 0 1 1 30 -8 C30 4 26 18 0 46 Z" fill="#F7941D" stroke="#fff" stroke-width="5"/>
+          <circle cx="0" cy="-8" r="16" fill="#fff"/>
+          <path d="M0 -18 l3.1 6.6 7 .9-5.1 4.8 1.3 6.9-6.3-3.4-6.3 3.4 1.3-6.9-5.1-4.8 7-.9z" fill="#1B7A40"/>
+        </g>
+        <!-- label -->
+        <g transform="translate(230,236)">
+          <rect x="-92" y="-16" width="184" height="34" rx="17" fill="#153A26"/>
+          <text x="0" y="6" text-anchor="middle" font-family="'Nunito',sans-serif" font-weight="800" font-size="14" fill="#fff">Nashville, TN 37211</text>
+        </g>
+      </svg>
     </div>
     <div style="background:#153A26;border-radius:28px;padding:30px">
       <h3 style="font:600 22px 'Fredoka',sans-serif;color:#fff;margin:0 0 10px">Rather skip ahead?</h3>
@@ -156,7 +196,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 </section>
 
 <footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
-  <div style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">
@@ -192,6 +232,9 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 </footer>
 
 <script>
+var FAH_SUPABASE_URL = 'https://zovywyaobwusmxzlamea.supabase.co';
+var FAH_SUPABASE_KEY = 'sb_publishable_LiOAPQOSPn1nHc-g9ken_w_1dXSfEsM';
+
 function fahSubmitTour() {
   var name = document.getElementById('tour-name').value.trim();
   var contact = document.getElementById('tour-contact').value.trim();
@@ -202,9 +245,37 @@ function fahSubmitTour() {
     return;
   }
   errorBox.style.display = 'none';
-  document.getElementById('tour-sent-name').textContent = name.split(' ')[0] || 'friend';
-  document.getElementById('tour-form-view').style.display = 'none';
-  document.getElementById('tour-success-view').style.display = 'block';
+
+  var btn = document.querySelector('#tour-form .submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  fetch(FAH_SUPABASE_URL + '/rest/v1/falah_tour_requests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': FAH_SUPABASE_KEY,
+      'Authorization': 'Bearer ' + FAH_SUPABASE_KEY
+    },
+    body: JSON.stringify({
+      name: name,
+      contact: contact,
+      program: document.getElementById('tour-program').value || null,
+      preferred_time: document.getElementById('tour-time').value || null,
+      message: document.getElementById('tour-msg').value.trim() || null
+    })
+  }).then(function (res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    document.getElementById('tour-sent-name').textContent = name.split(' ')[0] || 'friend';
+    document.getElementById('tour-form-view').style.display = 'none';
+    document.getElementById('tour-success-view').style.display = 'block';
+  }).catch(function () {
+    errorBox.textContent = "Couldn't send your request — please try again, or email info@falahacademy.org.";
+    errorBox.style.display = 'block';
+  }).finally(function () {
+    btn.disabled = false;
+    btn.textContent = 'Request my tour';
+  });
 }
 function fahResetTour() {
   document.getElementById('tour-form').reset();

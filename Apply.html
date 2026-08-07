@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="Join the Fall 2026 waitlist for Falah Academy of Nashville — PreK & Kindergarten. Five minutes, no fee until a seat is offered.">
 <style>
 html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
 a{color:#1B7A40}
@@ -50,11 +52,13 @@ label textarea{resize:vertical}
 .step-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
 .step-head h2{font:600 26px 'Fredoka',sans-serif;color:#153A26;margin:0}
 </style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
 </head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
@@ -167,7 +171,7 @@ label textarea{resize:vertical}
 
   <div class="card">
     <div class="step-head"><div class="step-badge" style="background:#F7941D;color:#153A26;transform:rotate(4deg)">4</div><h2>Emergency &amp; pickup</h2></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="rg3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
       <label>Emergency contact
         <input id="ap-emName" placeholder="Name">
       </label>
@@ -214,7 +218,7 @@ label textarea{resize:vertical}
   <div class="card">
     <div class="step-head"><div class="step-badge" style="background:#F7941D;color:#153A26;transform:rotate(-3deg)">6</div><h2>Enrollment document checklist</h2></div>
     <p style="font:600 14px/1.5 'Nunito',sans-serif;color:#41573F;margin:0 0 16px">Nothing is due today — just check what you already have on hand:</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="fldg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <label class="check-row"><input type="checkbox" id="ap-birthCert">Certified birth certificate</label>
       <label class="check-row"><input type="checkbox" id="ap-immunCert">Official TN Immunization Certificate</label>
       <label class="check-row"><input type="checkbox" id="ap-physExam">Physical exam record (within 12 months)</label>
@@ -271,7 +275,7 @@ label textarea{resize:vertical}
 </div>
 
 <footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
-  <div style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">
@@ -307,6 +311,9 @@ label textarea{resize:vertical}
 </footer>
 
 <script>
+var FAH_SUPABASE_URL = 'https://zovywyaobwusmxzlamea.supabase.co';
+var FAH_SUPABASE_KEY = 'sb_publishable_LiOAPQOSPn1nHc-g9ken_w_1dXSfEsM';
+
 var fahProgram = '';
 
 function fahPickProgram(p) {
@@ -377,11 +384,74 @@ function fahSubmitApply() {
   }
   errorBox.style.display = 'none';
 
-  var nick = document.getElementById('ap-childNick').value.trim();
-  document.getElementById('ap-done-name').textContent = nick || first || 'Your child';
-  document.getElementById('ap-form-section').style.display = 'none';
-  document.getElementById('ap-done-section').style.display = 'block';
-  window.scrollTo(0, 0);
+  var val = function (id) { return document.getElementById(id).value.trim() || null; };
+  var checked = function (id) { return document.getElementById(id).checked; };
+  var payload = {
+    program: fahProgram,
+    child_first: first,
+    child_last: last,
+    child_nickname: val('ap-childNick'),
+    child_dob: dob,
+    child_sex: val('ap-childSex'),
+    child_languages: val('ap-childLang'),
+    p1_name: p1Name,
+    p1_relationship: val('ap-p1Rel'),
+    p1_phone: p1Phone || null,
+    p1_email: p1Email || null,
+    street: val('ap-street'),
+    city: val('ap-city'),
+    zip: val('ap-zip'),
+    residency_doc: val('ap-resDoc'),
+    p2_name: val('ap-p2Name'),
+    p2_phone: val('ap-p2Phone'),
+    em_name: val('ap-emName'),
+    em_phone: val('ap-emPhone'),
+    em_relationship: val('ap-emRel'),
+    pickups: val('ap-pickups'),
+    doctor_name: val('ap-docName'),
+    doctor_phone: val('ap-docPhone'),
+    allergies: val('ap-allergies'),
+    conditions: val('ap-conditions'),
+    immunization_status: val('ap-immun'),
+    physical_status: val('ap-physical'),
+    docs: {
+      birth_certificate: checked('ap-birthCert'),
+      immunization_certificate: checked('ap-immunCert'),
+      physical_exam: checked('ap-physExam'),
+      residency: checked('ap-residency'),
+      photo_id: checked('ap-photoId'),
+      custody: checked('ap-custody')
+    },
+    heard_about: val('ap-heard'),
+    consent_contact: checked('ap-consentContact')
+  };
+
+  var btn = document.querySelector('#ap-form .submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  fetch(FAH_SUPABASE_URL + '/rest/v1/falah_applications', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': FAH_SUPABASE_KEY,
+      'Authorization': 'Bearer ' + FAH_SUPABASE_KEY
+    },
+    body: JSON.stringify(payload)
+  }).then(function (res) {
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var nick = document.getElementById('ap-childNick').value.trim();
+    document.getElementById('ap-done-name').textContent = nick || first || 'Your child';
+    document.getElementById('ap-form-section').style.display = 'none';
+    document.getElementById('ap-done-section').style.display = 'block';
+    window.scrollTo(0, 0);
+  }).catch(function () {
+    errorBox.textContent = "Something went wrong sending your application. Please try again, or email us at info@falahacademy.org.";
+    errorBox.style.display = 'block';
+  }).finally(function () {
+    btn.disabled = false;
+    btn.textContent = 'Join the waitlist';
+  });
 }
 
 function fahStartOver() {

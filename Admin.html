@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Falah Academy of Nashville</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<style>
+html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
+a{color:#1B7A40}
+::selection{background:#FBD79E}
+input,select,textarea{font-family:'Nunito',sans-serif}
+input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#F7941D !important}
+
+.field{border:2px solid #D5E5D9;border-radius:14px;padding:12px 14px;font:600 15px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB;width:100%;box-sizing:border-box}
+.btn{border:none;cursor:pointer;font:800 15px 'Nunito',sans-serif;color:#153A26;background:#F7941D;padding:12px 24px;border-radius:999px;box-shadow:0 3px 0 #C9720A;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 0 #C9720A}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+.btn-quiet{border:none;cursor:pointer;font:800 13px 'Nunito',sans-serif;color:#166B38;background:#E9F3EB;padding:9px 16px;border-radius:999px;transition:background .15s}
+.btn-quiet:hover{background:#D8EBDC}
+.btn-link{display:inline-block;text-decoration:none;font:800 13px 'Nunito',sans-serif;color:#166B38;background:#E9F3EB;padding:9px 16px;border-radius:999px;transition:background .15s}
+.btn-link:hover{background:#D8EBDC;color:#166B38}
+
+.tab{border:none;cursor:pointer;font:800 15px 'Nunito',sans-serif;color:#1F3D2B;background:transparent;padding:10px 20px;border-radius:999px;transition:background .15s}
+.tab:hover{background:#E9F3EB}
+.tab.active{color:#fff;background:#1B7A40}
+
+.stat-card{background:#fff;border-radius:24px;padding:22px 26px;box-shadow:0 4px 16px rgba(20,60,35,.08)}
+.stat-num{font:600 40px 'Fredoka',sans-serif;color:#153A26;line-height:1}
+.stat-lbl{font:800 12px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#93A996;margin-top:8px}
+
+.row-card{background:#fff;border-radius:22px;padding:20px 24px;box-shadow:0 4px 14px rgba(20,60,35,.07)}
+.pill{display:inline-block;font:800 12px 'Nunito',sans-serif;padding:5px 12px;border-radius:999px}
+.pill-new{background:#FDEBD2;color:#8A5206}
+.pill-scheduled{background:#E3EDFB;color:#1D4E96}
+.pill-contacted{background:#E3EDFB;color:#1D4E96}
+.pill-offered{background:#F3E8FB;color:#6B2FA0}
+.pill-completed{background:#E9F3EB;color:#166B38}
+.pill-enrolled{background:#E9F3EB;color:#166B38}
+.pill-cancelled{background:#F1F1EC;color:#7A8578}
+.pill-archived{background:#F1F1EC;color:#7A8578}
+
+.status-select{border:2px solid #D5E5D9;border-radius:999px;padding:7px 12px;font:800 13px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB;cursor:pointer}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px 22px;margin-top:16px}
+.detail-lbl{font:800 11px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#93A996;margin-bottom:3px}
+.detail-val{font:600 14px/1.45 'Nunito',sans-serif;color:#1F3D2B;overflow-wrap:anywhere}
+.doc-chip{display:inline-block;font:800 12px 'Nunito',sans-serif;padding:4px 11px;border-radius:999px;margin:0 6px 6px 0}
+@media (max-width:760px){.stats{grid-template-columns:1fr 1fr !important}}
+</style>
+</head>
+<body>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
+  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
+      <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
+      <span style="display:flex;flex-direction:column;line-height:1.05">
+        <span style="font:600 21px 'Fredoka',sans-serif;color:#166B38">Falah Academy</span>
+        <span style="font:800 11px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#E07C00">Admin dashboard</span>
+      </span>
+    </a>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+      <button id="refresh-btn" class="btn-quiet" style="display:none" onclick="loadData()">↻ Refresh</button>
+      <button id="signout-btn" class="btn-quiet" style="display:none" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Login ===== -->
+<section id="login-view" style="max-width:440px;margin:0 auto;padding:80px 24px">
+  <div style="background:#fff;border-radius:30px;padding:44px 40px;box-shadow:0 6px 20px rgba(20,60,35,.10)">
+    <h1 style="font:600 32px 'Fredoka',sans-serif;color:#153A26;margin:0 0 8px">Staff sign in</h1>
+    <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0 0 24px">Admin access only. Looking for tours or the waitlist? Head to <a href="Contact.html">Contact</a> or <a href="Apply.html">Apply</a>.</p>
+    <form onsubmit="return signIn()" style="display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:6px;font:800 13px 'Nunito',sans-serif;color:#153A26">Email
+        <input id="login-email" type="email" class="field" autocomplete="username" placeholder="you@example.com">
+      </label>
+      <label style="display:flex;flex-direction:column;gap:6px;font:800 13px 'Nunito',sans-serif;color:#153A26">Password
+        <input id="login-pass" type="password" class="field" autocomplete="current-password" placeholder="••••••••">
+      </label>
+      <div id="login-error" style="display:none;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
+      <button id="login-btn" type="submit" class="btn" style="margin-top:6px">Sign in</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== Dashboard ===== -->
+<div id="dash-view" style="display:none;max-width:1180px;margin:0 auto;padding:40px 24px 80px">
+
+  <div class="stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:32px">
+    <div class="stat-card"><div class="stat-num" id="stat-new-tours">–</div><div class="stat-lbl">New tour requests</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-upcoming">–</div><div class="stat-lbl">Upcoming tours</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-apps">–</div><div class="stat-lbl">Waitlist applications</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-apps-new">–</div><div class="stat-lbl">New this week</div></div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap">
+    <button id="tab-tours" class="tab active" onclick="showTab('tours')">Tour bookings</button>
+    <button id="tab-apps" class="tab" onclick="showTab('apps')">Waitlist applications</button>
+    <button class="btn-quiet" style="margin-left:auto" onclick="exportCsv()">Export CSV</button>
+  </div>
+
+  <div id="tours-panel" style="display:flex;flex-direction:column;gap:14px"></div>
+  <div id="apps-panel" style="display:none;flex-direction:column;gap:14px"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPABASE_URL = 'https://zovywyaobwusmxzlamea.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_LiOAPQOSPn1nHc-g9ken_w_1dXSfEsM';
+var SCHOOL_LOCATION = 'Falah Academy of Nashville, Nashville, TN 37211';
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+var tours = [];
+var apps = [];
+var activeTab = 'tours';
+var openApps = {};   // id -> expanded
+
+var PROGRAM_LABELS = { prek: 'PreK', k: 'Kindergarten', both: 'Both kids', other: 'Just curious' };
+var TIME_LABELS = { morning: 'Weekday morning', midday: 'Weekday midday', afternoon: 'Weekday afternoon' };
+var TOUR_STATUSES = ['new','scheduled','completed','cancelled'];
+var APP_STATUSES = ['new','contacted','offered','enrolled','archived'];
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function fmtDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function fmtDateTime(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+function ageOn(dobStr, refStr) {
+  var d = new Date(dobStr + 'T00:00:00'), ref = new Date(refStr);
+  var a = ref.getFullYear() - d.getFullYear();
+  var m = ref.getMonth() - d.getMonth();
+  if (m < 0 || (m === 0 && ref.getDate() < d.getDate())) a--;
+  return a;
+}
+
+/* ===== Auth ===== */
+function signIn() {
+  var btn = document.getElementById('login-btn');
+  var err = document.getElementById('login-error');
+  err.style.display = 'none';
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  sb.auth.signInWithPassword({
+    email: document.getElementById('login-email').value.trim(),
+    password: document.getElementById('login-pass').value
+  }).then(function (res) {
+    if (res.error) {
+      err.textContent = res.error.message;
+      err.style.display = 'block';
+    }
+  }).finally(function () {
+    btn.disabled = false; btn.textContent = 'Sign in';
+  });
+  return false;
+}
+function signOut() { sb.auth.signOut(); }
+
+sb.auth.onAuthStateChange(function (_event, session) {
+  var authed = !!session;
+  document.getElementById('login-view').style.display = authed ? 'none' : 'block';
+  document.getElementById('dash-view').style.display = authed ? 'block' : 'none';
+  document.getElementById('signout-btn').style.display = authed ? 'inline-block' : 'none';
+  document.getElementById('refresh-btn').style.display = authed ? 'inline-block' : 'none';
+  if (authed) loadData();
+});
+
+/* ===== Data ===== */
+function loadData() {
+  Promise.all([
+    sb.from('falah_tour_requests').select('*').order('created_at', { ascending: false }),
+    sb.from('falah_applications').select('*').order('created_at', { ascending: false })
+  ]).then(function (results) {
+    tours = results[0].data || [];
+    apps = results[1].data || [];
+    renderStats();
+    renderTours();
+    renderApps();
+  });
+}
+
+function renderStats() {
+  var now = Date.now();
+  var weekAgo = now - 7 * 864e5;
+  document.getElementById('stat-new-tours').textContent = tours.filter(function (t) { return t.status === 'new'; }).length;
+  document.getElementById('stat-upcoming').textContent = tours.filter(function (t) {
+    return t.status === 'scheduled' && t.scheduled_at && new Date(t.scheduled_at).getTime() >= now;
+  }).length;
+  document.getElementById('stat-apps').textContent = apps.length;
+  document.getElementById('stat-apps-new').textContent =
+    apps.filter(function (a) { return new Date(a.created_at).getTime() >= weekAgo; }).length +
+    tours.filter(function (t) { return new Date(t.created_at).getTime() >= weekAgo; }).length;
+}
+
+function showTab(tab) {
+  activeTab = tab;
+  document.getElementById('tab-tours').className = 'tab' + (tab === 'tours' ? ' active' : '');
+  document.getElementById('tab-apps').className = 'tab' + (tab === 'apps' ? ' active' : '');
+  document.getElementById('tours-panel').style.display = tab === 'tours' ? 'flex' : 'none';
+  document.getElementById('apps-panel').style.display = tab === 'apps' ? 'flex' : 'none';
+}
+
+function statusPill(status) {
+  return '<span class="pill pill-' + esc(status) + '">' + esc(status) + '</span>';
+}
+function statusSelect(kind, id, current, options) {
+  var html = '<select class="status-select" onchange="setStatus(\'' + kind + '\',\'' + id + '\',this.value)">';
+  options.forEach(function (o) {
+    html += '<option value="' + o + '"' + (o === current ? ' selected' : '') + '>' + o + '</option>';
+  });
+  return html + '</select>';
+}
+
+/* ===== Tours ===== */
+function renderTours() {
+  var panel = document.getElementById('tours-panel');
+  if (!tours.length) {
+    panel.innerHTML = '<div class="row-card" style="text-align:center;color:#93A996;font:700 15px \'Nunito\',sans-serif">No tour requests yet.</div>';
+    return;
+  }
+  panel.innerHTML = tours.map(function (t) {
+    var schedRow;
+    if (t.scheduled_at) {
+      schedRow =
+        '<span style="font:700 14px \'Nunito\',sans-serif;color:#166B38">📅 ' + esc(fmtDateTime(t.scheduled_at)) + '</span>' +
+        '<a class="btn-link" target="_blank" rel="noopener" href="' + gcalUrl(t) + '">+ Google Calendar</a>' +
+        '<button class="btn-quiet" onclick="downloadIcs(\'' + t.id + '\')">⬇ .ics</button>' +
+        '<button class="btn-quiet" onclick="clearSchedule(\'' + t.id + '\')">Unschedule</button>';
+    } else {
+      schedRow =
+        '<input type="datetime-local" id="sched-' + t.id + '" class="field" style="width:auto;padding:8px 12px;font-size:13px">' +
+        '<button class="btn-quiet" onclick="scheduleTour(\'' + t.id + '\')">Schedule tour</button>';
+    }
+    return '<div class="row-card">' +
+      '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">' +
+        '<div style="min-width:180px"><div style="font:600 19px \'Fredoka\',sans-serif;color:#153A26">' + esc(t.name) + '</div>' +
+        '<div style="font:600 13px \'Nunito\',sans-serif;color:#93A996">' + esc(fmtDate(t.created_at)) + '</div></div>' +
+        '<div style="min-width:170px"><div class="detail-lbl">Contact</div><div class="detail-val">' + esc(t.contact) + '</div></div>' +
+        '<div><div class="detail-lbl">Program</div><div class="detail-val">' + esc(PROGRAM_LABELS[t.program] || t.program || '—') + '</div></div>' +
+        '<div><div class="detail-lbl">Prefers</div><div class="detail-val">' + esc(TIME_LABELS[t.preferred_time] || t.preferred_time || '—') + '</div></div>' +
+        '<div style="margin-left:auto;display:flex;align-items:center;gap:10px">' + statusPill(t.status) +
+        statusSelect('tour', t.id, t.status, TOUR_STATUSES) + '</div>' +
+      '</div>' +
+      (t.message ? '<div style="margin-top:12px;background:#FDF8EE;border-radius:14px;padding:10px 16px;font:600 14px/1.5 \'Nunito\',sans-serif;color:#41573F">“' + esc(t.message) + '”</div>' : '') +
+      '<div style="margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">' + schedRow + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function scheduleTour(id) {
+  var input = document.getElementById('sched-' + id);
+  if (!input.value) { input.focus(); return; }
+  updateRow('falah_tour_requests', id, { scheduled_at: new Date(input.value).toISOString(), status: 'scheduled' });
+}
+function clearSchedule(id) {
+  updateRow('falah_tour_requests', id, { scheduled_at: null, status: 'new' });
+}
+
+/* Calendar helpers */
+function calDates(t) {
+  var start = new Date(t.scheduled_at);
+  var end = new Date(start.getTime() + 45 * 60000);
+  var f = function (d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); };
+  return f(start) + '/' + f(end);
+}
+function calDetails(t) {
+  var lines = ['Campus tour with ' + t.name, 'Contact: ' + t.contact];
+  if (t.program) lines.push('Program: ' + (PROGRAM_LABELS[t.program] || t.program));
+  if (t.message) lines.push('Note: ' + t.message);
+  return lines.join('\n');
+}
+function gcalUrl(t) {
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' + encodeURIComponent('Falah Academy tour — ' + t.name) +
+    '&dates=' + calDates(t) +
+    '&details=' + encodeURIComponent(calDetails(t)) +
+    '&location=' + encodeURIComponent(SCHOOL_LOCATION);
+}
+function downloadIcs(id) {
+  var t = tours.find(function (x) { return x.id === id; });
+  if (!t || !t.scheduled_at) return;
+  var dates = calDates(t).split('/');
+  var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Falah Academy//Admin//EN', 'BEGIN:VEVENT',
+    'UID:falah-tour-' + t.id, 'DTSTAMP:' + dates[0], 'DTSTART:' + dates[0], 'DTEND:' + dates[1],
+    'SUMMARY:Falah Academy tour — ' + t.name.replace(/[,;]/g, ' '),
+    'DESCRIPTION:' + calDetails(t).replace(/[,;]/g, ' ').replace(/\n/g, '\\n'),
+    'LOCATION:' + SCHOOL_LOCATION.replace(/,/g, '\\,'),
+    'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+  a.download = 'falah-tour-' + (t.name || 'visit').toLowerCase().replace(/\s+/g, '-') + '.ics';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ===== Applications ===== */
+function renderApps() {
+  var panel = document.getElementById('apps-panel');
+  if (!apps.length) {
+    panel.innerHTML = '<div class="row-card" style="text-align:center;color:#93A996;font:700 15px \'Nunito\',sans-serif">No applications yet.</div>';
+    return;
+  }
+  panel.innerHTML = apps.map(function (a) {
+    var open = !!openApps[a.id];
+    var progLabel = a.program === 'prek' ? 'PreK' : 'Kindergarten';
+    var head =
+      '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;cursor:pointer" onclick="toggleApp(\'' + a.id + '\')">' +
+        '<div style="min-width:200px"><div style="font:600 19px \'Fredoka\',sans-serif;color:#153A26">' + esc(a.child_first + ' ' + a.child_last) +
+        (a.child_nickname ? ' <span style="font:600 14px \'Nunito\',sans-serif;color:#93A996">“' + esc(a.child_nickname) + '”</span>' : '') + '</div>' +
+        '<div style="font:600 13px \'Nunito\',sans-serif;color:#93A996">Applied ' + esc(fmtDate(a.created_at)) + '</div></div>' +
+        '<div><div class="detail-lbl">Program</div><div class="detail-val">' + progLabel + '</div></div>' +
+        '<div><div class="detail-lbl">DOB</div><div class="detail-val">' + esc(a.child_dob) + ' (' + ageOn(a.child_dob, '2026-08-15') + ' on Aug 15)</div></div>' +
+        '<div style="min-width:170px"><div class="detail-lbl">' + esc(a.p1_relationship || 'Parent') + '</div><div class="detail-val">' + esc(a.p1_name) + '</div></div>' +
+        '<div style="min-width:150px"><div class="detail-lbl">Reach at</div><div class="detail-val">' + esc(a.p1_phone || '') + (a.p1_phone && a.p1_email ? '<br>' : '') + esc(a.p1_email || '') + '</div></div>' +
+        '<div style="margin-left:auto;display:flex;align-items:center;gap:10px" onclick="event.stopPropagation()">' + statusPill(a.status) +
+        statusSelect('app', a.id, a.status, APP_STATUSES) +
+        '<span style="font:800 16px \'Nunito\',sans-serif;color:#93A996">' + (open ? '▴' : '▾') + '</span></div>' +
+      '</div>';
+    var body = '';
+    if (open) {
+      var docs = a.docs || {};
+      var DOC_LABELS = { birth_certificate: 'Birth certificate', immunization_certificate: 'Immunization cert', physical_exam: 'Physical exam', residency: 'Proof of residency', photo_id: 'Photo ID', custody: 'Custody papers' };
+      var chips = Object.keys(DOC_LABELS).map(function (k) {
+        var has = !!docs[k];
+        return '<span class="doc-chip" style="background:' + (has ? '#E9F3EB;color:#166B38' : '#F1F1EC;color:#A9B3A7') + '">' + (has ? '✓ ' : '· ') + DOC_LABELS[k] + '</span>';
+      }).join('');
+      var pair = function (lbl, val) { return '<div><div class="detail-lbl">' + lbl + '</div><div class="detail-val">' + esc(val || '—') + '</div></div>'; };
+      body = '<div style="border-top:2px dashed #E4EDE2;margin-top:16px;padding-top:4px">' +
+        '<div class="detail-grid">' +
+        pair('Sex', a.child_sex === 'F' ? 'Female' : a.child_sex === 'M' ? 'Male' : a.child_sex) +
+        pair('Languages at home', a.child_languages) +
+        pair('Address', [a.street, a.city, a.zip].filter(Boolean).join(', ')) +
+        pair('Residency doc', a.residency_doc) +
+        pair('Second guardian', a.p2_name ? a.p2_name + (a.p2_phone ? ' · ' + a.p2_phone : '') : null) +
+        pair('Emergency contact', a.em_name ? a.em_name + (a.em_relationship ? ' (' + a.em_relationship + ')' : '') + (a.em_phone ? ' · ' + a.em_phone : '') : null) +
+        pair('Authorized pickups', a.pickups) +
+        pair('Pediatrician', a.doctor_name ? a.doctor_name + (a.doctor_phone ? ' · ' + a.doctor_phone : '') : null) +
+        pair('Allergies / dietary', a.allergies) +
+        pair('Conditions / meds', a.conditions) +
+        pair('Immunization cert', a.immunization_status) +
+        pair('Physical exam', a.physical_status) +
+        pair('Heard about us', a.heard_about) +
+        pair('OK to contact', a.consent_contact ? 'Yes' : 'No') +
+        '</div>' +
+        '<div style="margin-top:16px"><div class="detail-lbl">Documents on hand</div><div style="margin-top:6px">' + chips + '</div></div>' +
+        '<div style="margin-top:14px"><div class="detail-lbl">Admin notes</div>' +
+        '<textarea id="notes-' + a.id + '" class="field" rows="2" style="margin-top:6px" placeholder="Private notes…">' + esc(a.admin_notes || '') + '</textarea>' +
+        '<button class="btn-quiet" style="margin-top:8px" onclick="saveNotes(\'' + a.id + '\')">Save notes</button></div>' +
+      '</div>';
+    }
+    return '<div class="row-card">' + head + body + '</div>';
+  }).join('');
+}
+
+function toggleApp(id) {
+  openApps[id] = !openApps[id];
+  renderApps();
+}
+function saveNotes(id) {
+  updateRow('falah_applications', id, { admin_notes: document.getElementById('notes-' + id).value.trim() || null });
+}
+function setStatus(kind, id, status) {
+  updateRow(kind === 'tour' ? 'falah_tour_requests' : 'falah_applications', id, { status: status });
+}
+
+function updateRow(table, id, patch) {
+  sb.from(table).update(patch).eq('id', id).then(function (res) {
+    if (res.error) alert('Save failed: ' + res.error.message);
+    loadData();
+  });
+}
+
+/* ===== CSV export ===== */
+function exportCsv() {
+  var rows, name;
+  if (activeTab === 'tours') {
+    name = 'falah-tour-requests.csv';
+    rows = [['Requested', 'Name', 'Contact', 'Program', 'Preferred time', 'Status', 'Scheduled for', 'Message']].concat(
+      tours.map(function (t) {
+        return [fmtDate(t.created_at), t.name, t.contact, PROGRAM_LABELS[t.program] || t.program || '', TIME_LABELS[t.preferred_time] || '', t.status, t.scheduled_at ? fmtDateTime(t.scheduled_at) : '', t.message || ''];
+      }));
+  } else {
+    name = 'falah-waitlist.csv';
+    rows = [['Applied', 'Child', 'Program', 'DOB', 'Parent', 'Phone', 'Email', 'City', 'ZIP', 'Status', 'Allergies', 'Notes']].concat(
+      apps.map(function (a) {
+        return [fmtDate(a.created_at), a.child_first + ' ' + a.child_last, a.program === 'prek' ? 'PreK' : 'K', a.child_dob, a.p1_name, a.p1_phone || '', a.p1_email || '', a.city || '', a.zip || '', a.status, a.allergies || '', a.admin_notes || ''];
+      }));
+  }
+  var csv = rows.map(function (r) {
+    return r.map(function (c) { return '"' + String(c == null ? '' : c).replace(/"/g, '""') + '"'; }).join(',');
+  }).join('\r\n');
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' }));
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+</script>
+</body>
+</html>

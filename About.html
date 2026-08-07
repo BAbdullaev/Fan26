@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="Meet the team and mission behind Falah Academy of Nashville — academic excellence and strong moral character for PreK & Kindergarten.">
 <style>
 html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
 a{color:#1B7A40}
@@ -36,11 +38,13 @@ a:hover{color:#E07C00}
 .footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
 .footer-muted-link:hover{color:#F7941D}
 </style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
 </head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
@@ -55,7 +59,7 @@ a:hover{color:#E07C00}
       <a href="Admissions.html" class="nav-link">Admissions</a>
       <a href="Contact.html" class="nav-link">Contact</a>
     </nav>
-    <a href="Contact.html" class="cta-pill">Schedule a Tour</a>
+    <a href="Apply.html" class="cta-pill">Join the waitlist</a>
   </div>
 </header>
 
@@ -65,7 +69,7 @@ a:hover{color:#E07C00}
   <p style="font:600 19px/1.65 'Nunito',sans-serif;color:#41573F;max-width:640px;margin:0 auto;text-wrap:pretty">"Falah" means to flourish — and that's exactly what we're here for. A brand-new school built around our youngest learners, where academic excellence and strong moral character grow side by side.</p>
 </section>
 
-<section style="max-width:1180px;margin:0 auto;padding:0 24px 64px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center">
+<section class="rg2" style="max-width:1180px;margin:0 auto;padding:0 24px 64px;display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:center">
   <div style="position:relative">
     <div style="padding:4px;background:#fff;border-radius:44% 56% 52% 48% / 50% 44% 56% 50%;box-shadow:0 10px 30px rgba(20,60,35,.18)">
       <img src="assets/principal.png" alt="Dr. Rashid Abdus-Salaam, Founding Principal" style="display:block;width:100%;height:400px;object-fit:cover;border-radius:44% 56% 52% 48% / 50% 44% 56% 50%">
@@ -97,7 +101,7 @@ a:hover{color:#E07C00}
       <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:10px">Our values</div>
       <h2 style="font:600 40px 'Fredoka',sans-serif;color:#153A26;margin:0">What we stand for</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+    <div class="rg2" style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
       <div style="background:#fff;border-radius:26px;padding:32px;box-shadow:0 4px 16px rgba(20,60,35,.08);display:flex;gap:20px">
         <div style="flex-shrink:0;width:58px;height:58px;border-radius:50%;background:#FDEBD2;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#E07C00"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.5L12 16.8 6.1 20l1.3-6.5L2.5 9l6.6-.8z"></path></svg></div>
         <div>
@@ -137,15 +141,33 @@ a:hover{color:#E07C00}
       <h2 style="font:600 40px 'Fredoka',sans-serif;color:#153A26;margin:0 0 12px">The grown-ups your kids will love</h2>
       <p style="font:600 16px 'Nunito',sans-serif;color:#41573F;margin:0">Our founding team is coming together — faces and bios coming soon!</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+    <div class="rg3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
       <div style="background:#fff;border-radius:26px;padding:32px;box-shadow:0 4px 16px rgba(20,60,35,.08);text-align:center">
-        <div style="width:110px;height:110px;border-radius:50%;margin:0 auto 18px;background:repeating-linear-gradient(45deg,#E9F3EB 0 12px,#F6FAF4 12px 24px);border:3px dashed #9CC3A6;display:flex;align-items:center;justify-content:center"><span style="font:600 11px monospace;color:#4C7A5B">[ photo ]</span></div>
+        <div style="width:110px;height:110px;border-radius:50%;margin:0 auto 18px;background:#E9F3EB;border:3px dashed #9CC3A6;overflow:hidden">
+          <svg viewBox="0 0 110 110" style="display:block;width:100%;height:100%" role="img" aria-label="Teacher photo coming soon">
+            <rect width="110" height="110" fill="#E9F3EB"/>
+            <circle cx="55" cy="44" r="20" fill="#9CC3A6"/>
+            <path d="M20 106 Q20 68 55 68 Q90 68 90 106 Z" fill="#1B7A40"/>
+            <circle cx="47" cy="42" r="3" fill="#153A26"/><circle cx="63" cy="42" r="3" fill="#153A26"/>
+            <path d="M48 51 Q55 57 62 51" stroke="#153A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M83 18 l3.2 6.8 7.2.9-5.3 5 1.4 7.1-6.5-3.5-6.5 3.5 1.4-7.1-5.3-5 7.2-.9z" fill="#F7941D"/>
+          </svg>
+        </div>
         <h3 style="font:600 21px 'Fredoka',sans-serif;color:#153A26;margin:0 0 6px">Lead PreK Teacher</h3>
         <div style="display:inline-block;background:#E9F3EB;color:#166B38;font:800 12px 'Nunito',sans-serif;padding:6px 12px;border-radius:999px;margin-bottom:12px">PreK · Ages 3–4</div>
         <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Announcement coming soon — drumroll, please!</p>
       </div>
       <div style="background:#fff;border-radius:26px;padding:32px;box-shadow:0 4px 16px rgba(20,60,35,.08);text-align:center">
-        <div style="width:110px;height:110px;border-radius:50%;margin:0 auto 18px;background:repeating-linear-gradient(45deg,#FDEBD2 0 12px,#FDF4E4 12px 24px);border:3px dashed #F0B45B;display:flex;align-items:center;justify-content:center"><span style="font:600 11px monospace;color:#B36405">[ photo ]</span></div>
+        <div style="width:110px;height:110px;border-radius:50%;margin:0 auto 18px;background:#FDEBD2;border:3px dashed #F0B45B;overflow:hidden">
+          <svg viewBox="0 0 110 110" style="display:block;width:100%;height:100%" role="img" aria-label="Teacher photo coming soon">
+            <rect width="110" height="110" fill="#FDEBD2"/>
+            <circle cx="55" cy="44" r="20" fill="#F0B45B"/>
+            <path d="M20 106 Q20 68 55 68 Q90 68 90 106 Z" fill="#E07C00"/>
+            <circle cx="47" cy="42" r="3" fill="#153A26"/><circle cx="63" cy="42" r="3" fill="#153A26"/>
+            <path d="M48 51 Q55 57 62 51" stroke="#153A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M83 18 l3.2 6.8 7.2.9-5.3 5 1.4 7.1-6.5-3.5-6.5 3.5 1.4-7.1-5.3-5 7.2-.9z" fill="#1B7A40"/>
+          </svg>
+        </div>
         <h3 style="font:600 21px 'Fredoka',sans-serif;color:#153A26;margin:0 0 6px">Lead Kindergarten Teacher</h3>
         <div style="display:inline-block;background:#FDEBD2;color:#B36405;font:800 12px 'Nunito',sans-serif;padding:6px 12px;border-radius:999px;margin-bottom:12px">Kindergarten · Age 5</div>
         <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Announcement coming soon — stay tuned!</p>
@@ -167,14 +189,14 @@ a:hover{color:#E07C00}
       <p style="font:600 16px 'Nunito',sans-serif;color:#CFE5D4;margin:0">Peek at our programs, or come walk the halls with us.</p>
     </div>
     <div style="display:flex;gap:14px;flex-wrap:wrap">
-      <a href="Programs.html" class="btn-outline">See programs</a>
-      <a href="Contact.html" class="cta-pill-lg">Schedule a Tour</a>
+      <a href="Contact.html" class="btn-outline">Schedule a Tour</a>
+      <a href="Apply.html" class="cta-pill-lg">Join the waitlist</a>
     </div>
   </div>
 </section>
 
 <footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
-  <div style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">

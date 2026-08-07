@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="PreK & Kindergarten programs at Falah Academy of Nashville — TN-ELDS aligned curriculum and a joyful daily rhythm.">
 <style>
 html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
 a{color:#1B7A40}
@@ -33,11 +35,13 @@ a:hover{color:#E07C00}
 .footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
 .footer-muted-link:hover{color:#F7941D}
 </style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
 </head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
@@ -52,7 +56,7 @@ a:hover{color:#E07C00}
       <a href="Admissions.html" class="nav-link">Admissions</a>
       <a href="Contact.html" class="nav-link">Contact</a>
     </nav>
-    <a href="Contact.html" class="cta-pill">Schedule a Tour</a>
+    <a href="Apply.html" class="cta-pill">Join the waitlist</a>
   </div>
 </header>
 
@@ -62,7 +66,7 @@ a:hover{color:#E07C00}
   <p style="font:600 19px/1.65 'Nunito',sans-serif;color:#41573F;max-width:620px;margin:0 auto;text-wrap:pretty">We're starting small on purpose: PreK and Kindergarten, taught by teachers who know every child's name, favorite color, and silliest joke.</p>
 </section>
 
-<section style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:26px">
+<section class="rg2" style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:26px">
   <div style="background:#fff;border-radius:32px;overflow:hidden;box-shadow:0 6px 20px rgba(20,60,35,.10)">
     <div style="background:#1B7A40;padding:26px 32px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
@@ -72,8 +76,37 @@ a:hover{color:#E07C00}
       <p style="font:700 16px 'Nunito',sans-serif;color:#CFE5D4;margin:0">Play with a purpose</p>
     </div>
     <div style="padding:30px 32px">
-      <div style="height:170px;border-radius:22px;background:repeating-linear-gradient(45deg,#E9F3EB 0 14px,#F6FAF4 14px 28px);border:2px dashed #9CC3A6;display:flex;align-items:center;justify-content:center;margin-bottom:24px">
-        <span style="font:600 13px monospace;color:#4C7A5B;background:#fff;padding:6px 12px;border-radius:8px;border:1px solid #C9DECD">[ photo: block corner &amp; art easels ]</span>
+      <div style="height:170px;border-radius:22px;border:2px solid #C9DECD;overflow:hidden;margin-bottom:24px;background:#E9F3EB">
+        <svg viewBox="0 0 520 180" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" role="img" aria-label="Illustration of a block corner and art easel">
+          <rect width="520" height="180" fill="#E9F3EB"/>
+          <rect y="128" width="520" height="52" fill="#FDF3DF"/>
+          <g fill="#fff"><ellipse cx="90" cy="36" rx="34" ry="14"/><ellipse cx="118" cy="28" rx="24" ry="11"/></g>
+          <!-- block stack -->
+          <g font-family="'Fredoka',sans-serif" font-size="22" font-weight="600" text-anchor="middle">
+            <rect x="70" y="90" width="44" height="44" rx="8" fill="#F7941D"/><text x="92" y="120" fill="#153A26">A</text>
+            <rect x="120" y="90" width="44" height="44" rx="8" fill="#4C9A66"/><text x="142" y="120" fill="#fff">B</text>
+            <rect x="95" y="44" width="44" height="44" rx="8" fill="#1B7A40"/><text x="117" y="74" fill="#fff">C</text>
+          </g>
+          <!-- easel -->
+          <g transform="translate(330,26)">
+            <line x1="10" y1="110" x2="45" y2="0" stroke="#C68955" stroke-width="8" stroke-linecap="round"/>
+            <line x1="80" y1="110" x2="45" y2="0" stroke="#C68955" stroke-width="8" stroke-linecap="round"/>
+            <rect x="5" y="18" width="80" height="62" rx="8" fill="#fff" stroke="#D5E5D9" stroke-width="4"/>
+            <circle cx="30" cy="40" r="11" fill="#FBD79E" stroke="#F7941D" stroke-width="4"/>
+            <path d="M50 62 Q58 44 66 62" stroke="#4C9A66" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M14 68 Q28 60 42 68" stroke="#1B7A40" stroke-width="4" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- ball -->
+          <circle cx="250" cy="130" r="24" fill="#E07C00"/>
+          <path d="M226 130 Q250 114 274 130" stroke="#FBD79E" stroke-width="5" fill="none"/>
+          <path d="M226 130 Q250 146 274 130" stroke="#FBD79E" stroke-width="5" fill="none"/>
+          <!-- crayons -->
+          <g transform="translate(440,118)">
+            <rect x="0" y="0" width="12" height="42" rx="5" fill="#1B7A40" transform="rotate(14 6 21)"/>
+            <rect x="22" y="-4" width="12" height="46" rx="5" fill="#F7941D" transform="rotate(-8 28 19)"/>
+            <rect x="44" y="0" width="12" height="42" rx="5" fill="#E07C00" transform="rotate(10 50 21)"/>
+          </g>
+        </svg>
       </div>
       <h3 style="font:600 20px 'Fredoka',sans-serif;color:#153A26;margin:0 0 14px">What we learn</h3>
       <div style="display:flex;flex-direction:column;gap:11px;font:600 15px/1.5 'Nunito',sans-serif;color:#41573F;margin-bottom:24px">
@@ -98,8 +131,47 @@ a:hover{color:#E07C00}
       <p style="font:700 16px 'Nunito',sans-serif;color:#7A4A08;margin:0">Ready, set, read!</p>
     </div>
     <div style="padding:30px 32px">
-      <div style="height:170px;border-radius:22px;background:repeating-linear-gradient(45deg,#FDEBD2 0 14px,#FDF4E4 14px 28px);border:2px dashed #F0B45B;display:flex;align-items:center;justify-content:center;margin-bottom:24px">
-        <span style="font:600 13px monospace;color:#B36405;background:#fff;padding:6px 12px;border-radius:8px;border:1px solid #F0D4A8">[ photo: reading nook &amp; discovery table ]</span>
+      <div style="height:170px;border-radius:22px;border:2px solid #F0D4A8;overflow:hidden;margin-bottom:24px;background:#FDEBD2">
+        <svg viewBox="0 0 520 180" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" role="img" aria-label="Illustration of a reading nook">
+          <rect width="520" height="180" fill="#FDEBD2"/>
+          <rect y="128" width="520" height="52" fill="#FDF3DF"/>
+          <!-- garland -->
+          <path d="M0 14 Q130 44 260 14 Q390 44 520 14" stroke="#F0B45B" stroke-width="3" fill="none"/>
+          <g fill="#1B7A40"><path d="M80 24 l8 0 -4 14 z"/><path d="M180 32 l8 0 -4 14 z"/><path d="M340 32 l8 0 -4 14 z"/><path d="M440 24 l8 0 -4 14 z"/></g>
+          <g fill="#F7941D"><path d="M130 32 l8 0 -4 14 z"/><path d="M260 22 l8 0 -4 14 z"/><path d="M390 32 l8 0 -4 14 z"/></g>
+          <!-- bookshelf -->
+          <g transform="translate(60,52)">
+            <rect width="130" height="86" rx="10" fill="#C68955"/>
+            <rect x="10" y="10" width="110" height="30" rx="5" fill="#FDF8EE"/>
+            <rect x="14" y="13" width="13" height="24" rx="3" fill="#E07C00"/>
+            <rect x="31" y="13" width="13" height="24" rx="3" fill="#1B7A40"/>
+            <rect x="48" y="13" width="13" height="24" rx="3" fill="#F7941D"/>
+            <rect x="65" y="13" width="13" height="24" rx="3" fill="#4C9A66"/>
+            <rect x="82" y="13" width="13" height="24" rx="3" fill="#153A26"/>
+            <rect x="10" y="48" width="110" height="30" rx="5" fill="#FDF8EE"/>
+            <rect x="16" y="51" width="15" height="24" rx="3" fill="#4C9A66"/>
+            <rect x="35" y="51" width="15" height="24" rx="3" fill="#F7941D"/>
+            <rect x="54" y="51" width="15" height="24" rx="3" fill="#1B7A40"/>
+            <rect x="73" y="51" width="15" height="24" rx="3" fill="#FBD79E"/>
+          </g>
+          <!-- open book on cushion -->
+          <ellipse cx="300" cy="146" rx="52" ry="16" fill="#F7941D"/>
+          <g transform="translate(300,110)">
+            <path d="M-40 0 Q-20 -14 0 0 L0 30 Q-20 16 -40 30 Z" fill="#fff" stroke="#F0D4A8" stroke-width="3"/>
+            <path d="M40 0 Q20 -14 0 0 L0 30 Q20 16 40 30 Z" fill="#fff" stroke="#F0D4A8" stroke-width="3"/>
+            <line x1="-28" y1="8" x2="-10" y2="5" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
+            <line x1="10" y1="5" x2="28" y2="8" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
+            <line x1="-28" y1="16" x2="-10" y2="13" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
+            <line x1="10" y1="13" x2="28" y2="16" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <!-- lamp -->
+          <g transform="translate(430,58)">
+            <path d="M-22 26 L22 26 L10 0 L-10 0 Z" fill="#1B7A40"/>
+            <line x1="0" y1="26" x2="0" y2="76" stroke="#153A26" stroke-width="6" stroke-linecap="round"/>
+            <ellipse cx="0" cy="80" rx="20" ry="7" fill="#153A26"/>
+            <circle cx="0" cy="34" r="6" fill="#FBD79E"/>
+          </g>
+        </svg>
       </div>
       <h3 style="font:600 20px 'Fredoka',sans-serif;color:#153A26;margin:0 0 14px">What we learn</h3>
       <div style="display:flex;flex-direction:column;gap:11px;font:600 15px/1.5 'Nunito',sans-serif;color:#41573F;margin-bottom:24px">
@@ -132,7 +204,7 @@ a:hover{color:#E07C00}
       <p style="font:600 16px 'Nunito',sans-serif;color:#41573F;margin:0">Predictable enough to feel safe, playful enough to feel magical.</p>
     </div>
     <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column">
-      <div style="display:grid;grid-template-columns:92px 24px 1fr;gap:0 18px;align-items:start">
+      <div class="tl" style="display:grid;grid-template-columns:92px 24px 1fr;gap:0 18px;align-items:start">
         <div style="font:600 20px 'Fredoka',sans-serif;color:#E07C00;text-align:right;padding-top:14px">8:00</div>
         <div style="display:flex;flex-direction:column;align-items:center;height:100%"><div style="width:18px;height:18px;border-radius:50%;background:#F7941D;border:4px solid #fff;box-shadow:0 0 0 2px #F7941D;margin-top:16px"></div><div style="width:3px;flex:1;background:#C9DECD;border-radius:2px"></div></div>
         <div style="background:#fff;border-radius:20px;padding:18px 24px;margin-bottom:14px;box-shadow:0 3px 12px rgba(20,60,35,.07)"><div style="font:800 17px 'Nunito',sans-serif;color:#153A26;margin-bottom:4px">Arrival &amp; morning circle</div><div style="font:600 14px/1.5 'Nunito',sans-serif;color:#41573F">Warm hellos, a song or two, calendar time, and the day's big question.</div></div>
@@ -176,7 +248,7 @@ a:hover{color:#E07C00}
 </section>
 
 <footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
-  <div style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">

@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="Falah Academy of Nashville — a warm, wonder-filled PreK & Kindergarten opening Fall 2026. Schedule a tour or join the waitlist today.">
 <style>
 html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
 a{color:#1B7A40}
@@ -41,15 +43,17 @@ a:hover{color:#E07C00}
 .footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
 .footer-muted-link:hover{color:#F7941D}
 </style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
 </head>
 <body>
 
-<div style="background:#F7941D;color:#153A26;text-align:center;padding:10px 20px;font:800 15px 'Nunito',sans-serif">
+<div class="topbar" style="background:#F7941D;color:#153A26;text-align:center;padding:10px 20px;font:800 15px 'Nunito',sans-serif">
 ★ Now enrolling PreK &amp; Kindergarten for Fall 2026 — seats are limited! <a href="Apply.html" style="color:#153A26;text-decoration:underline;margin-left:6px">Join the waitlist</a>
 </div>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
@@ -64,18 +68,18 @@ a:hover{color:#E07C00}
       <a href="Admissions.html" class="nav-link">Admissions</a>
       <a href="Contact.html" class="nav-link">Contact</a>
     </nav>
-    <a href="Contact.html" class="cta-pill">Schedule a Tour</a>
+    <a href="Apply.html" class="cta-pill">Join the waitlist</a>
   </div>
 </header>
 
-<section style="max-width:1180px;margin:0 auto;padding:64px 24px 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center">
+<section class="rg2" style="max-width:1180px;margin:0 auto;padding:64px 24px 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center">
   <div>
     <div style="display:inline-flex;align-items:center;gap:8px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:800 14px 'Nunito',sans-serif;padding:8px 16px;border-radius:999px;margin-bottom:20px">✦ Brand-new school · Opening Fall 2026</div>
     <h1 style="font:600 66px/1.05 'Fredoka',sans-serif;color:#153A26;margin:0 0 20px">Little learners.<br><span style="color:#1B7A40">Big</span> <span style="background:linear-gradient(transparent 62%, #FBD79E 62%);padding:0 4px">adventures.</span></h1>
     <p style="font:600 20px/1.6 'Nunito',sans-serif;color:#41573F;margin:0 0 28px;max-width:480px;text-wrap:pretty">Falah Academy is Nashville's newest PreK &amp; Kindergarten — a warm, wonder-filled place where bright minds and kind hearts grow together.</p>
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:28px">
-      <a href="Contact.html" class="hero-cta">Schedule a Tour</a>
-      <a href="Programs.html" class="hero-outline">Explore programs</a>
+      <a href="Apply.html" class="hero-cta">Join the waitlist</a>
+      <a href="Contact.html" class="hero-outline">Schedule a Tour</a>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:8px 14px;border-radius:999px">PreK · Ages 3–4</span>
@@ -84,8 +88,93 @@ a:hover{color:#E07C00}
     </div>
   </div>
   <div style="position:relative">
-    <div style="height:430px;border-radius:48% 52% 46% 54% / 44% 46% 54% 56%;background:repeating-linear-gradient(45deg,#E9F3EB 0 16px,#F6FAF4 16px 32px);border:3px dashed #9CC3A6;display:flex;align-items:center;justify-content:center">
-      <span style="font:600 14px monospace;color:#4C7A5B;background:#fff;padding:8px 14px;border-radius:10px;border:1px solid #C9DECD">[ photo: morning story circle ]</span>
+    <div class="hero-visual" style="height:430px;border-radius:48% 52% 46% 54% / 44% 46% 54% 56%;border:3px solid #9CC3A6;overflow:hidden;background:#E9F3EB">
+      <svg viewBox="0 0 600 440" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" role="img" aria-label="Illustration of a morning story circle">
+        <rect width="600" height="440" fill="#E9F3EB"/>
+        <rect y="270" width="600" height="170" fill="#FDF3DF"/>
+        <!-- sun -->
+        <g stroke="#F7941D" stroke-width="6" stroke-linecap="round">
+          <line x1="92" y1="18" x2="92" y2="34"/><line x1="92" y1="126" x2="92" y2="142"/>
+          <line x1="30" y1="80" x2="46" y2="80"/><line x1="138" y1="80" x2="154" y2="80"/>
+          <line x1="49" y1="37" x2="60" y2="48"/><line x1="124" y1="112" x2="135" y2="123"/>
+          <line x1="135" y1="37" x2="124" y2="48"/><line x1="60" y1="112" x2="49" y2="123"/>
+        </g>
+        <circle cx="92" cy="80" r="34" fill="#FBD79E" stroke="#F7941D" stroke-width="6"/>
+        <!-- clouds -->
+        <g fill="#fff"><ellipse cx="440" cy="66" rx="46" ry="20"/><ellipse cx="478" cy="56" rx="34" ry="16"/><ellipse cx="270" cy="46" rx="34" ry="14" opacity=".8"/></g>
+        <!-- window -->
+        <g transform="translate(452,110)">
+          <rect width="112" height="112" rx="16" fill="#F6FAF4" stroke="#9CC3A6" stroke-width="6"/>
+          <line x1="56" y1="6" x2="56" y2="106" stroke="#9CC3A6" stroke-width="5"/>
+          <line x1="6" y1="56" x2="106" y2="56" stroke="#9CC3A6" stroke-width="5"/>
+        </g>
+        <!-- bookshelf -->
+        <g transform="translate(30,180)">
+          <rect width="120" height="96" rx="12" fill="#C68955"/>
+          <rect x="10" y="12" width="100" height="32" rx="6" fill="#FDF8EE"/>
+          <rect x="14" y="16" width="12" height="24" rx="3" fill="#1B7A40"/>
+          <rect x="30" y="16" width="12" height="24" rx="3" fill="#F7941D"/>
+          <rect x="46" y="16" width="12" height="24" rx="3" fill="#4C9A66"/>
+          <rect x="62" y="16" width="12" height="24" rx="3" fill="#E07C00"/>
+          <rect x="78" y="16" width="12" height="24" rx="3" fill="#153A26"/>
+          <rect x="10" y="52" width="100" height="32" rx="6" fill="#FDF8EE"/>
+          <rect x="16" y="56" width="14" height="24" rx="3" fill="#F7941D"/>
+          <rect x="34" y="56" width="14" height="24" rx="3" fill="#1B7A40"/>
+          <rect x="52" y="56" width="14" height="24" rx="3" fill="#FBD79E"/>
+          <rect x="70" y="56" width="14" height="24" rx="3" fill="#4C9A66"/>
+        </g>
+        <!-- rug -->
+        <ellipse cx="300" cy="372" rx="252" ry="62" fill="#FBD79E"/>
+        <ellipse cx="300" cy="372" rx="190" ry="44" fill="none" stroke="#F7941D" stroke-width="5" stroke-dasharray="14 12"/>
+        <!-- teacher with book -->
+        <g transform="translate(300,214)">
+          <path d="M-46 96 Q-46 10 0 10 Q46 10 46 96 Z" fill="#1B7A40"/>
+          <circle cx="0" cy="-14" r="27" fill="#C68955"/>
+          <path d="M-27 -20 Q-27 -46 0 -46 Q27 -46 27 -20 Q14 -34 0 -34 Q-14 -34 -27 -20 Z" fill="#153A26"/>
+          <circle cx="-9" cy="-14" r="3" fill="#153A26"/><circle cx="9" cy="-14" r="3" fill="#153A26"/>
+          <path d="M-8 -3 Q0 4 8 -3" stroke="#153A26" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- open book -->
+          <g transform="translate(0,58)">
+            <path d="M-34 0 Q-17 -12 0 0 L0 26 Q-17 14 -34 26 Z" fill="#fff" stroke="#D5E5D9" stroke-width="3"/>
+            <path d="M34 0 Q17 -12 0 0 L0 26 Q17 14 34 26 Z" fill="#fff" stroke="#D5E5D9" stroke-width="3"/>
+            <line x1="-24" y1="6" x2="-8" y2="4" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
+            <line x1="8" y1="4" x2="24" y2="6" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </g>
+        <!-- kids -->
+        <g transform="translate(158,318)">
+          <path d="M-30 52 Q-30 -4 0 -4 Q30 -4 30 52 Z" fill="#F7941D"/>
+          <circle cx="0" cy="-22" r="20" fill="#F2C9A0"/>
+          <path d="M-20 -26 Q-20 -44 0 -44 Q20 -44 20 -26 Q10 -36 0 -36 Q-10 -36 -20 -26 Z" fill="#8C5A33"/>
+          <circle cx="-7" cy="-22" r="2.6" fill="#153A26"/><circle cx="7" cy="-22" r="2.6" fill="#153A26"/>
+          <path d="M-6 -13 Q0 -8 6 -13" stroke="#153A26" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(300,344)">
+          <path d="M-30 50 Q-30 -4 0 -4 Q30 -4 30 50 Z" fill="#4C9A66"/>
+          <circle cx="0" cy="-22" r="20" fill="#8C5A33"/>
+          <path d="M-20 -24 Q-22 -48 0 -46 Q22 -48 20 -24 Q10 -38 0 -38 Q-10 -38 -20 -24 Z" fill="#153A26"/>
+          <circle cx="-7" cy="-22" r="2.6" fill="#153A26"/><circle cx="7" cy="-22" r="2.6" fill="#153A26"/>
+          <path d="M-6 -13 Q0 -8 6 -13" stroke="#153A26" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(442,318)">
+          <path d="M-30 52 Q-30 -4 0 -4 Q30 -4 30 52 Z" fill="#E07C00"/>
+          <circle cx="0" cy="-22" r="20" fill="#C68955"/>
+          <path d="M-20 -26 Q-20 -46 0 -44 Q20 -46 20 -26 Q10 -36 0 -36 Q-10 -36 -20 -26 Z" fill="#3B2A1A"/>
+          <circle cx="-14" cy="-40" r="6" fill="#F7941D"/><circle cx="14" cy="-40" r="6" fill="#F7941D"/>
+          <circle cx="-7" cy="-22" r="2.6" fill="#153A26"/><circle cx="7" cy="-22" r="2.6" fill="#153A26"/>
+          <path d="M-6 -13 Q0 -8 6 -13" stroke="#153A26" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- plant -->
+        <g transform="translate(548,262)">
+          <path d="M0 0 Q-16 -34 -30 -44" stroke="#1B7A40" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M0 0 Q4 -40 0 -58" stroke="#1B7A40" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M0 0 Q16 -30 28 -38" stroke="#1B7A40" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <ellipse cx="-32" cy="-48" rx="10" ry="7" fill="#4C9A66" transform="rotate(-30 -32 -48)"/>
+          <ellipse cx="0" cy="-62" rx="9" ry="12" fill="#4C9A66"/>
+          <ellipse cx="30" cy="-42" rx="10" ry="7" fill="#4C9A66" transform="rotate(28 30 -42)"/>
+          <path d="M-22 0 L22 0 L16 34 L-16 34 Z" fill="#E07C00"/>
+        </g>
+      </svg>
     </div>
     <img src="assets/logo.jpeg" alt="" style="position:absolute;top:-26px;right:6px;width:110px;height:110px;border-radius:50%;background:#fff;box-shadow:0 8px 24px rgba(20,60,35,.22);animation:bob2 5s ease-in-out infinite">
     <div style="position:absolute;bottom:14px;left:-14px;background:#1B7A40;color:#fff;font:600 18px 'Fredoka',sans-serif;padding:12px 20px;border-radius:18px;box-shadow:0 6px 18px rgba(20,60,35,.25);animation:bob 6s ease-in-out infinite">Fall 2026 — here we grow!</div>
@@ -99,7 +188,7 @@ a:hover{color:#E07C00}
     <h2 style="font:600 40px 'Fredoka',sans-serif;color:#153A26;margin:0 0 12px">Every corner of our crest means something</h2>
     <p style="font:600 17px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Four little symbols, four big promises we make to every child.</p>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+  <div class="rg4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
     <div style="background:#fff;border-radius:26px;padding:28px 22px;box-shadow:0 4px 16px rgba(20,60,35,.08);border-top:6px solid #F7941D">
       <div style="width:58px;height:58px;border-radius:50%;background:#FDEBD2;display:flex;align-items:center;justify-content:center;margin-bottom:16px"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#E07C00"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.5L12 16.8 6.1 20l1.3-6.5L2.5 9l6.6-.8z"></path></svg></div>
       <h3 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 8px">Aim high</h3>
@@ -132,7 +221,7 @@ a:hover{color:#E07C00}
       </div>
       <p style="font:600 16px 'Nunito',sans-serif;color:#41573F;margin:0;max-width:340px;text-wrap:pretty">We're beginning with our youngest learners — and we'll grow one grade at a time.</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    <div class="rg2" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
       <div style="background:#fff;border-radius:30px;overflow:hidden;box-shadow:0 6px 20px rgba(20,60,35,.10)">
         <div style="background:#1B7A40;padding:22px 28px;display:flex;align-items:center;justify-content:space-between">
           <h3 style="font:600 28px 'Fredoka',sans-serif;color:#fff;margin:0">PreK</h3>
@@ -174,7 +263,7 @@ a:hover{color:#E07C00}
         <h2 style="font:600 30px 'Fredoka',sans-serif;color:#153A26;margin:0">A peek at our day</h2>
         <a href="Programs.html" style="font:800 15px 'Nunito',sans-serif;color:#166B38">Full daily rhythm →</a>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+      <div class="rg4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
         <div style="border:2px dashed #C9DECD;border-radius:20px;padding:18px">
           <div style="font:600 15px 'Fredoka',sans-serif;color:#E07C00;margin-bottom:6px">8:00</div>
           <div style="font:800 16px 'Nunito',sans-serif;color:#153A26">Morning circle</div>
@@ -208,15 +297,15 @@ a:hover{color:#E07C00}
       <h2 style="font:600 40px 'Fredoka',sans-serif;color:#fff;margin:0 0 14px">Come say hello!</h2>
       <p style="font:600 17px/1.6 'Nunito',sans-serif;color:#CFE5D4;margin:0 0 28px">The best way to feel the Falah difference is to visit. Tours are happening now for our very first school year.</p>
       <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a href="Contact.html" class="cta-pill-lg">Schedule a Tour</a>
-        <a href="Apply.html" class="btn-outline">Join the waitlist</a>
+        <a href="Apply.html" class="cta-pill-lg">Join the waitlist</a>
+        <a href="Contact.html" class="btn-outline">Schedule a Tour</a>
       </div>
     </div>
   </div>
 </section>
 
 <footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
-  <div style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">
