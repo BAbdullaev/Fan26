@@ -19,5 +19,17 @@ Shared nav/footer and hover states are implemented in plain CSS across all pages
 - **`Admin.html` is the staff dashboard.** Sign in with the Supabase auth admin account (create it under Authentication → Users in the Supabase dashboard, email must match the RLS policy). Shows stats, tour bookings, and waitlist applications; supports status changes, private notes, scheduling tours (with Google Calendar links + .ics downloads), and CSV export. It is not linked from public navigation and is `noindex`.
 
 ### Known gaps
-- Photos marked `[ photo: ... ]` throughout the site are placeholders — teacher photos, classroom photos, and the map are not yet real images.
-- Tuition figures, calendar dates, and other specifics are planning placeholders from the design and should be confirmed before going live.
+- Photos marked `[ photo: ... ]` throughout the site are placeholders — teacher photos, classroom photos, and the map are not yet real images. Both teacher cards on `About.html` still use illustrated avatars.
+- No street address yet — the site shows "Nashville, TN 37211" only.
+
+### Client-confirmed content (Aug 2026)
+
+Sourced from the client email and the Parent Orientation 2026 deck:
+
+- **Tuition:** $8,000/year, or 10 monthly payments of $800. Same rate for PreK and KG. No other fees have been confirmed — the old application/registration fees and sibling discount were removed.
+- **First day of school:** Monday, August 24, 2026. The rest of the 2026–27 calendar (breaks, holidays, open house) is still being finalized and was removed from `Admissions.html` rather than guessed.
+- **Daily schedules:** real PreK and Kindergarten schedules are on `Programs.html`. Staff break times and the aide's name were omitted at the client's request.
+- **Staff:** Dr. Rashid Abdus-Salaam (Founding Principal), Mrs. Maha Jabbary (Lead PreK), Mrs. Sara Sofi (Lead Kindergarten).
+- **Email:** the site uses `admissions@fan2026.org` and `rashid@fan2026.org`. Mrs. Maha's classroom address (`mahabad.Jabbary@fan2026.org`) is in the deck but is deliberately not published on the site.
+- **Curriculum:** Wit & Wisdom + My Heggerty (literacy), STEMscopes Math, Tennessee Studies Weekly (social studies).
+- Removed as unverifiable: the principal's credential list, the uniform color detail, and the tuition/calendar planning figures.
