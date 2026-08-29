@@ -147,3 +147,71 @@ create policy "staff can update applications"
   to authenticated
   using (public.is_fan26_staff())
   with check (public.is_fan26_staff());
+
+-- ===== Public staff directory =====
+-- Shown on Directory.html to anyone. Editable only by master accounts,
+-- from Admin.html's Directory tab.
+
+create table public.falah_directory (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  role_title text,
+  description text,
+  email text,
+  phone text,
+  extension text,
+  photo_url text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.falah_directory enable row level security;
+
+create policy "anyone can view directory"
+  on public.falah_directory for select
+  to anon, authenticated
+  using (true);
+
+create policy "master can insert directory entries"
+  on public.falah_directory for insert
+  to authenticated
+  with check (public.is_fan26_master());
+
+create policy "master can update directory entries"
+  on public.falah_directory for update
+  to authenticated
+  using (public.is_fan26_master())
+  with check (public.is_fan26_master());
+
+create policy "master can delete directory entries"
+  on public.falah_directory for delete
+  to authenticated
+  using (public.is_fan26_master());
+
+-- ===== Profile photo storage =====
+
+insert into storage.buckets (id, name, public)
+values ('directory-photos', 'directory-photos', true)
+on conflict (id) do nothing;
+
+create policy "anyone can view directory photos"
+  on storage.objects for select
+  to anon, authenticated
+  using (bucket_id = 'directory-photos');
+
+create policy "master can upload directory photos"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'directory-photos' and public.is_fan26_master());
+
+create policy "master can update directory photos"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'directory-photos' and public.is_fan26_master())
+  with check (bucket_id = 'directory-photos' and public.is_fan26_master());
+
+create policy "master can delete directory photos"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'directory-photos' and public.is_fan26_master());

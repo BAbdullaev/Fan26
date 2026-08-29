@@ -116,6 +116,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
     <button id="tab-apps" class="tab" onclick="showTab('apps')">Waitlist applications</button>
     <button id="tab-cal" class="tab" onclick="showTab('cal')">Calendar</button>
     <button id="tab-staff" class="tab" style="display:none" onclick="showTab('staff')">Staff access</button>
+    <button id="tab-directory" class="tab" style="display:none" onclick="showTab('directory')">Staff directory</button>
     <button class="btn-quiet" style="margin-left:auto" onclick="exportCsv()">Export CSV</button>
   </div>
 
@@ -146,6 +147,41 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
       <div id="staff-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
     </div>
     <div id="staff-list"></div>
+  </div>
+  <div id="directory-panel" style="display:none;flex-direction:column;gap:14px">
+    <div id="directory-add-card" class="row-card" style="display:none">
+      <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Add directory entry</h2>
+      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Master accounts only. Shown publicly on the Directory page.</p>
+      <form onsubmit="return addDirectoryEntry()" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end">
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Full name
+          <input id="dir-new-name" class="field" placeholder="Jane Doe" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Role / title
+          <input id="dir-new-role" class="field" placeholder="Lead PreK Teacher">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Email
+          <input id="dir-new-email" type="email" class="field" placeholder="jane@fan2026.org">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Phone
+          <input id="dir-new-phone" class="field" placeholder="(615) 555-0100">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Extension
+          <input id="dir-new-ext" class="field" placeholder="102">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Display order
+          <input id="dir-new-order" type="number" class="field" value="0" style="width:100%">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26;grid-column:1/-1">Description
+          <textarea id="dir-new-desc" class="field" rows="2" placeholder="A short line about this person"></textarea>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Photo
+          <input id="dir-new-photo" type="file" accept="image/*" class="field">
+        </label>
+        <button id="dir-add-btn" type="submit" class="btn">Add to directory</button>
+      </form>
+      <div id="dir-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
+    </div>
+    <div id="directory-list"></div>
   </div>
   <div id="cal-panel" style="display:none">
     <div class="row-card">
@@ -256,6 +292,8 @@ if (DEMO_MODE) {
     myRole = null;
     document.getElementById('tab-staff').style.display = 'none';
     document.getElementById('staff-add-card').style.display = 'none';
+    document.getElementById('tab-directory').style.display = 'none';
+    document.getElementById('directory-add-card').style.display = 'none';
     if (authed) {
       showTab('tours');
       loadData();
@@ -263,6 +301,8 @@ if (DEMO_MODE) {
         myRole = res.data ? res.data.role : null;
         document.getElementById('tab-staff').style.display = myRole === 'master' ? 'inline-block' : 'none';
         document.getElementById('staff-add-card').style.display = myRole === 'master' ? 'block' : 'none';
+        document.getElementById('tab-directory').style.display = myRole === 'master' ? 'inline-block' : 'none';
+        document.getElementById('directory-add-card').style.display = myRole === 'master' ? 'block' : 'none';
       });
     }
   });
@@ -311,12 +351,15 @@ function showTab(tab) {
   document.getElementById('tab-apps').className = 'tab' + (tab === 'apps' ? ' active' : '');
   document.getElementById('tab-cal').className = 'tab' + (tab === 'cal' ? ' active' : '');
   document.getElementById('tab-staff').className = 'tab' + (tab === 'staff' ? ' active' : '');
+  document.getElementById('tab-directory').className = 'tab' + (tab === 'directory' ? ' active' : '');
   document.getElementById('tours-panel').style.display = tab === 'tours' ? 'flex' : 'none';
   document.getElementById('apps-panel').style.display = tab === 'apps' ? 'flex' : 'none';
   document.getElementById('cal-panel').style.display = tab === 'cal' ? 'block' : 'none';
   document.getElementById('staff-panel').style.display = tab === 'staff' ? 'flex' : 'none';
+  document.getElementById('directory-panel').style.display = tab === 'directory' ? 'flex' : 'none';
   if (tab === 'cal') renderCalendar();
   if (tab === 'staff') loadStaff();
+  if (tab === 'directory') loadDirectory();
 }
 
 /* ===== Staff access (master only) ===== */
@@ -396,6 +439,159 @@ function removeStaff(email) {
       if (!result.ok) throw new Error(result.body.error || 'Failed to remove staff');
       loadStaff();
     }).catch(function (e) { alert('Remove failed: ' + e.message); });
+}
+
+/* ===== Staff directory (master only) ===== */
+var directoryList = [];
+
+function loadDirectory() {
+  sb.from('falah_directory').select('*').order('sort_order').order('full_name').then(function (res) {
+    directoryList = res.data || [];
+    renderDirectory();
+  });
+}
+
+function directoryPhotoPath(id, file) {
+  var safeName = file.name.replace(/[^a-zA-Z0-9.\-]/g, '_');
+  return id + '/' + Date.now() + '-' + safeName;
+}
+
+function uploadDirectoryPhoto(id, file) {
+  var path = directoryPhotoPath(id, file);
+  return sb.storage.from('directory-photos').upload(path, file, { contentType: file.type }).then(function (res) {
+    if (res.error) throw res.error;
+    var pub = sb.storage.from('directory-photos').getPublicUrl(path);
+    return pub.data.publicUrl;
+  });
+}
+
+// Best-effort cleanup so replaced/removed photos don't pile up in storage.
+function deleteDirectoryPhotoByUrl(url) {
+  if (!url) return;
+  var marker = '/directory-photos/';
+  var idx = url.indexOf(marker);
+  if (idx === -1) return;
+  var path = decodeURIComponent(url.slice(idx + marker.length));
+  sb.storage.from('directory-photos').remove([path]);
+}
+
+function renderDirectory() {
+  document.getElementById('directory-list').innerHTML = directoryList.map(function (p) {
+    var avatar = p.photo_url
+      ? '<img src="' + esc(p.photo_url) + '" style="width:64px;height:64px;border-radius:50%;object-fit:cover;flex-shrink:0">'
+      : '<div style="width:64px;height:64px;border-radius:50%;background:#E9F3EB;display:flex;align-items:center;justify-content:center;flex-shrink:0;font:600 20px \'Fredoka\',sans-serif;color:#166B38">' + esc((p.full_name || '?').trim().charAt(0).toUpperCase()) + '</div>';
+    return '<div class="row-card" id="dir-card-' + p.id + '">' +
+      '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
+        avatar +
+        '<div style="flex:1;min-width:260px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Full name' +
+            '<input id="dir-name-' + p.id + '" class="field" value="' + esc(p.full_name) + '"></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Role / title' +
+            '<input id="dir-role-' + p.id + '" class="field" value="' + esc(p.role_title || '') + '"></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Email' +
+            '<input id="dir-email-' + p.id + '" type="email" class="field" value="' + esc(p.email || '') + '"></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Phone' +
+            '<input id="dir-phone-' + p.id + '" class="field" value="' + esc(p.phone || '') + '"></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Extension' +
+            '<input id="dir-ext-' + p.id + '" class="field" value="' + esc(p.extension || '') + '"></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Display order' +
+            '<input id="dir-order-' + p.id + '" type="number" class="field" value="' + esc(p.sort_order) + '"></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996;grid-column:1/-1">Description' +
+            '<textarea id="dir-desc-' + p.id + '" class="field" rows="2">' + esc(p.description || '') + '</textarea></label>' +
+          '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Replace photo' +
+            '<input id="dir-photo-' + p.id + '" type="file" accept="image/*" class="field"></label>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px">' +
+          '<button class="btn-quiet" onclick="saveDirectoryEntry(\'' + p.id + '\')">Save changes</button>' +
+          '<button class="btn-quiet" onclick="removeDirectoryEntry(\'' + p.id + '\')">Remove</button>' +
+        '</div>' +
+      '</div>' +
+      '<div id="dir-error-' + p.id + '" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 \'Nunito\',sans-serif;padding:10px 16px;border-radius:14px"></div>' +
+    '</div>';
+  }).join('') || '<div class="row-card" style="text-align:center;color:#93A996;font:700 15px \'Nunito\',sans-serif">No directory entries yet.</div>';
+}
+
+function saveDirectoryEntry(id) {
+  var errBox = document.getElementById('dir-error-' + id);
+  errBox.style.display = 'none';
+  var patch = {
+    full_name: document.getElementById('dir-name-' + id).value.trim(),
+    role_title: document.getElementById('dir-role-' + id).value.trim() || null,
+    email: document.getElementById('dir-email-' + id).value.trim() || null,
+    phone: document.getElementById('dir-phone-' + id).value.trim() || null,
+    extension: document.getElementById('dir-ext-' + id).value.trim() || null,
+    sort_order: parseInt(document.getElementById('dir-order-' + id).value, 10) || 0,
+    description: document.getElementById('dir-desc-' + id).value.trim() || null,
+    updated_at: new Date().toISOString()
+  };
+  var photoInput = document.getElementById('dir-photo-' + id);
+  var photoFile = photoInput.files[0];
+  var previousPhotoUrl = (directoryList.find(function (r) { return r.id === id; }) || {}).photo_url;
+
+  (photoFile ? uploadDirectoryPhoto(id, photoFile) : Promise.resolve(null)).then(function (url) {
+    if (url) patch.photo_url = url;
+    return sb.from('falah_directory').update(patch).eq('id', id);
+  }).then(function (res) {
+    if (res.error) throw res.error;
+    if (photoFile && previousPhotoUrl) deleteDirectoryPhotoByUrl(previousPhotoUrl);
+    loadDirectory();
+  }).catch(function (e) {
+    errBox.textContent = e.message || 'Save failed';
+    errBox.style.display = 'block';
+  });
+}
+
+function removeDirectoryEntry(id) {
+  var photoUrl = (directoryList.find(function (r) { return r.id === id; }) || {}).photo_url;
+  sb.from('falah_directory').delete().eq('id', id).then(function (res) {
+    if (res.error) { alert('Remove failed: ' + res.error.message); return; }
+    deleteDirectoryPhotoByUrl(photoUrl);
+    loadDirectory();
+  });
+}
+
+function addDirectoryEntry() {
+  var btn = document.getElementById('dir-add-btn');
+  var err = document.getElementById('dir-error');
+  err.style.display = 'none';
+  var row = {
+    full_name: document.getElementById('dir-new-name').value.trim(),
+    role_title: document.getElementById('dir-new-role').value.trim() || null,
+    email: document.getElementById('dir-new-email').value.trim() || null,
+    phone: document.getElementById('dir-new-phone').value.trim() || null,
+    extension: document.getElementById('dir-new-ext').value.trim() || null,
+    sort_order: parseInt(document.getElementById('dir-new-order').value, 10) || 0,
+    description: document.getElementById('dir-new-desc').value.trim() || null
+  };
+  if (!row.full_name) { err.textContent = 'Full name is required'; err.style.display = 'block'; return false; }
+  var photoFile = document.getElementById('dir-new-photo').files[0];
+
+  btn.disabled = true; btn.textContent = 'Adding…';
+  sb.from('falah_directory').insert(row).select().single().then(function (res) {
+    if (res.error) throw res.error;
+    var newId = res.data.id;
+    if (photoFile) {
+      return uploadDirectoryPhoto(newId, photoFile).then(function (url) {
+        return sb.from('falah_directory').update({ photo_url: url }).eq('id', newId);
+      });
+    }
+  }).then(function () {
+    document.getElementById('dir-new-name').value = '';
+    document.getElementById('dir-new-role').value = '';
+    document.getElementById('dir-new-email').value = '';
+    document.getElementById('dir-new-phone').value = '';
+    document.getElementById('dir-new-ext').value = '';
+    document.getElementById('dir-new-order').value = '0';
+    document.getElementById('dir-new-desc').value = '';
+    document.getElementById('dir-new-photo').value = '';
+    loadDirectory();
+  }).catch(function (e) {
+    err.textContent = e.message || 'Failed to add directory entry';
+    err.style.display = 'block';
+  }).finally(function () {
+    btn.disabled = false; btn.textContent = 'Add to directory';
+  });
+  return false;
 }
 
 /* ===== Calendar ===== */
