@@ -57,27 +57,59 @@ create table public.falah_applications (
   admin_notes text
 );
 
--- ===== Staff allowlist =====
--- Centralizes who counts as "staff" for RLS. To add/remove staff, replace
--- this function's email array (or move to a table if the list grows much
--- more) and re-apply via the Supabase MCP server / SQL editor.
+-- ===== Staff roster =====
+-- Who can sign into Admin.html, and who among them ("master") can add/remove
+-- others through the dashboard's Staff access tab. Adding/removing rows here
+-- happens only through the staff-admin Edge Function (service role) — see
+-- supabase/functions/staff-admin/index.ts — never directly by the client, so
+-- a staff_users row always stays paired with a real auth.users account.
 
+create table public.staff_users (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  full_name text,
+  role text not null default 'staff' check (role in ('staff', 'master')),
+  auth_user_id uuid unique references auth.users(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+-- security definer so the check itself isn't blocked by staff_users' own RLS
 create or replace function public.is_fan26_staff()
 returns boolean
 language sql
 stable
+security definer
 set search_path = ''
 as $$
-  select coalesce(auth.jwt() ->> 'email', '') = any (array[
-    'rashid@fan2026.org',
-    'admissions@fan2026.org',
-    'merahman01@gmail.com',
-    'ashehata929+spark@gmail.com',
-    'abdullaevbilaliddin@gmail.com'
-  ]);
+  select exists (
+    select 1 from public.staff_users
+    where email = coalesce((select auth.jwt() ->> 'email'), '')
+  );
 $$;
 
--- ===== Row Level Security =====
+create or replace function public.is_fan26_master()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.staff_users
+    where email = coalesce((select auth.jwt() ->> 'email'), '')
+      and role = 'master'
+  );
+$$;
+
+alter table public.staff_users enable row level security;
+
+-- Read-only from the client; see the header note above for why.
+create policy "staff can view staff roster"
+  on public.staff_users for select
+  to authenticated
+  using (public.is_fan26_staff());
+
+-- ===== Row Level Security (tour requests & applications) =====
 -- Public site can only INSERT (submit a tour request / application).
 -- Only signed-in staff (per is_fan26_staff()) can SELECT/UPDATE.
 

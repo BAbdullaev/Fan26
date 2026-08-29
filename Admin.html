@@ -115,11 +115,38 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
     <button id="tab-tours" class="tab active" onclick="showTab('tours')">Tour bookings</button>
     <button id="tab-apps" class="tab" onclick="showTab('apps')">Waitlist applications</button>
     <button id="tab-cal" class="tab" onclick="showTab('cal')">Calendar</button>
+    <button id="tab-staff" class="tab" style="display:none" onclick="showTab('staff')">Staff access</button>
     <button class="btn-quiet" style="margin-left:auto" onclick="exportCsv()">Export CSV</button>
   </div>
 
   <div id="tours-panel" style="display:flex;flex-direction:column;gap:14px"></div>
   <div id="apps-panel" style="display:none;flex-direction:column;gap:14px"></div>
+  <div id="staff-panel" style="display:none;flex-direction:column;gap:14px">
+    <div id="staff-add-card" class="row-card" style="display:none">
+      <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Add staff</h2>
+      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Master accounts only. Sets a temporary password — share it with the new staff member directly.</p>
+      <form onsubmit="return addStaff()" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end">
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Full name
+          <input id="staff-new-name" class="field" placeholder="Jane Doe">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Email
+          <input id="staff-new-email" type="email" class="field" placeholder="jane@fan2026.org" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Temporary password
+          <input id="staff-new-pass" type="text" class="field" placeholder="min. 8 characters" required minlength="8">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Access level
+          <select id="staff-new-role" class="field">
+            <option value="staff">Staff (dashboard access)</option>
+            <option value="master">Master (can manage staff)</option>
+          </select>
+        </label>
+        <button id="staff-add-btn" type="submit" class="btn">Add staff</button>
+      </form>
+      <div id="staff-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
+    </div>
+    <div id="staff-list"></div>
+  </div>
   <div id="cal-panel" style="display:none">
     <div class="row-card">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap">
@@ -225,7 +252,19 @@ if (DEMO_MODE) {
     document.getElementById('dash-view').style.display = authed ? 'block' : 'none';
     document.getElementById('signout-btn').style.display = authed ? 'inline-block' : 'none';
     document.getElementById('refresh-btn').style.display = authed ? 'inline-block' : 'none';
-    if (authed) loadData();
+    myEmail = authed ? session.user.email.toLowerCase() : null;
+    myRole = null;
+    document.getElementById('tab-staff').style.display = 'none';
+    document.getElementById('staff-add-card').style.display = 'none';
+    if (authed) {
+      showTab('tours');
+      loadData();
+      sb.from('staff_users').select('role').eq('email', myEmail).maybeSingle().then(function (res) {
+        myRole = res.data ? res.data.role : null;
+        document.getElementById('tab-staff').style.display = myRole === 'master' ? 'inline-block' : 'none';
+        document.getElementById('staff-add-card').style.display = myRole === 'master' ? 'block' : 'none';
+      });
+    }
   });
 }
 
@@ -271,10 +310,92 @@ function showTab(tab) {
   document.getElementById('tab-tours').className = 'tab' + (tab === 'tours' ? ' active' : '');
   document.getElementById('tab-apps').className = 'tab' + (tab === 'apps' ? ' active' : '');
   document.getElementById('tab-cal').className = 'tab' + (tab === 'cal' ? ' active' : '');
+  document.getElementById('tab-staff').className = 'tab' + (tab === 'staff' ? ' active' : '');
   document.getElementById('tours-panel').style.display = tab === 'tours' ? 'flex' : 'none';
   document.getElementById('apps-panel').style.display = tab === 'apps' ? 'flex' : 'none';
   document.getElementById('cal-panel').style.display = tab === 'cal' ? 'block' : 'none';
+  document.getElementById('staff-panel').style.display = tab === 'staff' ? 'flex' : 'none';
   if (tab === 'cal') renderCalendar();
+  if (tab === 'staff') loadStaff();
+}
+
+/* ===== Staff access (master only) ===== */
+var myEmail = null;
+var myRole = null;
+var staffList = [];
+
+function loadStaff() {
+  sb.from('staff_users').select('*').order('created_at').then(function (res) {
+    staffList = res.data || [];
+    renderStaff();
+  });
+}
+
+function renderStaff() {
+  var ROLE_LABELS = { staff: 'Staff', master: 'Master' };
+  document.getElementById('staff-list').innerHTML = staffList.map(function (s) {
+    var isMe = s.email === myEmail;
+    return '<div class="row-card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">' +
+      '<div style="min-width:200px"><div style="font:600 17px \'Fredoka\',sans-serif;color:#153A26">' + esc(s.full_name || s.email) + (isMe ? ' <span style="font:700 12px \'Nunito\',sans-serif;color:#93A996">(you)</span>' : '') + '</div>' +
+      '<div style="font:600 13px \'Nunito\',sans-serif;color:#93A996">' + esc(s.email) + '</div></div>' +
+      '<span class="pill ' + (s.role === 'master' ? 'pill-offered' : 'pill-completed') + '">' + ROLE_LABELS[s.role] + '</span>' +
+      '<div style="margin-left:auto">' +
+      (isMe ? '' : '<button class="btn-quiet" onclick="removeStaff(\'' + esc(s.email) + '\')">Remove access</button>') +
+      '</div></div>';
+  }).join('') || '<div class="row-card" style="text-align:center;color:#93A996;font:700 15px \'Nunito\',sans-serif">No staff yet.</div>';
+}
+
+function addStaff() {
+  var btn = document.getElementById('staff-add-btn');
+  var err = document.getElementById('staff-error');
+  err.style.display = 'none';
+  var email = document.getElementById('staff-new-email').value.trim().toLowerCase();
+  var fullName = document.getElementById('staff-new-name').value.trim();
+  var password = document.getElementById('staff-new-pass').value;
+  var role = document.getElementById('staff-new-role').value;
+
+  btn.disabled = true; btn.textContent = 'Adding…';
+  sb.auth.getSession().then(function (sessionRes) {
+    return fetch(SUPABASE_URL + '/functions/v1/staff-admin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + sessionRes.data.session.access_token
+      },
+      body: JSON.stringify({ action: 'add', email: email, full_name: fullName || null, password: password, role: role })
+    });
+  }).then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
+    .then(function (result) {
+      if (!result.ok) throw new Error(result.body.error || 'Failed to add staff');
+      document.getElementById('staff-new-name').value = '';
+      document.getElementById('staff-new-email').value = '';
+      document.getElementById('staff-new-pass').value = '';
+      document.getElementById('staff-new-role').value = 'staff';
+      loadStaff();
+    }).catch(function (e) {
+      err.textContent = e.message;
+      err.style.display = 'block';
+    }).finally(function () {
+      btn.disabled = false; btn.textContent = 'Add staff';
+    });
+  return false;
+}
+
+function removeStaff(email) {
+  sb.auth.getSession().then(function (sessionRes) {
+    return fetch(SUPABASE_URL + '/functions/v1/staff-admin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + sessionRes.data.session.access_token
+      },
+      body: JSON.stringify({ action: 'remove', email: email })
+    });
+  }).then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
+    .then(function (result) {
+      if (!result.ok) throw new Error(result.body.error || 'Failed to remove staff');
+      loadStaff();
+    }).catch(function (e) { alert('Remove failed: ' + e.message); });
 }
 
 /* ===== Calendar ===== */
