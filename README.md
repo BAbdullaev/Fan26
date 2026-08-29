@@ -35,4 +35,4 @@ All public-page copy is sourced from the client email of Aug 2026, the PreK/KG s
 
 ### Open items
 - Photos marked `[ photo: ... ]` throughout the site are placeholders — teacher photos, classroom photos, and the map are not yet real images. Both teacher cards on `About.html` still use illustrated avatars.
-- No street address yet — the site shows "Nashville, TN 37211" only.
+- No street address yet — the site shows "Nashville, TN 37217" only.
