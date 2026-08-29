@@ -15,8 +15,8 @@ Shared nav/footer and hover states are implemented in plain CSS across all pages
 
 ### Backend & admin
 
-- **Contact and Apply forms submit to Supabase.** Tour requests go to `falah_tour_requests` and waitlist applications to `falah_applications` (project `zovywyaobwusmxzlamea`, currently shared with premed-tracker because the org's free tier caps at 2 projects — tables are `falah_`-prefixed for easy extraction later). RLS: the public anon key can only INSERT; reads/updates require a signed-in user whose email is the admin's.
-- **`Admin.html` is the staff dashboard.** Sign in with the Supabase auth admin account (create it under Authentication → Users in the Supabase dashboard, email must match the RLS policy). Shows stats, tour bookings, and waitlist applications; supports status changes, private notes, scheduling tours (with Google Calendar links + .ics downloads), and CSV export. It is not linked from public navigation and is `noindex`.
+- **Contact and Apply forms submit to Supabase.** Tour requests go to `falah_tour_requests` and waitlist applications to `falah_applications`, in project `kjuuipvyqqjlxmmlrlhy` (dedicated to Fan26, connected via the Supabase MCP server). RLS: the public publishable key can only INSERT; reads/updates require a signed-in staff account. Schema is documented in `supabase/schema.sql`.
+- **`Admin.html` is the staff dashboard**, live (not demo mode). Sign in with a staff Supabase Auth account. Access is governed by the `public.is_fan26_staff()` SQL function (see `supabase/schema.sql`), currently allowlisting: Rashid Abdus-Salaam (`rashid@fan2026.org`), Elbatoul Lemssaadi (`admissions@fan2026.org`), Dr. Eqbal Rahman, Ahmed Shehata, and Biloliddin Abdullaev. To add/remove staff, update the array in that function and re-apply it, then create/delete the matching Supabase Auth user. Shows stats, tour bookings, and waitlist applications; supports status changes, private notes, scheduling tours (with Google Calendar links + .ics downloads), and CSV export. It is not linked from public navigation and is `noindex`.
 
 ### Client-confirmed content (Aug 2026)
 
