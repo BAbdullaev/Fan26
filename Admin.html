@@ -97,17 +97,22 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   /* the header must never wrap mid-word: keep every label on one line and,
      if the row runs out of space, drop the buttons to their own line */
   .adminhdr{padding:10px 16px !important;gap:8px !important;flex-wrap:wrap;row-gap:8px}
-  .adminhdr>a{min-width:0}
+  .adminhdr>a{min-width:0;gap:10px !important}
+  .adminhdr>div{margin-left:auto}
   .adminhdr img{width:38px !important;height:38px !important;flex-shrink:0}
-  .adminhdr .brandname{font-size:17px !important;white-space:nowrap}
-  .adminhdr .brandsub{font-size:9px !important;white-space:nowrap;letter-spacing:.1em !important}
+  .adminhdr .brandname{font-size:16px !important;white-space:nowrap}
+  .adminhdr .brandsub{font-size:9px !important;white-space:nowrap;letter-spacing:.09em !important}
   .adminhdr .btn-quiet{font-size:12px;padding:8px 12px;white-space:nowrap}
   #login-view{padding:48px 16px !important}
   #login-view>div{padding:32px 24px !important}
 }
-@media (max-width:420px){
-  .adminhdr .brandname{display:none}
-  .adminhdr .brandsub{font-size:11px !important;color:#166B38 !important}
+@media (max-width:400px){
+  .adminhdr{padding:10px 14px !important}
+  .adminhdr img{width:34px !important;height:34px !important}
+  .adminhdr>a{gap:9px !important}
+  .adminhdr .brandname{font-size:15px !important}
+  .adminhdr .brandsub{font-size:8px !important}
+  .adminhdr .btn-quiet{font-size:11px;padding:7px 11px}
 }
 </style>
 </head>
