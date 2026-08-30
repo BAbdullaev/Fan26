@@ -23,3 +23,32 @@
     io.observe(el);
   });
 })();
+
+/* Mobile nav — collapses the header <nav> behind a hamburger button
+   (assets/site.css only shows .nav-toggle / turns .hdr nav into a
+   dropdown at 980px and below; desktop is untouched). */
+(function () {
+  var toggle = document.querySelector('.hdr .nav-toggle');
+  var nav = document.querySelector('.hdr nav');
+  if (!toggle || !nav) return;
+
+  function closeNav() {
+    nav.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = nav.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('nav-open') && !nav.contains(e.target) && e.target !== toggle) closeNav();
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', closeNav);
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 980) closeNav();
+  });
+})();
