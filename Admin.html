@@ -147,7 +147,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
       </button>
       <div id="admin-menu" class="menu" role="menu" aria-labelledby="menu-btn">
         <div class="menu-sect">Go to</div>
-        <button id="tab-apps" class="menu-item active" role="menuitem" onclick="showTab('apps')">Waitlist applications</button>
+        <button id="tab-apps" class="menu-item active" role="menuitem" onclick="showTab('apps')">Enrollment applications</button>
         <button id="tab-tours" class="menu-item" role="menuitem" onclick="showTab('tours')">Tour bookings</button>
         <button id="tab-cal" class="menu-item" role="menuitem" onclick="showTab('cal')">Calendar</button>
         <button id="tab-staff" class="menu-item" style="display:none" role="menuitem" onclick="showTab('staff')">Staff access</button>
@@ -166,7 +166,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 <section id="login-view" style="max-width:440px;margin:0 auto;padding:80px 24px">
   <div style="background:#fff;border-radius:30px;padding:44px 40px;box-shadow:0 6px 20px rgba(20,60,35,.10)">
     <h1 style="font:600 32px 'Fredoka',sans-serif;color:#153A26;margin:0 0 8px">Staff sign in</h1>
-    <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0 0 24px">Admin access only. Looking for tours or the waitlist? Head to <a href="Contact.html">Contact</a> or <a href="Apply.html">Apply</a>.</p>
+    <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0 0 24px">Admin access only. Looking for tours or enrollment? Head to <a href="Contact.html">Contact</a> or <a href="Apply.html">Apply</a>.</p>
     <form onsubmit="return signIn()" style="display:flex;flex-direction:column;gap:14px">
       <label style="display:flex;flex-direction:column;gap:6px;font:800 13px 'Nunito',sans-serif;color:#153A26">Email
         <input id="login-email" type="email" class="field" autocomplete="username" placeholder="you@example.com">
@@ -186,12 +186,12 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   <div class="stats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:32px">
     <div class="stat-card"><div class="stat-num" id="stat-new-tours">–</div><div class="stat-lbl">New tour requests</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-upcoming">–</div><div class="stat-lbl">Upcoming tours</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-apps">–</div><div class="stat-lbl">Waitlist applications</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-apps">–</div><div class="stat-lbl">Enrollment applications</div></div>
     <div class="stat-card"><div class="stat-num" id="stat-apps-new">–</div><div class="stat-lbl">New this week</div></div>
   </div>
 
   <div class="sect-head">
-    <h1 id="sect-title" style="font:600 30px 'Fredoka',sans-serif;color:#153A26;margin:0">Waitlist applications</h1>
+    <h1 id="sect-title" style="font:600 30px 'Fredoka',sans-serif;color:#153A26;margin:0">Enrollment applications</h1>
     <p id="sect-sub" style="font:600 14px 'Nunito',sans-serif;color:#93A996;margin:6px 0 0">Every family who has asked for a seat.</p>
   </div>
 
@@ -301,7 +301,7 @@ var activeTab = 'apps';
 var openApps = {};   // id -> expanded
 
 var SECTION_HEADINGS = {
-  apps:      ['Waitlist applications', 'Every family who has asked for a seat.'],
+  apps:      ['Enrollment applications', 'Every family who has asked for a seat.'],
   tours:     ['Tour bookings', 'Tour requests from the Contact form.'],
   cal:       ['Calendar', 'Scheduled tours, month by month.'],
   staff:     ['Staff access', 'Who can sign in to this dashboard.'],
@@ -955,7 +955,7 @@ function exportCsv() {
         return [fmtDate(t.created_at), t.name, t.contact, PROGRAM_LABELS[t.program] || t.program || '', TIME_LABELS[t.preferred_time] || '', t.status, t.scheduled_at ? fmtDateTime(t.scheduled_at) : '', t.message || ''];
       }));
   } else {
-    name = 'falah-waitlist.csv';
+    name = 'falah-enrollment-applications.csv';
     rows = [['Applied', 'Child', 'Program', 'DOB', 'Parent', 'Phone', 'Email', 'City', 'ZIP', 'Status', 'Allergies', 'Notes']].concat(
       apps.map(function (a) {
         return [fmtDate(a.created_at), a.child_first + ' ' + a.child_last, a.program === 'prek' ? 'PreK' : 'K', a.child_dob, a.p1_name, a.p1_phone || '', a.p1_email || '', a.city || '', a.zip || '', a.status, a.allergies || '', a.admin_notes || ''];
