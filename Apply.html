@@ -44,7 +44,8 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 .footer-muted-link:hover{color:#F7941D}
 
 label{display:flex;flex-direction:column;gap:6px;font:800 13px 'Nunito',sans-serif;color:#153A26}
-label input, label select, label textarea{border:2px solid #D5E5D9;border-radius:14px;padding:12px 14px;font:600 15px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB}
+label input, label select, label textarea{border:2px solid #D5E5D9;border-radius:14px;padding:12px 14px;font:600 15px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB;width:100%;box-sizing:border-box;min-width:0}
+.field-grid>*{min-width:0}
 label textarea{resize:vertical}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .card{background:#fff;border-radius:28px;padding:34px;box-shadow:0 6px 20px rgba(20,60,35,.10)}

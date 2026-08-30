@@ -51,8 +51,10 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 .doc-chip{display:inline-block;font:800 12px 'Nunito',sans-serif;padding:4px 11px;border-radius:999px;margin:0 6px 6px 0}
 
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-grid>*{min-width:0}
+.cal-chip{overflow-wrap:anywhere}
 .cal-dow{font:800 11px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#93A996;text-align:center;padding:6px 0}
-.cal-cell{background:#FDFDFB;border:2px solid #EDF3EA;border-radius:14px;min-height:96px;padding:8px;display:flex;flex-direction:column;gap:5px}
+.cal-cell{background:#FDFDFB;border:2px solid #EDF3EA;border-radius:14px;min-height:96px;padding:8px;display:flex;flex-direction:column;gap:5px;box-sizing:border-box;min-width:0}
 .cal-cell.other-month{background:transparent;border-color:transparent}
 .cal-cell.today{border-color:#F7941D;background:#FFFBF2}
 .cal-daynum{font:600 14px 'Fredoka',sans-serif;color:#41573F}
@@ -62,18 +64,62 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 .cal-chip.past{color:#7A8578;background:#F1F1EC;border-left-color:#B9C2B7}
 .cal-chip .t{color:#E07C00;display:block}
 .cal-chip.past .t{color:#98A296}
-@media (max-width:760px){.stats{grid-template-columns:1fr 1fr !important}.cal-cell{min-height:64px}}
+@media (max-width:760px){
+  .stats{grid-template-columns:1fr 1fr !important}
+  .cal-cell{min-height:64px}
+  .row-card{padding:18px 16px}
+  .detail-grid{grid-template-columns:1fr !important}
+}
+@media (max-width:640px){
+  /* keep the tab row on one line and let it scroll, instead of wrapping
+     into three ragged rows */
+  .tabbar{flex-wrap:nowrap !important;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+  .tabbar::-webkit-scrollbar{display:none}
+  .tabbar .tab{flex:0 0 auto;white-space:nowrap;font-size:14px;padding:9px 14px}
+  .tabbar .btn-quiet{flex:0 0 auto;white-space:nowrap}
+
+  #dash-view{padding:24px 16px 60px !important}
+  .stat-card{padding:18px}
+  .stat-num{font-size:32px}
+  .stat-lbl{font-size:11px}
+
+  /* month grid: 7 columns have to survive a 375px phone */
+  .cal-grid{gap:3px}
+  .cal-cell{min-height:56px;padding:4px;border-radius:10px;border-width:1px;gap:3px}
+  .cal-daynum{font-size:12px}
+  .cal-dow{font-size:9px;letter-spacing:.04em;padding:4px 0}
+  /* a name + time cannot render in a 42px cell — show each booking as a
+     tappable bar instead, and keep the detail one tap away */
+  .cal-chip{font-size:0;line-height:0;height:10px;width:100%;padding:0;border-left:none;border-radius:5px;background:#1B7A40}
+  .cal-chip.past{background:#B9C2B7}
+  .cal-chip .t{display:none}
+
+  /* the header must never wrap mid-word: keep every label on one line and,
+     if the row runs out of space, drop the buttons to their own line */
+  .adminhdr{padding:10px 16px !important;gap:8px !important;flex-wrap:wrap;row-gap:8px}
+  .adminhdr>a{min-width:0}
+  .adminhdr img{width:38px !important;height:38px !important;flex-shrink:0}
+  .adminhdr .brandname{font-size:17px !important;white-space:nowrap}
+  .adminhdr .brandsub{font-size:9px !important;white-space:nowrap;letter-spacing:.1em !important}
+  .adminhdr .btn-quiet{font-size:12px;padding:8px 12px;white-space:nowrap}
+  #login-view{padding:48px 16px !important}
+  #login-view>div{padding:32px 24px !important}
+}
+@media (max-width:420px){
+  .adminhdr .brandname{display:none}
+  .adminhdr .brandsub{font-size:11px !important;color:#166B38 !important}
+}
 </style>
 </head>
 <body>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
-  <div style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+  <div class="adminhdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
     <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
       <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
       <span style="display:flex;flex-direction:column;line-height:1.05">
-        <span style="font:600 21px 'Fredoka',sans-serif;color:#166B38">Falah Academy</span>
-        <span style="font:800 11px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#E07C00">Admin dashboard</span>
+        <span class="brandname" style="font:600 21px 'Fredoka',sans-serif;color:#166B38">Falah Academy</span>
+        <span class="brandsub" style="font:800 11px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#E07C00">Admin dashboard</span>
       </span>
     </a>
     <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
@@ -111,7 +157,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
     <div class="stat-card"><div class="stat-num" id="stat-apps-new">–</div><div class="stat-lbl">New this week</div></div>
   </div>
 
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap">
+  <div class="tabbar" style="display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap">
     <button id="tab-tours" class="tab active" onclick="showTab('tours')">Tour bookings</button>
     <button id="tab-apps" class="tab" onclick="showTab('apps')">Waitlist applications</button>
     <button id="tab-cal" class="tab" onclick="showTab('cal')">Calendar</button>
@@ -357,6 +403,8 @@ function showTab(tab) {
   document.getElementById('cal-panel').style.display = tab === 'cal' ? 'block' : 'none';
   document.getElementById('staff-panel').style.display = tab === 'staff' ? 'flex' : 'none';
   document.getElementById('directory-panel').style.display = tab === 'directory' ? 'flex' : 'none';
+  var activeBtn = document.querySelector('.tabbar .tab.active');
+  if (activeBtn && activeBtn.scrollIntoView) activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   if (tab === 'cal') renderCalendar();
   if (tab === 'staff') loadStaff();
   if (tab === 'directory') loadDirectory();
