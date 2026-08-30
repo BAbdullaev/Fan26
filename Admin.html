@@ -25,9 +25,22 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
 .btn-link{display:inline-block;text-decoration:none;font:800 13px 'Nunito',sans-serif;color:#166B38;background:#E9F3EB;padding:9px 16px;border-radius:999px;transition:background .15s}
 .btn-link:hover{background:#D8EBDC;color:#166B38}
 
-.tab{border:none;cursor:pointer;font:800 15px 'Nunito',sans-serif;color:#1F3D2B;background:transparent;padding:10px 20px;border-radius:999px;transition:background .15s}
-.tab:hover{background:#E9F3EB}
-.tab.active{color:#fff;background:#1B7A40}
+.menu-toggle{border:none;cursor:pointer;display:flex;align-items:center;gap:9px;font:800 14px 'Nunito',sans-serif;color:#166B38;background:#E9F3EB;padding:10px 16px;border-radius:999px;transition:background .15s,color .15s}
+.menu-toggle:hover{background:#D8EBDC}
+.menu-toggle[aria-expanded="true"]{background:#1B7A40;color:#fff}
+.menu-toggle .bars{display:flex;flex-direction:column;gap:3px;width:16px}
+.menu-toggle .bars span{display:block;height:2px;border-radius:2px;background:currentColor}
+
+.menu{position:absolute;top:calc(100% + 12px);right:0;min-width:238px;background:#fff;border-radius:20px;box-shadow:0 14px 38px rgba(20,60,35,.20);padding:10px;display:none;z-index:60}
+.menu.open{display:block}
+.menu-sect{font:800 10px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#93A996;padding:8px 12px 6px}
+.menu-item{display:block;width:100%;text-align:left;border:none;background:transparent;cursor:pointer;font:800 14px 'Nunito',sans-serif;color:#1F3D2B;padding:11px 12px;border-radius:12px;transition:background .15s,color .15s}
+.menu-item:hover{background:#E9F3EB}
+.menu-item.active{background:#1B7A40;color:#fff}
+.menu-item-quiet{color:#93A996}
+.menu-sep{height:1px;background:#EDF3EA;margin:8px 6px}
+
+.sect-head{margin-bottom:22px}
 
 .stat-card{background:#fff;border-radius:24px;padding:22px 26px;box-shadow:0 4px 16px rgba(20,60,35,.08)}
 .stat-num{font:600 40px 'Fredoka',sans-serif;color:#153A26;line-height:1}
@@ -71,12 +84,11 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   .detail-grid{grid-template-columns:1fr !important}
 }
 @media (max-width:640px){
-  /* keep the tab row on one line and let it scroll, instead of wrapping
-     into three ragged rows */
-  .tabbar{flex-wrap:nowrap !important;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
-  .tabbar::-webkit-scrollbar{display:none}
-  .tabbar .tab{flex:0 0 auto;white-space:nowrap;font-size:14px;padding:9px 14px}
-  .tabbar .btn-quiet{flex:0 0 auto;white-space:nowrap}
+  /* the hamburger label is redundant next to the icon on a phone */
+  .menu-toggle .menu-label{display:none}
+  .menu-toggle{padding:10px 13px}
+  .menu{min-width:0;width:calc(100vw - 32px);max-width:260px}
+  #sect-title{font-size:24px !important}
 
   #dash-view{padding:24px 16px 60px !important}
   .stat-card{padding:18px}
@@ -103,6 +115,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   .adminhdr .brandname{font-size:16px !important;white-space:nowrap}
   .adminhdr .brandsub{font-size:9px !important;white-space:nowrap;letter-spacing:.09em !important}
   .adminhdr .btn-quiet{font-size:12px;padding:8px 12px;white-space:nowrap}
+  .sect-head{margin-bottom:18px}
   #login-view{padding:48px 16px !important}
   #login-view>div{padding:32px 24px !important}
 }
@@ -127,9 +140,24 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
         <span class="brandsub" style="font:800 11px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#E07C00">Admin dashboard</span>
       </span>
     </a>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <button id="refresh-btn" class="btn-quiet" style="display:none" onclick="loadData()">↻ Refresh</button>
-      <button id="signout-btn" class="btn-quiet" style="display:none" onclick="signOut()">Sign out</button>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;position:relative">
+      <button id="menu-btn" class="menu-toggle" style="display:none" aria-haspopup="true" aria-expanded="false" aria-controls="admin-menu" onclick="toggleMenu(event)">
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="menu-label">Menu</span>
+      </button>
+      <div id="admin-menu" class="menu" role="menu" aria-labelledby="menu-btn">
+        <div class="menu-sect">Go to</div>
+        <button id="tab-apps" class="menu-item active" role="menuitem" onclick="showTab('apps')">Waitlist applications</button>
+        <button id="tab-tours" class="menu-item" role="menuitem" onclick="showTab('tours')">Tour bookings</button>
+        <button id="tab-cal" class="menu-item" role="menuitem" onclick="showTab('cal')">Calendar</button>
+        <button id="tab-staff" class="menu-item" style="display:none" role="menuitem" onclick="showTab('staff')">Staff access</button>
+        <button id="tab-directory" class="menu-item" style="display:none" role="menuitem" onclick="showTab('directory')">Staff directory</button>
+        <div class="menu-sep"></div>
+        <div class="menu-sect">Actions</div>
+        <button class="menu-item" role="menuitem" onclick="exportCsv();closeMenu()">Export CSV</button>
+        <button id="refresh-btn" class="menu-item" style="display:none" role="menuitem" onclick="loadData();closeMenu()">Refresh data</button>
+        <button id="signout-btn" class="menu-item menu-item-quiet" style="display:none" role="menuitem" onclick="signOut()">Sign out</button>
+      </div>
     </div>
   </div>
 </header>
@@ -162,17 +190,13 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
     <div class="stat-card"><div class="stat-num" id="stat-apps-new">–</div><div class="stat-lbl">New this week</div></div>
   </div>
 
-  <div class="tabbar" style="display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap">
-    <button id="tab-tours" class="tab active" onclick="showTab('tours')">Tour bookings</button>
-    <button id="tab-apps" class="tab" onclick="showTab('apps')">Waitlist applications</button>
-    <button id="tab-cal" class="tab" onclick="showTab('cal')">Calendar</button>
-    <button id="tab-staff" class="tab" style="display:none" onclick="showTab('staff')">Staff access</button>
-    <button id="tab-directory" class="tab" style="display:none" onclick="showTab('directory')">Staff directory</button>
-    <button class="btn-quiet" style="margin-left:auto" onclick="exportCsv()">Export CSV</button>
+  <div class="sect-head">
+    <h1 id="sect-title" style="font:600 30px 'Fredoka',sans-serif;color:#153A26;margin:0">Waitlist applications</h1>
+    <p id="sect-sub" style="font:600 14px 'Nunito',sans-serif;color:#93A996;margin:6px 0 0">Every family who has asked for a seat.</p>
   </div>
 
-  <div id="tours-panel" style="display:flex;flex-direction:column;gap:14px"></div>
-  <div id="apps-panel" style="display:none;flex-direction:column;gap:14px"></div>
+  <div id="tours-panel" style="display:none;flex-direction:column;gap:14px"></div>
+  <div id="apps-panel" style="display:flex;flex-direction:column;gap:14px"></div>
   <div id="staff-panel" style="display:none;flex-direction:column;gap:14px">
     <div id="staff-add-card" class="row-card" style="display:none">
       <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Add staff</h2>
@@ -273,8 +297,34 @@ var DEMO_APPS = [
 
 var tours = [];
 var apps = [];
-var activeTab = 'tours';
+var activeTab = 'apps';
 var openApps = {};   // id -> expanded
+
+var SECTION_HEADINGS = {
+  apps:      ['Waitlist applications', 'Every family who has asked for a seat.'],
+  tours:     ['Tour bookings', 'Tour requests from the Contact form.'],
+  cal:       ['Calendar', 'Scheduled tours, month by month.'],
+  staff:     ['Staff access', 'Who can sign in to this dashboard.'],
+  directory: ['Staff directory', 'What families see on the public directory page.']
+};
+
+function toggleMenu(e) {
+  if (e) e.stopPropagation();
+  var menu = document.getElementById('admin-menu');
+  var open = menu.classList.toggle('open');
+  document.getElementById('menu-btn').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function closeMenu() {
+  document.getElementById('admin-menu').classList.remove('open');
+  document.getElementById('menu-btn').setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('click', function (e) {
+  var menu = document.getElementById('admin-menu');
+  if (menu.classList.contains('open') && !menu.contains(e.target)) closeMenu();
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeMenu();
+});
 
 var PROGRAM_LABELS = { prek: 'PreK', k: 'Kindergarten', both: 'Both kids', other: 'Just curious' };
 var TIME_LABELS = { morning: 'Weekday morning', midday: 'Weekday midday', afternoon: 'Weekday afternoon' };
@@ -326,19 +376,23 @@ function signOut() { sb.auth.signOut(); }
 if (DEMO_MODE) {
   document.getElementById('login-view').style.display = 'none';
   document.getElementById('dash-view').style.display = 'block';
-  document.getElementById('refresh-btn').style.display = 'inline-block';
+  document.getElementById('refresh-btn').style.display = '';
+  document.getElementById('menu-btn').style.display = '';
   var banner = document.createElement('div');
   banner.style.cssText = 'max-width:1180px;margin:18px auto -14px;padding:0 24px';
   banner.innerHTML = '<div style="background:#FDEBD2;border:2px dashed #F0B45B;color:#8A5206;font:700 13px/1.5 \'Nunito\',sans-serif;padding:10px 18px;border-radius:16px">Demo mode — sample data only, nothing is saved. Set <code>DEMO_MODE = false</code> in Admin.html (and create the admin user in Supabase) to see live enrollments.</div>';
   document.getElementById('dash-view').parentNode.insertBefore(banner, document.getElementById('dash-view'));
+  showTab('apps');
   loadData();
 } else {
   sb.auth.onAuthStateChange(function (_event, session) {
     var authed = !!session;
     document.getElementById('login-view').style.display = authed ? 'none' : 'block';
     document.getElementById('dash-view').style.display = authed ? 'block' : 'none';
-    document.getElementById('signout-btn').style.display = authed ? 'inline-block' : 'none';
-    document.getElementById('refresh-btn').style.display = authed ? 'inline-block' : 'none';
+    document.getElementById('signout-btn').style.display = authed ? '' : 'none';
+    document.getElementById('refresh-btn').style.display = authed ? '' : 'none';
+    document.getElementById('menu-btn').style.display = authed ? '' : 'none';
+    if (!authed) closeMenu();
     myEmail = authed ? session.user.email.toLowerCase() : null;
     myRole = null;
     document.getElementById('tab-staff').style.display = 'none';
@@ -346,13 +400,13 @@ if (DEMO_MODE) {
     document.getElementById('tab-directory').style.display = 'none';
     document.getElementById('directory-add-card').style.display = 'none';
     if (authed) {
-      showTab('tours');
+      showTab('apps');
       loadData();
       sb.from('staff_users').select('role').eq('email', myEmail).maybeSingle().then(function (res) {
         myRole = res.data ? res.data.role : null;
-        document.getElementById('tab-staff').style.display = myRole === 'master' ? 'inline-block' : 'none';
+        document.getElementById('tab-staff').style.display = myRole === 'master' ? '' : 'none';
         document.getElementById('staff-add-card').style.display = myRole === 'master' ? 'block' : 'none';
-        document.getElementById('tab-directory').style.display = myRole === 'master' ? 'inline-block' : 'none';
+        document.getElementById('tab-directory').style.display = myRole === 'master' ? '' : 'none';
         document.getElementById('directory-add-card').style.display = myRole === 'master' ? 'block' : 'none';
       });
     }
@@ -398,18 +452,22 @@ function renderStats() {
 
 function showTab(tab) {
   activeTab = tab;
-  document.getElementById('tab-tours').className = 'tab' + (tab === 'tours' ? ' active' : '');
-  document.getElementById('tab-apps').className = 'tab' + (tab === 'apps' ? ' active' : '');
-  document.getElementById('tab-cal').className = 'tab' + (tab === 'cal' ? ' active' : '');
-  document.getElementById('tab-staff').className = 'tab' + (tab === 'staff' ? ' active' : '');
-  document.getElementById('tab-directory').className = 'tab' + (tab === 'directory' ? ' active' : '');
+  document.getElementById('tab-tours').className = 'menu-item' + (tab === 'tours' ? ' active' : '');
+  document.getElementById('tab-apps').className = 'menu-item' + (tab === 'apps' ? ' active' : '');
+  document.getElementById('tab-cal').className = 'menu-item' + (tab === 'cal' ? ' active' : '');
+  document.getElementById('tab-staff').className = 'menu-item' + (tab === 'staff' ? ' active' : '');
+  document.getElementById('tab-directory').className = 'menu-item' + (tab === 'directory' ? ' active' : '');
   document.getElementById('tours-panel').style.display = tab === 'tours' ? 'flex' : 'none';
   document.getElementById('apps-panel').style.display = tab === 'apps' ? 'flex' : 'none';
   document.getElementById('cal-panel').style.display = tab === 'cal' ? 'block' : 'none';
   document.getElementById('staff-panel').style.display = tab === 'staff' ? 'flex' : 'none';
   document.getElementById('directory-panel').style.display = tab === 'directory' ? 'flex' : 'none';
-  var activeBtn = document.querySelector('.tabbar .tab.active');
-  if (activeBtn && activeBtn.scrollIntoView) activeBtn.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  var head = SECTION_HEADINGS[tab];
+  if (head) {
+    document.getElementById('sect-title').textContent = head[0];
+    document.getElementById('sect-sub').textContent = head[1];
+  }
+  closeMenu();
   if (tab === 'cal') renderCalendar();
   if (tab === 'staff') loadStaff();
   if (tab === 'directory') loadDirectory();
