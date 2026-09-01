@@ -37,6 +37,6 @@ All public-page copy is sourced from the client email of Aug 2026, the PreK/KG s
 - Removed as unverifiable: the principal's credential list, the uniform color detail, and the tuition/calendar planning figures.
 
 ### Open items
-- Photos marked `[ photo: ... ]` throughout the site are placeholders — teacher photos, classroom photos, and the map are not yet real images. Both teacher cards on `About.html` still use illustrated avatars.
+- Teacher photos are still illustrated avatars on `About.html`. Real classroom photos now live in `assets/classroom/` (metadata-stripped, enhanced, 1600px web JPEGs — processed from the client's phone photos) and appear on `Programs.html`: in both program cards and the "Take a peek at our classrooms" gallery with lightbox. Student first names are visible on furniture in some photos — published with the client's explicit OK.
 
 The confirmed street address is **2311 Murfreesboro Pike Suite B, Nashville, TN 37217** — shown in every footer, the Contact page's address card, the live Google Maps embed, and `Admin.html`'s calendar location string.

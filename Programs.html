@@ -34,6 +34,25 @@ a:hover{color:#E07C00}
 
 .footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
 .footer-muted-link:hover{color:#F7941D}
+
+/* ---------- classroom gallery ---------- */
+.gal{columns:3 240px;column-gap:14px}
+.gal-item{display:block;width:100%;border:none;padding:0;background:none;cursor:pointer;margin:0 0 14px;break-inside:avoid;border-radius:22px;overflow:hidden;box-shadow:0 4px 14px rgba(20,60,35,.10)}
+.gal-item img{display:block;width:100%;height:auto;transition:transform .3s ease}
+.gal-item:hover img{transform:scale(1.03)}
+.lb-backdrop{position:fixed;inset:0;background:rgba(21,58,38,.62);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
+.lb-backdrop.open{display:flex}
+.lb-figure{position:relative;max-width:min(920px,94vw);margin:0}
+.lb-figure img{display:block;max-width:100%;max-height:78vh;border-radius:20px;box-shadow:0 18px 44px rgba(0,0,0,.35)}
+.lb-cap{font:700 14px/1.5 'Nunito',sans-serif;color:#fff;text-align:center;margin:12px 0 0}
+.lb-btn{position:absolute;top:50%;transform:translateY(-50%);border:none;cursor:pointer;width:42px;height:42px;border-radius:50%;background:#fff;color:#153A26;font:800 20px/1 'Nunito',sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.lb-prev{left:-12px}.lb-next{right:-12px}
+.lb-close{position:absolute;top:-12px;right:-12px;border:none;cursor:pointer;width:38px;height:38px;border-radius:50%;background:#F7941D;color:#153A26;font:800 17px/1 'Nunito',sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+@media(max-width:640px){
+  .gal{columns:2;column-gap:10px}
+  .gal-item{margin-bottom:10px;border-radius:14px}
+  .lb-prev{left:4px}.lb-next{right:4px}.lb-close{top:6px;right:6px}
+}
 </style>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/site.js"></script>
@@ -82,36 +101,7 @@ a:hover{color:#E07C00}
     </div>
     <div style="padding:30px 32px">
       <div style="height:170px;border-radius:22px;border:2px solid #C9DECD;overflow:hidden;margin-bottom:24px;background:#E9F3EB">
-        <svg viewBox="0 0 520 180" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" role="img" aria-label="Illustration of a block corner and art easel">
-          <rect width="520" height="180" fill="#E9F3EB"/>
-          <rect y="128" width="520" height="52" fill="#FDF3DF"/>
-          <g fill="#fff"><ellipse cx="90" cy="36" rx="34" ry="14"/><ellipse cx="118" cy="28" rx="24" ry="11"/></g>
-          <!-- block stack -->
-          <g font-family="'Fredoka',sans-serif" font-size="22" font-weight="600" text-anchor="middle">
-            <rect x="70" y="90" width="44" height="44" rx="8" fill="#F7941D"/><text x="92" y="120" fill="#153A26">A</text>
-            <rect x="120" y="90" width="44" height="44" rx="8" fill="#4C9A66"/><text x="142" y="120" fill="#fff">B</text>
-            <rect x="95" y="44" width="44" height="44" rx="8" fill="#1B7A40"/><text x="117" y="74" fill="#fff">C</text>
-          </g>
-          <!-- easel -->
-          <g transform="translate(330,26)">
-            <line x1="10" y1="110" x2="45" y2="0" stroke="#C68955" stroke-width="8" stroke-linecap="round"/>
-            <line x1="80" y1="110" x2="45" y2="0" stroke="#C68955" stroke-width="8" stroke-linecap="round"/>
-            <rect x="5" y="18" width="80" height="62" rx="8" fill="#fff" stroke="#D5E5D9" stroke-width="4"/>
-            <circle cx="30" cy="40" r="11" fill="#FBD79E" stroke="#F7941D" stroke-width="4"/>
-            <path d="M50 62 Q58 44 66 62" stroke="#4C9A66" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <path d="M14 68 Q28 60 42 68" stroke="#1B7A40" stroke-width="4" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- ball -->
-          <circle cx="250" cy="130" r="24" fill="#E07C00"/>
-          <path d="M226 130 Q250 114 274 130" stroke="#FBD79E" stroke-width="5" fill="none"/>
-          <path d="M226 130 Q250 146 274 130" stroke="#FBD79E" stroke-width="5" fill="none"/>
-          <!-- crayons -->
-          <g transform="translate(440,118)">
-            <rect x="0" y="0" width="12" height="42" rx="5" fill="#1B7A40" transform="rotate(14 6 21)"/>
-            <rect x="22" y="-4" width="12" height="46" rx="5" fill="#F7941D" transform="rotate(-8 28 19)"/>
-            <rect x="44" y="0" width="12" height="42" rx="5" fill="#E07C00" transform="rotate(10 50 21)"/>
-          </g>
-        </svg>
+        <img src="assets/classroom/classroom-09.jpg" alt="Inside the PreK classroom — curved tables with a name at every seat" width="1600" height="1200" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">
       </div>
       <h3 style="font:600 20px 'Fredoka',sans-serif;color:#153A26;margin:0 0 14px">What we learn</h3>
       <div style="display:flex;flex-direction:column;gap:11px;font:600 15px/1.5 'Nunito',sans-serif;color:#41573F;margin-bottom:24px">
@@ -138,46 +128,7 @@ a:hover{color:#E07C00}
     </div>
     <div style="padding:30px 32px">
       <div style="height:170px;border-radius:22px;border:2px solid #F0D4A8;overflow:hidden;margin-bottom:24px;background:#FDEBD2">
-        <svg viewBox="0 0 520 180" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%" role="img" aria-label="Illustration of a reading nook">
-          <rect width="520" height="180" fill="#FDEBD2"/>
-          <rect y="128" width="520" height="52" fill="#FDF3DF"/>
-          <!-- garland -->
-          <path d="M0 14 Q130 44 260 14 Q390 44 520 14" stroke="#F0B45B" stroke-width="3" fill="none"/>
-          <g fill="#1B7A40"><path d="M80 24 l8 0 -4 14 z"/><path d="M180 32 l8 0 -4 14 z"/><path d="M340 32 l8 0 -4 14 z"/><path d="M440 24 l8 0 -4 14 z"/></g>
-          <g fill="#F7941D"><path d="M130 32 l8 0 -4 14 z"/><path d="M260 22 l8 0 -4 14 z"/><path d="M390 32 l8 0 -4 14 z"/></g>
-          <!-- bookshelf -->
-          <g transform="translate(60,52)">
-            <rect width="130" height="86" rx="10" fill="#C68955"/>
-            <rect x="10" y="10" width="110" height="30" rx="5" fill="#FDF8EE"/>
-            <rect x="14" y="13" width="13" height="24" rx="3" fill="#E07C00"/>
-            <rect x="31" y="13" width="13" height="24" rx="3" fill="#1B7A40"/>
-            <rect x="48" y="13" width="13" height="24" rx="3" fill="#F7941D"/>
-            <rect x="65" y="13" width="13" height="24" rx="3" fill="#4C9A66"/>
-            <rect x="82" y="13" width="13" height="24" rx="3" fill="#153A26"/>
-            <rect x="10" y="48" width="110" height="30" rx="5" fill="#FDF8EE"/>
-            <rect x="16" y="51" width="15" height="24" rx="3" fill="#4C9A66"/>
-            <rect x="35" y="51" width="15" height="24" rx="3" fill="#F7941D"/>
-            <rect x="54" y="51" width="15" height="24" rx="3" fill="#1B7A40"/>
-            <rect x="73" y="51" width="15" height="24" rx="3" fill="#FBD79E"/>
-          </g>
-          <!-- open book on cushion -->
-          <ellipse cx="300" cy="146" rx="52" ry="16" fill="#F7941D"/>
-          <g transform="translate(300,110)">
-            <path d="M-40 0 Q-20 -14 0 0 L0 30 Q-20 16 -40 30 Z" fill="#fff" stroke="#F0D4A8" stroke-width="3"/>
-            <path d="M40 0 Q20 -14 0 0 L0 30 Q20 16 40 30 Z" fill="#fff" stroke="#F0D4A8" stroke-width="3"/>
-            <line x1="-28" y1="8" x2="-10" y2="5" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
-            <line x1="10" y1="5" x2="28" y2="8" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
-            <line x1="-28" y1="16" x2="-10" y2="13" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
-            <line x1="10" y1="13" x2="28" y2="16" stroke="#9CC3A6" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <!-- lamp -->
-          <g transform="translate(430,58)">
-            <path d="M-22 26 L22 26 L10 0 L-10 0 Z" fill="#1B7A40"/>
-            <line x1="0" y1="26" x2="0" y2="76" stroke="#153A26" stroke-width="6" stroke-linecap="round"/>
-            <ellipse cx="0" cy="80" rx="20" ry="7" fill="#153A26"/>
-            <circle cx="0" cy="34" r="6" fill="#FBD79E"/>
-          </g>
-        </svg>
+        <img src="assets/classroom/classroom-02.jpg" alt="Inside the kindergarten classroom — desks set with supply caddies" width="1600" height="1200" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">
       </div>
       <h3 style="font:600 20px 'Fredoka',sans-serif;color:#153A26;margin:0 0 14px">What we learn</h3>
       <div style="display:flex;flex-direction:column;gap:11px;font:600 15px/1.5 'Nunito',sans-serif;color:#41573F;margin-bottom:24px">
@@ -200,6 +151,22 @@ a:hover{color:#E07C00}
   <div style="background:#fff;border:2px dashed #C9DECD;border-radius:22px;padding:20px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
     <span style="background:#1B7A40;color:#fff;font:800 12px 'Nunito',sans-serif;padding:7px 13px;border-radius:999px;white-space:nowrap">TN-ELDS aligned</span>
     <p style="font:600 15px/1.5 'Nunito',sans-serif;color:#41573F;margin:0">Our curriculum follows the Tennessee Early Learning Developmental Standards &mdash; so every playful day still builds exactly the skills Tennessee expects for school readiness. Kindergarten module themes run from the five senses and farms through history and world cultures, and every student takes at least one field trip during the year.</p>
+  </div>
+</section>
+
+<section style="max-width:1180px;margin:0 auto;padding:64px 24px 0">
+  <div style="text-align:center;max-width:640px;margin:0 auto 36px">
+    <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:10px">Step inside</div>
+    <h2 style="font:600 40px 'Fredoka',sans-serif;color:#153A26;margin:0 0 12px">Take a peek at our classrooms</h2>
+    <p style="font:600 16px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Real rooms, ready and waiting for our very first Warriors. Tap any photo for a closer look.</p>
+  </div>
+  <div class="gal" id="gal">
+      <button type="button" class="gal-item" data-i="0" aria-label="View photo: The alphabet rug where circle time happens"><img src="assets/classroom/classroom-08.jpg" alt="The alphabet rug where circle time happens" width="1600" height="1200" loading="lazy"></button>
+      <button type="button" class="gal-item" data-i="1" aria-label="View photo: All feelings are welcome here"><img src="assets/classroom/classroom-10.jpg" alt="All feelings are welcome here" width="1200" height="1600" loading="lazy"></button>
+      <button type="button" class="gal-item" data-i="2" aria-label="View photo: The objectives board — phonics, Wit &amp; Wisdom, math, science and social studies"><img src="assets/classroom/classroom-04.jpg" alt="The objectives board — phonics, Wit &amp; Wisdom, math, science and social studies" width="1600" height="1200" loading="lazy"></button>
+      <button type="button" class="gal-item" data-i="3" aria-label="View photo: The reading corner, favorite books facing out"><img src="assets/classroom/classroom-12.jpg" alt="The reading corner, favorite books facing out" width="1600" height="1200" loading="lazy"></button>
+      <button type="button" class="gal-item" data-i="4" aria-label="View photo: The welcome banner at our door"><img src="assets/classroom/classroom-14.jpg" alt="The welcome banner at our door" width="1200" height="1600" loading="lazy"></button>
+      <button type="button" class="gal-item" data-i="5" aria-label="View photo: The play corner, stocked for large-motor time"><img src="assets/classroom/classroom-07.jpg" alt="The play corner, stocked for large-motor time" width="1600" height="1200" loading="lazy"></button>
   </div>
 </section>
 
@@ -338,6 +305,53 @@ a:hover{color:#E07C00}
   </div>
   <div style="border-top:1px solid #24543A;text-align:center;padding:18px 24px;font:700 13px 'Nunito',sans-serif;color:#7FA98B">© 2026 Falah Academy of Nashville · PreK &amp; Kindergarten · <a href="Admin.html" class="footer-muted-link" style="color:#7FA98B">Staff sign in</a></div>
 </footer>
+
+
+<div class="lb-backdrop" id="lb">
+  <figure class="lb-figure" role="dialog" aria-modal="true" aria-label="Classroom photo viewer">
+    <button class="lb-close" id="lb-close" type="button" aria-label="Close">&times;</button>
+    <button class="lb-btn lb-prev" id="lb-prev" type="button" aria-label="Previous photo">&lsaquo;</button>
+    <img id="lb-img" src="" alt="">
+    <button class="lb-btn lb-next" id="lb-next" type="button" aria-label="Next photo">&rsaquo;</button>
+    <figcaption class="lb-cap" id="lb-cap"></figcaption>
+  </figure>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var items = Array.prototype.slice.call(document.querySelectorAll('.gal-item'));
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'), cap = document.getElementById('lb-cap');
+  var cur = 0, lastFocus = null;
+  function show(i) {
+    cur = (i + items.length) % items.length;
+    var src = items[cur].querySelector('img');
+    img.src = src.src; img.alt = src.alt; cap.textContent = src.alt;
+  }
+  function open(i, opener) {
+    lastFocus = opener; show(i);
+    lb.classList.add('open');
+    document.getElementById('lb-close').focus();
+  }
+  function close() {
+    lb.classList.remove('open'); img.src = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  items.forEach(function (btn) {
+    btn.addEventListener('click', function () { open(+btn.getAttribute('data-i'), btn); });
+  });
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', function () { show(cur - 1); });
+  document.getElementById('lb-next').addEventListener('click', function () { show(cur + 1); });
+  lb.addEventListener('mousedown', function (e) { if (e.target === lb) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(cur - 1);
+    if (e.key === 'ArrowRight') show(cur + 1);
+  });
+})();
+</script>
 
 </body>
 </html>
