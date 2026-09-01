@@ -40,6 +40,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
 </style>
 <link rel="stylesheet" href="assets/site.css">
 <script defer src="assets/site.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}</style>
 <style>
 /* ============ Calendar ============ */
@@ -218,6 +219,13 @@ details[open] .faq-plus{transform:rotate(45deg)}
     <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">First day &middot; Aug 24, 2026</span>
     <span style="background:#FDEBD2;color:#B36405;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">Last day &middot; June 2, 2027</span>
     <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">4 quarters</span>
+  </div>
+  <div style="margin-top:22px">
+    <button type="button" id="cal-pdf-btn" class="cta-pill-lg" style="border:none;font-family:inherit;display:inline-flex;align-items:center;gap:9px">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#153A26" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13"/><path d="M6 11l6 6 6-6"/><path d="M4 20h16"/></svg>
+      Download the fridge calendar (PDF)
+    </button>
+    <p style="font:600 12.5px 'Nunito',sans-serif;color:#93A996;margin:10px 0 0">One page, the whole year. Print it and stick it on the fridge.</p>
   </div>
 </section>
 
@@ -688,6 +696,148 @@ details[open] .faq-plus{transform:rotate(45deg)}
     }
     return opts.join('');
   })();
+
+  /* ---------- printable fridge calendar (PDF) ----------
+     One page, two columns, whole school year — built from the same
+     EVENTS array as the interactive views, so it can never drift out
+     of sync. Falls back to the browser print dialog if the PDF
+     library hasn't loaded (slow connection, blocked CDN, etc.). */
+  function buildPdf() {
+    var Ctor = window.jspdf && window.jspdf.jsPDF;
+    if (!Ctor) { window.print(); return; }
+
+    var doc = new Ctor({ unit: 'pt', format: 'letter' });
+    var PAGE_W = 612, PAGE_H = 792, MARGIN = 40, GAP = 24;
+    var COL_W = (PAGE_W - MARGIN * 2 - GAP) / 2, DATE_W = 54, TXT_X = 9;
+    var COL_X = [MARGIN, MARGIN + COL_W + GAP];
+
+    function hexRgb(hex) {
+      var h = hex.replace('#', '');
+      return [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)];
+    }
+    /* date sits inline before the title, e.g. "AUG 24  First day of
+       school" — except when the date string itself is too wide to
+       leave room for a title (a rare cross-month span like
+       "DEC 24–JAN 1"), where it drops to its own line above instead. */
+    function measureRow(ev) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.8);
+      var dateStr = shortSpan(ev).toUpperCase();
+      var stacked = doc.getTextWidth(dateStr) > DATE_W - TXT_X;
+      var wrapW = COL_W - (stacked ? TXT_X : DATE_W);
+
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+      var titleLines = doc.splitTextToSize(ev.t, wrapW);
+      var h = (stacked ? 10 : 0) + titleLines.length * 11.5, noteLines = [];
+      if (ev.w) {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.2);
+        noteLines = doc.splitTextToSize(ev.w, wrapW);
+        h += noteLines.length * 9 + 2;
+      }
+      return { stacked: stacked, dateStr: dateStr, titleLines: titleLines, noteLines: noteLines, h: h + 6 };
+    }
+    function drawHeader(x, y, g) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(21, 58, 38);
+      doc.text((MONTHS[g.m] + ' ' + g.y).toUpperCase(), x, y);
+      doc.setDrawColor(222, 232, 224); doc.setLineWidth(0.75);
+      doc.line(x, y + 4, x + COL_W, y + 4);
+      return y + 19;
+    }
+    function drawRow(x, y, ev, r) {
+      var rgb = hexRgb(CATS[ev.c].fg);
+      doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+      doc.circle(x + 2, y - 3, 1.7, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.8); doc.setTextColor(rgb[0], rgb[1], rgb[2]);
+      doc.text(r.dateStr, x + TXT_X, y);
+      var titleX = x + (r.stacked ? TXT_X : DATE_W), titleY = r.stacked ? y + 10 : y;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(30, 52, 38);
+      r.titleLines.forEach(function (line, i) { doc.text(line, titleX, titleY + i * 11.5); });
+      var yy = titleY + r.titleLines.length * 11.5;
+      if (r.noteLines.length) {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7.2); doc.setTextColor(138, 156, 141);
+        r.noteLines.forEach(function (line, i) { doc.text(line, titleX, yy + i * 9); });
+        yy += r.noteLines.length * 9;
+      }
+      return yy + 6;
+    }
+    function chip(x, y, text, fg, bg) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.3);
+      var w = doc.getTextWidth(text) + 18, h = 15;
+      doc.setFillColor(bg[0], bg[1], bg[2]);
+      doc.roundedRect(x, y, w, h, 7.5, 7.5, 'F');
+      doc.setTextColor(fg[0], fg[1], fg[2]);
+      doc.text(text, x + 9, y + h / 2 + 3);
+      return x + w + 7;
+    }
+
+    /* masthead */
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(224, 124, 0);
+    doc.text('2026–27 SCHOOL YEAR', MARGIN, 44);
+    doc.setFontSize(21); doc.setTextColor(21, 58, 38);
+    doc.text('Falah Academy of Nashville', MARGIN, 66);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(65, 87, 63);
+    doc.text('Academic Calendar — the whole year, one page for the fridge', MARGIN, 82);
+
+    var cx = MARGIN, cy = 96;
+    cx = chip(cx, cy, 'First day · Aug 24, 2026', [22, 107, 56], [233, 243, 235]);
+    cx = chip(cx, cy, 'Last day · June 2, 2027', [179, 100, 5], [253, 235, 210]);
+    chip(cx, cy, '4 quarters', [22, 107, 56], [233, 243, 235]);
+
+    /* group events by their start month, then measure each row */
+    var byMonth = {}, order = [];
+    EVENTS.forEach(function (ev) {
+      var d = parse(ev.s), mi = monthIndex(d.getFullYear(), d.getMonth());
+      if (!byMonth[mi]) { byMonth[mi] = { y: d.getFullYear(), m: d.getMonth(), evs: [] }; order.push(mi); }
+      byMonth[mi].evs.push(ev);
+    });
+    order.sort(function (a, b) { return a - b; });
+    var groups = order.map(function (mi) { return byMonth[mi]; });
+    groups.forEach(function (g) {
+      g.rows = g.evs.map(measureRow);
+      g.h = 19 + g.rows.reduce(function (s, r) { return s + r.h; }, 0);
+    });
+
+    /* split into two columns by height, whole months at a time */
+    var totalH = groups.reduce(function (s, g) { return s + g.h; }, 0), target = totalH / 2;
+    var columns = [[], []], col = 0, acc = 0;
+    groups.forEach(function (g) {
+      if (col === 0 && acc >= target && columns[0].length) col = 1;
+      columns[col].push(g);
+      acc += g.h;
+    });
+
+    var CONTENT_TOP = 126;
+    columns.forEach(function (groupsInCol, ci) {
+      var x = COL_X[ci], y = CONTENT_TOP;
+      groupsInCol.forEach(function (g) {
+        y = drawHeader(x, y, g);
+        g.evs.forEach(function (ev, i) { y = drawRow(x, y, ev, g.rows[i]); });
+      });
+    });
+
+    /* legend */
+    var usedCats = {};
+    EVENTS.forEach(function (ev) { usedCats[ev.c] = 1; });
+    var ly = PAGE_H - 74;
+    doc.setDrawColor(228, 237, 229); doc.setLineWidth(0.75);
+    doc.line(MARGIN, ly - 14, PAGE_W - MARGIN, ly - 14);
+    var lx = MARGIN;
+    CAT_ORDER.filter(function (c) { return usedCats[c]; }).forEach(function (c) {
+      var rgb = hexRgb(CATS[c].fg);
+      doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+      doc.circle(lx + 3, ly - 3, 2.4, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.6); doc.setTextColor(65, 87, 63);
+      doc.text(CATS[c].label, lx + 9, ly);
+      lx += doc.getTextWidth(CATS[c].label) + 22;
+    });
+
+    /* footer */
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(138, 156, 141);
+    doc.text('Dates follow the printed 2026–27 Falah Academy calendar. If a date ever changes, families are notified by email first.', MARGIN, PAGE_H - 46);
+    doc.text('2311 Murfreesboro Pike Suite B, Nashville, TN 37217   ·   admissions@fan2026.org   ·   629-629-0234', MARGIN, PAGE_H - 32);
+
+    doc.save('Falah-Academy-2026-27-Calendar.pdf');
+  }
+  el('cal-pdf-btn').addEventListener('click', buildPdf);
 
   renderFilters();
   renderMonth();
