@@ -107,6 +107,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
 .cal-ev i{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .cal-ev span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cal-more{font:800 10px 'Nunito',sans-serif;color:#A3B3A6;padding-left:11px}
+.cal-hint{display:none}
 .cal-dots{display:none;gap:3px;flex-wrap:wrap}
 .cal-dots i{width:6px;height:6px;border-radius:50%;display:block}
 
@@ -175,6 +176,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
      carries the detail */
   .cal-ev,.cal-more{display:none}
   .cal-dots{display:flex}
+  .cal-hint{display:block;font:600 12px/1.5 'Nunito',sans-serif;color:#8A9C8D;margin:12px 2px 0;text-wrap:pretty}
   .erow{grid-template-columns:auto minmax(0,1fr);row-gap:2px;padding:9px 9px}
   .erow .d{grid-column:2;font-size:11px}
   .cal-modal{padding:20px;border-radius:20px}
@@ -249,6 +251,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
     <div id="view-month" role="tabpanel" aria-labelledby="view-btn-month">
       <div class="cal-grid" id="cal-dows" aria-hidden="true"></div>
       <div class="cal-grid" id="cal-days"></div>
+      <p class="cal-hint">Each dot is an event. Tap a day for the details, or read the full list below.</p>
       <div class="list-head"><h3 id="month-list-head">Everything in August</h3><span class="list-count" id="month-list-count"></span></div>
       <div id="month-list"></div>
     </div>
