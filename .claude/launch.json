@@ -1,8 +1,0 @@
-{
-  "version": "0.0.1",
-  "configurations": [
-    { "name": "falah-static", "runtimeExecutable": "python3",
-      "runtimeArgs": ["/private/tmp/claude-501/-Applications-Falah/d5ff8800-9bbb-489a-914f-b457415a969c/scratchpad/serve.py"],
-      "port": 8766 }
-  ]
-}
