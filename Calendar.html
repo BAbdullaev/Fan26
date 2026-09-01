@@ -340,14 +340,14 @@ details[open] .faq-plus{transform:rotate(45deg)}
     { s: '2026-08-05', e: '2026-08-21', t: 'Teachers in-service',                 c: 'staff'   },
     { s: '2026-08-11',                  t: 'Parent orientation',  w: 'Half day, 10:00 AM - 12:00 PM', c: 'event' },
     { s: '2026-08-24',                  t: 'First day of school',                 c: 'event'   },
-    { s: '2026-09-07',                  t: 'Labor Day',           w: 'School open — regular schedule', c: 'holiday' },
+    { s: '2026-09-07',                  t: 'Labor Day',           w: 'No school', c: 'holiday' },
     { s: '2026-09-17',                  t: 'Progress reports issued',             c: 'grades'  },
     { s: '2026-10-08',                  t: 'Quarter 1 ends',                      c: 'term'    },
     { s: '2026-10-09',                  t: 'Quarter 2 begins',                    c: 'term'    },
-    { s: '2026-10-12',                  t: 'National holiday',    w: 'School open — regular schedule', c: 'holiday' },
+    { s: '2026-10-12',                  t: 'National holiday',    w: 'No school', c: 'holiday' },
     { s: '2026-10-22',                  t: 'Report cards',                        c: 'grades'  },
-    { s: '2026-11-03',                  t: 'Parent conferences',  w: '8:00 AM - 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'event' },
-    { s: '2026-11-11',                  t: 'Veterans Day',        w: 'School open — regular schedule', c: 'holiday' },
+    { s: '2026-11-03',                  t: 'Parent conferences',  w: 'Students do not report · Conferences 8:00 AM - 12:00 PM, teacher PD 12:00 - 3:00 PM', c: 'conference' },
+    { s: '2026-11-11',                  t: 'Veterans Day',        w: 'No school', c: 'holiday' },
     { s: '2026-11-20',                  t: 'Progress reports issued',             c: 'grades'  },
     { s: '2026-11-26', e: '2026-11-27', t: 'Thanksgiving break',  w: 'School closed', c: 'closed' },
     { s: '2026-12-23',                  t: 'Half day',            w: '8:00 AM - 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'halfday' },
@@ -356,7 +356,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
     { s: '2027-01-01',                  t: 'New Year’s Day', w: 'School closed', c: 'closed' },
     { s: '2027-01-01',                  t: 'Quarter 3 begins',                    c: 'term'    },
     { s: '2027-01-14',                  t: 'Report cards',                        c: 'grades'  },
-    { s: '2027-01-18',                  t: 'Martin Luther King Jr. Day', w: 'School open — regular schedule', c: 'holiday' },
+    { s: '2027-01-18',                  t: 'Martin Luther King Jr. Day', w: 'No school', c: 'holiday' },
     { s: '2027-02-15',                  t: 'Half day',            w: 'Until 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'halfday' },
     { s: '2027-03-05',                  t: 'Quarter 3 ends',                      c: 'term'    },
     { s: '2027-03-06',                  t: 'Quarter 4 begins',                    c: 'term'    },
@@ -365,7 +365,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
     { s: '2027-04-15',                  t: 'Progress reports issued',             c: 'grades'  },
     { s: '2027-05-17', e: '2027-05-19', t: 'Eid break',           w: 'School closed', c: 'closed' },
     { s: '2027-05-21',                  t: 'Half day',            w: '9:00 AM - 12:00 PM', c: 'halfday' },
-    { s: '2027-05-31',                  t: 'Memorial Day',        w: 'School open — regular schedule', c: 'holiday' },
+    { s: '2027-05-31',                  t: 'Memorial Day',        w: 'No school', c: 'holiday' },
     { s: '2027-06-02',                  t: 'Last day of school',  w: 'Half day, 8:00 AM - 12:00 PM', c: 'event' },
     { s: '2027-06-03',                  t: 'Last day for teachers',               c: 'staff'   }
   ];
@@ -373,21 +373,23 @@ details[open] .faq-plus{transform:rotate(45deg)}
   var CATS = {
     event:   { label: 'School events', fg: '#166B38', bg: '#E9F3EB' },
     closed:  { label: 'School closed', fg: '#A33A30', bg: '#FBE7E4' },
-    holiday: { label: 'Holiday · school open', fg: '#0F7B75', bg: '#E0F2F0' },
-    halfday: { label: 'Half days',     fg: '#B36405', bg: '#FDEBD2' },
-    grades:  { label: 'Report cards',  fg: '#1D4E96', bg: '#E3EDFB' },
-    term:    { label: 'Quarters',      fg: '#6B2FA0', bg: '#F3E8FB' },
+    holiday: { label: 'Holiday · no school', fg: '#B36405', bg: '#FDEBD2' },
+    conference: { label: 'Parent conference', fg: '#1D4E96', bg: '#E3EDFB' },
+    halfday: { label: 'Half days',     fg: '#0F7B75', bg: '#E0F2F0' },
+    grades:  { label: 'Report cards',  fg: '#6B2FA0', bg: '#F3E8FB' },
+    term:    { label: 'Quarters',      fg: '#5B6B7A', bg: '#ECF1F4' },
     staff:   { label: 'Staff only',    fg: '#6E7A6C', bg: '#F1F1EC' }
   };
-  var CAT_ORDER = ['event', 'closed', 'holiday', 'halfday', 'grades', 'term', 'staff'];
+  var CAT_ORDER = ['event', 'closed', 'holiday', 'conference', 'halfday', 'grades', 'term', 'staff'];
 
   var FIRST = { y: 2026, m: 7 };   // August 2026
   var LAST  = { y: 2027, m: 5 };   // June 2027
   var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var SHORT  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var DOWS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var MAJOR = { closed: 1, halfday: 1 };   // these change a family's plans
+  var MAJOR = { closed: 1, holiday: 1, conference: 1, halfday: 1 };  // no school, or a changed day
 
+  var NO_SCHOOL = { closed: 1, holiday: 1, conference: 1 };
   var off = {};        // categories switched off
   var view = 'month';  // 'month' | 'list'
   var cur = null;      // {y, m} on screen
@@ -456,7 +458,9 @@ details[open] .faq-plus{transform:rotate(45deg)}
 
   /* ---------- filters ---------- */
   function renderFilters() {
-    el('cal-filters').innerHTML = CAT_ORDER.map(function (c) {
+    var used = {};
+    EVENTS.forEach(function (ev) { used[ev.c] = 1; });
+    el('cal-filters').innerHTML = CAT_ORDER.filter(function (c) { return used[c]; }).map(function (c) {
       var cat = CATS[c], on = !off[c];
       return '<button type="button" class="cal-chip" data-cat="' + c + '" aria-pressed="' + on + '" ' +
         'style="background:' + cat.bg + ';color:' + cat.fg + ';border-color:' + cat.fg + '33">' +
@@ -502,7 +506,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
       var dow = new Date(y, m, d).getDay();
       var cls = 'cal-day';
       if (dow === 0 || dow === 6) cls += ' weekend';
-      if (evs.some(function (ev) { return ev.c === 'closed'; })) cls += ' is-closed';
+      if (evs.some(function (ev) { return NO_SCHOOL[ev.c]; })) cls += ' is-closed';
       else if (evs.some(function (ev) { return ev.c === 'halfday'; })) cls += ' is-half';
       if (k === todayKey) cls += ' today';
 

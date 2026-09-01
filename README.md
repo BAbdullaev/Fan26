@@ -28,6 +28,8 @@ All public-page copy is sourced from the client email of Aug 2026, the PreK/KG s
 
 - **Tuition:** $8,000/year, or 10 monthly payments of $800. Same rate for PreK and KG. No other fees have been confirmed — the old application/registration fees and sibling discount were removed.
 - **First day of school:** Monday, August 24, 2026; last day Wednesday, June 2, 2027. The full 2026–27 calendar is on `Calendar.html`, transcribed from the printed *FALAH ACADEMY OF NASHVILLE Calendar 26_27* PDF. Event data lives in the `EVENTS` array at the bottom of that file — edit it there and the grid, month list and full-year list all follow.
+- **Confirmed by Dr. Rashid:** Labor Day, Oct 12, Veterans Day, MLK Day and Memorial Day are all no-school days. November 3 is the year's only parent conference day and students do not report. Quarter start/end dates are markers only.
+- **Still unconfirmed:** the printed calendar has Q2 ending Dec 31 and Q3 beginning Jan 1, a day the school is closed for New Year inside winter break. Left as printed.
 - **Daily schedules:** real PreK and Kindergarten schedules are on `Programs.html`. Staff break times and the aide's name were omitted at the client's request.
 - **Staff:** Dr. Rashid Abdus-Salaam (Founding Principal), Mrs. Maha Jabbary (Lead PreK), Mrs. Sara Sofi (Lead Kindergarten).
 - **Email:** the site uses `admissions@fan2026.org` and `rashid@fan2026.org`. Mrs. Maha's classroom address (`mahabad.Jabbary@fan2026.org`) is in the deck but is deliberately not published on the site.
