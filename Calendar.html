@@ -212,16 +212,12 @@ details[open] .faq-plus{transform:rotate(45deg)}
 </header>
 
 <section style="max-width:1180px;margin:0 auto;padding:56px 24px 30px;text-align:center">
-  <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:12px">2026&ndash;27 school year</div>
+  <div id="hero-year-label" style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:12px">Loading school year&hellip;</div>
   <h1 style="font:600 52px/1.1 'Fredoka',sans-serif;color:#153A26;margin:0 0 16px">Academic <span style="background:linear-gradient(transparent 62%, #FBD79E 62%);padding:0 4px">calendar</span></h1>
   <p style="font:600 17px/1.65 'Nunito',sans-serif;color:#41573F;max-width:600px;margin:0 auto 26px;text-wrap:pretty">Every term date, holiday, break, half day and report card for the year. Tap any day or event for the details.</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-    <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">First day &middot; Aug 24, 2026</span>
-    <span style="background:#FDEBD2;color:#B36405;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">Last day &middot; June 2, 2027</span>
-    <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">4 quarters</span>
-  </div>
+  <div id="hero-chips" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"></div>
   <div style="margin-top:22px">
-    <button type="button" id="cal-pdf-btn" class="cta-pill-lg" style="border:none;font-family:inherit;display:inline-flex;align-items:center;gap:9px">
+    <button type="button" id="cal-pdf-btn" class="cta-pill-lg" style="border:none;font-family:inherit;display:inline-flex;align-items:center;gap:9px" disabled>
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#153A26" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13"/><path d="M6 11l6 6 6-6"/><path d="M4 20h16"/></svg>
       Download the fridge calendar (PDF)
     </button>
@@ -229,7 +225,13 @@ details[open] .faq-plus{transform:rotate(45deg)}
   </div>
 </section>
 
-<div class="cal-shell">
+<div class="cal-shell" id="cal-loading" style="text-align:center;padding:40px 24px;font:700 15px 'Nunito',sans-serif;color:#93A996">Loading the calendar&hellip;</div>
+<div class="cal-shell" id="cal-unavailable" style="display:none;text-align:center;padding:40px 24px">
+  <div style="background:#fff;border-radius:24px;padding:30px;box-shadow:0 6px 20px rgba(20,60,35,.08);font:700 15px/1.6 'Nunito',sans-serif;color:#41573F">
+    No calendar has been published yet. Please check back soon, or email <a href="mailto:admissions@fan2026.org" style="font-weight:800">admissions@fan2026.org</a>.
+  </div>
+</div>
+<div class="cal-shell" id="cal-shell-main" style="display:none">
   <div class="cal-card">
 
     <div class="cal-bar">
@@ -286,7 +288,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
 
 <section style="max-width:1180px;margin:0 auto;padding:36px 24px 8px">
   <div style="background:#fff;border:1px solid #E4EDE5;border-radius:20px;padding:20px 26px">
-    <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Dates follow the printed 2026&ndash;27 Falah Academy calendar. If a date ever changes, families are notified by email first &mdash; and this page is updated the same day. Questions? Email <a href="mailto:admissions@fan2026.org" style="font-weight:800">admissions@fan2026.org</a>.</p>
+    <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Dates follow the published <span id="footer-year-label">current</span> Falah Academy calendar. If a date ever changes, families are notified by email first &mdash; and this page is updated the same day. Questions? Email <a href="mailto:admissions@fan2026.org" style="font-weight:800">admissions@fan2026.org</a>.</p>
   </div>
 </section>
 
@@ -341,45 +343,22 @@ details[open] .faq-plus{transform:rotate(45deg)}
   <div style="border-top:1px solid #24543A;text-align:center;padding:18px 24px;font:700 13px 'Nunito',sans-serif;color:#7FA98B">© 2026 Falah Academy of Nashville · PreK &amp; Kindergarten · <a href="Admin.html" class="footer-muted-link" style="color:#7FA98B">Staff sign in</a></div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 (function () {
   "use strict";
 
-  /* Dates transcribed from the printed 2026-27 Falah Academy calendar.
-     Multi-day items use an inclusive `end`. */
-  var EVENTS = [
-    { s: '2026-08-05', e: '2026-08-21', t: 'Teachers in-service',                 c: 'staff'   },
-    { s: '2026-08-11',                  t: 'Parent orientation',  w: 'Half day, 10:00 AM - 12:00 PM', c: 'event' },
-    { s: '2026-08-24',                  t: 'First day of school',                 c: 'event'   },
-    { s: '2026-09-07',                  t: 'Labor Day',           w: 'No school', c: 'holiday' },
-    { s: '2026-09-17',                  t: 'Progress reports issued',             c: 'grades'  },
-    { s: '2026-10-08',                  t: 'Quarter 1 ends',                      c: 'term'    },
-    { s: '2026-10-09',                  t: 'Quarter 2 begins',                    c: 'term'    },
-    { s: '2026-10-12',                  t: 'National holiday',    w: 'No school', c: 'holiday' },
-    { s: '2026-10-22',                  t: 'Report cards',                        c: 'grades'  },
-    { s: '2026-11-03',                  t: 'Parent conferences',  w: 'Students do not report · Conferences 8:00 AM - 12:00 PM, teacher PD 12:00 - 3:00 PM', c: 'conference' },
-    { s: '2026-11-11',                  t: 'Veterans Day',        w: 'No school', c: 'holiday' },
-    { s: '2026-11-20',                  t: 'Progress reports issued',             c: 'grades'  },
-    { s: '2026-11-26', e: '2026-11-27', t: 'Thanksgiving break',  w: 'School closed', c: 'closed' },
-    { s: '2026-12-23',                  t: 'Half day',            w: '8:00 AM - 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'halfday' },
-    { s: '2026-12-24', e: '2027-01-01', t: 'Winter break',        w: 'School closed', c: 'closed' },
-    { s: '2026-12-31',                  t: 'Quarter 2 ends',                      c: 'term'    },
-    { s: '2027-01-01',                  t: 'New Year’s Day', w: 'School closed', c: 'closed' },
-    { s: '2027-01-01',                  t: 'Quarter 3 begins',                    c: 'term'    },
-    { s: '2027-01-14',                  t: 'Report cards',                        c: 'grades'  },
-    { s: '2027-01-18',                  t: 'Martin Luther King Jr. Day', w: 'No school', c: 'holiday' },
-    { s: '2027-02-15',                  t: 'Half day',            w: 'Until 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'halfday' },
-    { s: '2027-03-05',                  t: 'Quarter 3 ends',                      c: 'term'    },
-    { s: '2027-03-06',                  t: 'Quarter 4 begins',                    c: 'term'    },
-    { s: '2027-03-10', e: '2027-03-12', t: 'Eid break',           w: 'School closed', c: 'closed' },
-    { s: '2027-03-25',                  t: 'Report cards',                        c: 'grades'  },
-    { s: '2027-04-15',                  t: 'Progress reports issued',             c: 'grades'  },
-    { s: '2027-05-17', e: '2027-05-19', t: 'Eid break',           w: 'School closed', c: 'closed' },
-    { s: '2027-05-21',                  t: 'Half day',            w: '9:00 AM - 12:00 PM', c: 'halfday' },
-    { s: '2027-05-31',                  t: 'Memorial Day',        w: 'No school', c: 'holiday' },
-    { s: '2027-06-02',                  t: 'Last day of school',  w: 'Half day, 8:00 AM - 12:00 PM', c: 'event' },
-    { s: '2027-06-03',                  t: 'Last day for teachers',               c: 'staff'   }
-  ];
+  var sb = supabase.createClient(
+    'https://kjuuipvyqqjlxmmlrlhy.supabase.co',
+    'sb_publishable_Dqw1ds-3LFQdC2k8YSZBQg_no3HfNA4'
+  );
+
+  /* Loaded from Supabase (the published school year + its events) by
+     loadYear() at the bottom of this file — see Admin.html's "Academic
+     calendar" tab for where staff edit this. Multi-day items use an
+     inclusive `end`. */
+  var YEAR = null;   // { label, start_date, end_date, quarters }
+  var EVENTS = [];
 
   var CATS = {
     event:   { label: 'School events', fg: '#166B38', bg: '#E9F3EB' },
@@ -393,8 +372,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
   };
   var CAT_ORDER = ['event', 'closed', 'holiday', 'conference', 'halfday', 'grades', 'term', 'staff'];
 
-  var FIRST = { y: 2026, m: 7 };   // August 2026
-  var LAST  = { y: 2027, m: 5 };   // June 2027
+  var FIRST = null, LAST = null;   // set once the published school year loads
   var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   var SHORT  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var DOWS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -421,23 +399,26 @@ details[open] .faq-plus{transform:rotate(45deg)}
     });
   }
 
-  EVENTS.forEach(function (ev, i) { ev.id = i; });
-
   /* date key -> events, expanded across multi-day ranges */
   var BY_DAY = {};
-  EVENTS.forEach(function (ev) {
-    var d = parse(ev.s), stop = parse(ev.e || ev.s);
-    while (d <= stop) {
-      var k = key(d.getFullYear(), d.getMonth(), d.getDate());
-      (BY_DAY[k] = BY_DAY[k] || []).push(ev);
-      d.setDate(d.getDate() + 1);
-    }
-  });
+  function indexEvents() {
+    EVENTS.forEach(function (ev, i) { ev.id = i; });
+    BY_DAY = {};
+    EVENTS.forEach(function (ev) {
+      var d = parse(ev.s), stop = parse(ev.e || ev.s);
+      while (d <= stop) {
+        var k = key(d.getFullYear(), d.getMonth(), d.getDate());
+        (BY_DAY[k] = BY_DAY[k] || []).push(ev);
+        d.setDate(d.getDate() + 1);
+      }
+    });
+  }
 
   function visible(list) { return (list || []).filter(function (ev) { return !off[ev.c]; }); }
   function anyFilterOff() { return CAT_ORDER.some(function (c) { return off[c]; }); }
 
   function longDate(d) { return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); }
+  function shortDate(d) { return SHORT[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); }
   function fullSpan(ev) {
     var a = parse(ev.s), b = parse(ev.e || ev.s);
     if (!ev.e || ev.e === ev.s) return longDate(a);
@@ -654,17 +635,6 @@ details[open] .faq-plus{transform:rotate(45deg)}
     var p = this.value.split('-'); goTo(+p[0], +p[1]);
   });
 
-  var now0 = new Date();
-  var todayInRange = inRange(now0.getFullYear(), now0.getMonth());
-  el('cal-today').disabled = !todayInRange;
-  el('cal-today').addEventListener('click', function () {
-    var t = new Date();
-    if (inRange(t.getFullYear(), t.getMonth())) {
-      setView('month');
-      goTo(t.getFullYear(), t.getMonth());
-    }
-  });
-
   function setView(v) {
     view = v;
     var isMonth = v === 'month';
@@ -680,22 +650,10 @@ details[open] .faq-plus{transform:rotate(45deg)}
     el('cal-jump').disabled = !isMonth;
     el('cal-title').textContent = isMonth
       ? MONTHS[cur.m] + ' ' + cur.y
-      : 'Aug 2026 – Jun 2027';
+      : SHORT[FIRST.m] + ' ' + FIRST.y + ' – ' + SHORT[LAST.m] + ' ' + LAST.y;
   }
   el('view-btn-month').addEventListener('click', function () { setView('month'); renderMonth(); });
   el('view-btn-list').addEventListener('click', function () { setView('list'); renderYear(); });
-
-  /* open on the visitor's own month when they are inside the school year */
-  cur = todayInRange ? { y: now0.getFullYear(), m: now0.getMonth() } : { y: FIRST.y, m: FIRST.m };
-
-  el('cal-jump').innerHTML = (function () {
-    var opts = [], i = monthIndex(FIRST.y, FIRST.m), stop = monthIndex(LAST.y, LAST.m);
-    for (; i <= stop; i++) {
-      var y = Math.floor(i / 12), m = i % 12;
-      opts.push('<option value="' + y + '-' + m + '">' + MONTHS[m] + ' ' + y + '</option>');
-    }
-    return opts.join('');
-  })();
 
   /* ---------- printable fridge calendar (PDF) ----------
      One page, two columns, whole school year — built from the same
@@ -703,6 +661,7 @@ details[open] .faq-plus{transform:rotate(45deg)}
      of sync. Falls back to the browser print dialog if the PDF
      library hasn't loaded (slow connection, blocked CDN, etc.). */
   function buildPdf() {
+    if (!YEAR) return;
     var Ctor = window.jspdf && window.jspdf.jsPDF;
     if (!Ctor) { window.print(); return; }
 
@@ -771,16 +730,16 @@ details[open] .faq-plus{transform:rotate(45deg)}
 
     /* masthead */
     doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(224, 124, 0);
-    doc.text('2026–27 SCHOOL YEAR', MARGIN, 44);
+    doc.text((YEAR.label + ' SCHOOL YEAR').toUpperCase(), MARGIN, 44);
     doc.setFontSize(21); doc.setTextColor(21, 58, 38);
     doc.text('Falah Academy of Nashville', MARGIN, 66);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(12); doc.setTextColor(65, 87, 63);
     doc.text('Academic Calendar — the whole year, one page for the fridge', MARGIN, 82);
 
     var cx = MARGIN, cy = 96;
-    cx = chip(cx, cy, 'First day · Aug 24, 2026', [22, 107, 56], [233, 243, 235]);
-    cx = chip(cx, cy, 'Last day · June 2, 2027', [179, 100, 5], [253, 235, 210]);
-    chip(cx, cy, '4 quarters', [22, 107, 56], [233, 243, 235]);
+    cx = chip(cx, cy, 'First day · ' + shortDate(parse(YEAR.start_date)), [22, 107, 56], [233, 243, 235]);
+    cx = chip(cx, cy, 'Last day · ' + shortDate(parse(YEAR.end_date)), [179, 100, 5], [253, 235, 210]);
+    chip(cx, cy, YEAR.quarters + ' quarters', [22, 107, 56], [233, 243, 235]);
 
     /* group events by their start month, then measure each row */
     var byMonth = {}, order = [];
@@ -832,16 +791,90 @@ details[open] .faq-plus{transform:rotate(45deg)}
 
     /* footer */
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(138, 156, 141);
-    doc.text('Dates follow the printed 2026–27 Falah Academy calendar. If a date ever changes, families are notified by email first.', MARGIN, PAGE_H - 46);
+    doc.text('Dates follow the published ' + YEAR.label + ' Falah Academy calendar. If a date ever changes, families are notified by email first.', MARGIN, PAGE_H - 46);
     doc.text('2311 Murfreesboro Pike Suite B, Nashville, TN 37217   ·   admissions@fan2026.org   ·   629-629-0234', MARGIN, PAGE_H - 32);
 
-    doc.save('Falah-Academy-2026-27-Calendar.pdf');
+    doc.save('Falah-Academy-' + YEAR.label.replace(/[^0-9A-Za-z]+/g, '-') + '-Calendar.pdf');
   }
   el('cal-pdf-btn').addEventListener('click', buildPdf);
 
-  renderFilters();
-  renderMonth();
-  renderYear();
+  /* ---------- boot: fetch the published school year, then render ---------- */
+  function boot() {
+    indexEvents();
+
+    var y0 = parse(YEAR.start_date), y1 = parse(YEAR.end_date);
+    FIRST = { y: y0.getFullYear(), m: y0.getMonth() };
+    LAST  = { y: y1.getFullYear(), m: y1.getMonth() };
+
+    el('hero-year-label').textContent = YEAR.label + ' school year';
+    el('hero-chips').innerHTML =
+      '<span style="background:#E9F3EB;color:#166B38;font:800 13px \'Nunito\',sans-serif;padding:9px 16px;border-radius:999px">First day &middot; ' + esc(shortDate(y0)) + '</span>' +
+      '<span style="background:#FDEBD2;color:#B36405;font:800 13px \'Nunito\',sans-serif;padding:9px 16px;border-radius:999px">Last day &middot; ' + esc(shortDate(y1)) + '</span>' +
+      '<span style="background:#E9F3EB;color:#166B38;font:800 13px \'Nunito\',sans-serif;padding:9px 16px;border-radius:999px">' + esc(YEAR.quarters) + ' quarters</span>';
+    var footerYearEl = el('footer-year-label');
+    if (footerYearEl) footerYearEl.textContent = YEAR.label;
+
+    renderFilters();
+
+    var now0 = new Date();
+    var todayInRange = inRange(now0.getFullYear(), now0.getMonth());
+    el('cal-today').disabled = !todayInRange;
+    el('cal-today').addEventListener('click', function () {
+      var t = new Date();
+      if (inRange(t.getFullYear(), t.getMonth())) {
+        setView('month');
+        goTo(t.getFullYear(), t.getMonth());
+      }
+    });
+
+    cur = todayInRange ? { y: now0.getFullYear(), m: now0.getMonth() } : { y: FIRST.y, m: FIRST.m };
+
+    el('cal-jump').innerHTML = (function () {
+      var opts = [], i = monthIndex(FIRST.y, FIRST.m), stop = monthIndex(LAST.y, LAST.m);
+      for (; i <= stop; i++) {
+        var y = Math.floor(i / 12), m = i % 12;
+        opts.push('<option value="' + y + '-' + m + '">' + MONTHS[m] + ' ' + y + '</option>');
+      }
+      return opts.join('');
+    })();
+
+    renderMonth();
+    renderYear();
+
+    el('cal-pdf-btn').disabled = false;
+    el('cal-loading').style.display = 'none';
+    el('cal-shell-main').style.display = 'block';
+  }
+
+  function showUnavailable() {
+    el('cal-loading').style.display = 'none';
+    el('cal-unavailable').style.display = 'block';
+    el('hero-year-label').textContent = 'Calendar unavailable';
+  }
+
+  function loadYear() {
+    sb.from('falah_school_years').select('*').eq('is_published', true).maybeSingle()
+      .then(function (yearRes) {
+        if (yearRes.error) throw yearRes.error;
+        if (!yearRes.data) { showUnavailable(); return null; }
+        YEAR = yearRes.data;
+        return sb.from('falah_calendar_events').select('*').eq('school_year_id', YEAR.id).order('start_date');
+      })
+      .then(function (evRes) {
+        if (!evRes) return;
+        if (evRes.error) throw evRes.error;
+        EVENTS = (evRes.data || []).map(function (row) {
+          return { s: row.start_date, e: row.end_date || undefined, t: row.title, w: row.note || undefined, c: row.category };
+        });
+        boot();
+      })
+      .catch(function (e) {
+        console.error('Failed to load the academic calendar', e);
+        showUnavailable();
+      });
+  }
+
+  loadYear();
 })();
 </script>
 

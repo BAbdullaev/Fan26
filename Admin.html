@@ -149,7 +149,8 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
         <div class="menu-sect">Go to</div>
         <button id="tab-apps" class="menu-item active" role="menuitem" onclick="showTab('apps')">Enrollment applications</button>
         <button id="tab-tours" class="menu-item" role="menuitem" onclick="showTab('tours')">Tour bookings</button>
-        <button id="tab-cal" class="menu-item" role="menuitem" onclick="showTab('cal')">Calendar</button>
+        <button id="tab-cal" class="menu-item" role="menuitem" onclick="showTab('cal')">Tour calendar</button>
+        <button id="tab-yearcal" class="menu-item" style="display:none" role="menuitem" onclick="showTab('yearcal')">Academic calendar</button>
         <button id="tab-staff" class="menu-item" style="display:none" role="menuitem" onclick="showTab('staff')">Staff access</button>
         <button id="tab-directory" class="menu-item" style="display:none" role="menuitem" onclick="showTab('directory')">Staff directory</button>
         <div class="menu-sep"></div>
@@ -273,6 +274,72 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
       <div style="margin-top:14px;font:700 12px 'Nunito',sans-serif;color:#93A996">Scheduled tours appear on their day — click one to jump to the booking. Green = upcoming, gray = past.</div>
     </div>
   </div>
+
+  <div id="yearcal-panel" style="display:none;flex-direction:column;gap:14px">
+    <div class="row-card">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">School year
+          <select id="yc-year-select" class="field" style="width:auto;min-width:200px" onchange="switchYear(this.value)"></select>
+        </label>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-quiet" id="yc-publish-btn" type="button" onclick="toggleYearPublish()">Publish</button>
+          <button class="btn-quiet" id="yc-delete-btn" type="button" onclick="deleteYear()">Delete year</button>
+          <button class="btn" type="button" onclick="openYearSetup()">Calendar Setup</button>
+        </div>
+      </div>
+      <p id="yc-year-meta" style="font:600 13px 'Nunito',sans-serif;color:#93A996;margin:12px 0 0"></p>
+    </div>
+
+    <div id="yc-setup-card" class="row-card" style="display:none">
+      <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Calendar Setup</h2>
+      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Create the calendar for a new school year — it stays hidden from families on the public Calendar page until you publish it above. Optionally copy last year's events as a starting point (dates shift automatically to line up with the new first day).</p>
+      <form onsubmit="return createSchoolYear()" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end">
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">School year label
+          <input id="yc-new-label" class="field" placeholder="2027–28" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">First day
+          <input id="yc-new-start" type="date" class="field" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Last day
+          <input id="yc-new-end" type="date" class="field" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Quarters
+          <input id="yc-new-quarters" type="number" class="field" value="4" min="1" max="6">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Copy events from
+          <select id="yc-new-copyfrom" class="field"><option value="">Start blank</option></select>
+        </label>
+        <button id="yc-setup-btn" type="submit" class="btn">Create school year</button>
+      </form>
+      <div id="yc-setup-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
+    </div>
+
+    <div id="yc-add-card" class="row-card">
+      <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Add calendar event</h2>
+      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Added to the school year selected above. Any staff member can add, edit or remove events — changes appear on the public Calendar page (and its downloadable PDF) as soon as the year is published.</p>
+      <form onsubmit="return addCalendarEvent()" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end">
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Start date
+          <input id="yc-new-start-date" type="date" class="field" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">End date (optional)
+          <input id="yc-new-end-date" type="date" class="field">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26;grid-column:span 2">Title
+          <input id="yc-new-title" class="field" placeholder="Winter break" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Category
+          <select id="yc-new-cat" class="field"></select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26;grid-column:1/-1">Note (shown to families, optional)
+          <input id="yc-new-note" class="field" placeholder="School closed">
+        </label>
+        <button id="yc-add-btn" type="submit" class="btn">Add event</button>
+      </form>
+      <div id="yc-add-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
+    </div>
+
+    <div id="yc-events-list"></div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -303,7 +370,8 @@ var openApps = {};   // id -> expanded
 var SECTION_HEADINGS = {
   apps:      ['Enrollment applications', 'Every family who has asked for a seat.'],
   tours:     ['Tour bookings', 'Tour requests from the Contact form.'],
-  cal:       ['Calendar', 'Scheduled tours, month by month.'],
+  cal:       ['Tour calendar', 'Scheduled tours, month by month.'],
+  yearcal:   ['Academic calendar', 'The school-year calendar families see on the public Calendar page.'],
   staff:     ['Staff access', 'Who can sign in to this dashboard.'],
   directory: ['Staff directory', 'What families see on the public directory page.']
 };
@@ -395,6 +463,7 @@ if (DEMO_MODE) {
     if (!authed) closeMenu();
     myEmail = authed ? session.user.email.toLowerCase() : null;
     myRole = null;
+    document.getElementById('tab-yearcal').style.display = authed ? '' : 'none';
     document.getElementById('tab-staff').style.display = 'none';
     document.getElementById('staff-add-card').style.display = 'none';
     document.getElementById('tab-directory').style.display = 'none';
@@ -455,11 +524,13 @@ function showTab(tab) {
   document.getElementById('tab-tours').className = 'menu-item' + (tab === 'tours' ? ' active' : '');
   document.getElementById('tab-apps').className = 'menu-item' + (tab === 'apps' ? ' active' : '');
   document.getElementById('tab-cal').className = 'menu-item' + (tab === 'cal' ? ' active' : '');
+  document.getElementById('tab-yearcal').className = 'menu-item' + (tab === 'yearcal' ? ' active' : '');
   document.getElementById('tab-staff').className = 'menu-item' + (tab === 'staff' ? ' active' : '');
   document.getElementById('tab-directory').className = 'menu-item' + (tab === 'directory' ? ' active' : '');
   document.getElementById('tours-panel').style.display = tab === 'tours' ? 'flex' : 'none';
   document.getElementById('apps-panel').style.display = tab === 'apps' ? 'flex' : 'none';
   document.getElementById('cal-panel').style.display = tab === 'cal' ? 'block' : 'none';
+  document.getElementById('yearcal-panel').style.display = tab === 'yearcal' ? 'flex' : 'none';
   document.getElementById('staff-panel').style.display = tab === 'staff' ? 'flex' : 'none';
   document.getElementById('directory-panel').style.display = tab === 'directory' ? 'flex' : 'none';
   var head = SECTION_HEADINGS[tab];
@@ -469,6 +540,7 @@ function showTab(tab) {
   }
   closeMenu();
   if (tab === 'cal') renderCalendar();
+  if (tab === 'yearcal') loadSchoolYears();
   if (tab === 'staff') loadStaff();
   if (tab === 'directory') loadDirectory();
 }
@@ -860,6 +932,289 @@ function downloadIcs(id) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
+
+/* ===== Academic calendar (Calendar Setup + events) =====
+   Powers the public Calendar.html page. Any signed-in staff member can
+   fully manage this — create/publish/delete school years, and add/edit/
+   delete events — it isn't master-gated like Staff access or Directory. */
+var CAL_CATEGORIES = ['event', 'closed', 'holiday', 'conference', 'halfday', 'grades', 'term', 'staff'];
+var CAL_CATEGORY_LABELS = {
+  event: 'School event', closed: 'School closed', holiday: 'Holiday (no school)',
+  conference: 'Parent conference', halfday: 'Half day', grades: 'Report cards / grades',
+  term: 'Quarter', staff: 'Staff only'
+};
+var schoolYears = [];
+var selectedYearId = null;
+var yearEvents = [];
+
+function fmtDateOnly(s) {
+  if (!s) return '—';
+  var p = s.split('-');
+  return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function daysBetween(aStr, bStr) {
+  return Math.round((new Date(bStr + 'T00:00:00Z') - new Date(aStr + 'T00:00:00Z')) / 86400000);
+}
+function shiftDateStr(dateStr, days) {
+  var p = dateStr.split('-').map(Number);
+  var d = new Date(Date.UTC(p[0], p[1] - 1, p[2]));
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+function loadSchoolYears() {
+  sb.from('falah_school_years').select('*').order('start_date', { ascending: false }).then(function (res) {
+    schoolYears = res.data || [];
+    if (!selectedYearId || !schoolYears.some(function (y) { return y.id === selectedYearId; })) {
+      var pub = schoolYears.find(function (y) { return y.is_published; });
+      selectedYearId = pub ? pub.id : (schoolYears[0] ? schoolYears[0].id : null);
+    }
+    renderYearSelect();
+    renderYearMeta();
+    if (selectedYearId) loadYearEvents(selectedYearId); else { yearEvents = []; renderEvents(); }
+  });
+}
+
+function renderYearSelect() {
+  var sel = document.getElementById('yc-year-select');
+  sel.innerHTML = schoolYears.length
+    ? schoolYears.map(function (y) {
+        return '<option value="' + y.id + '"' + (y.id === selectedYearId ? ' selected' : '') + '>' +
+          esc(y.label) + (y.is_published ? ' — Published' : '') + '</option>';
+      }).join('')
+    : '<option value="">No school years yet</option>';
+
+  var copySel = document.getElementById('yc-new-copyfrom');
+  copySel.innerHTML = '<option value="">Start blank</option>' + schoolYears.map(function (y) {
+    return '<option value="' + y.id + '">Copy from ' + esc(y.label) + '</option>';
+  }).join('');
+}
+
+function renderYearMeta() {
+  var year = schoolYears.find(function (y) { return y.id === selectedYearId; });
+  var meta = document.getElementById('yc-year-meta');
+  var publishBtn = document.getElementById('yc-publish-btn');
+  var deleteBtn = document.getElementById('yc-delete-btn');
+  if (!year) {
+    meta.textContent = 'No school years yet — use Calendar Setup to create one.';
+    publishBtn.style.display = 'none';
+    deleteBtn.style.display = 'none';
+    return;
+  }
+  meta.innerHTML = esc(fmtDateOnly(year.start_date)) + ' – ' + esc(fmtDateOnly(year.end_date)) + ' · ' +
+    year.quarters + ' quarters · ' +
+    (year.is_published ? '<span class="pill pill-enrolled">Published — visible to families</span>' : '<span class="pill pill-cancelled">Not published</span>');
+  publishBtn.style.display = '';
+  publishBtn.textContent = year.is_published ? 'Unpublish' : 'Publish';
+  deleteBtn.style.display = '';
+}
+
+function switchYear(id) {
+  selectedYearId = id || null;
+  renderYearMeta();
+  if (selectedYearId) loadYearEvents(selectedYearId); else { yearEvents = []; renderEvents(); }
+}
+
+function openYearSetup() {
+  var card = document.getElementById('yc-setup-card');
+  card.style.display = card.style.display === 'none' ? 'block' : 'none';
+}
+
+function createSchoolYear() {
+  var btn = document.getElementById('yc-setup-btn');
+  var err = document.getElementById('yc-setup-error');
+  err.style.display = 'none';
+  var label = document.getElementById('yc-new-label').value.trim();
+  var start = document.getElementById('yc-new-start').value;
+  var end = document.getElementById('yc-new-end').value;
+  var quarters = parseInt(document.getElementById('yc-new-quarters').value, 10) || 4;
+  var copyFromId = document.getElementById('yc-new-copyfrom').value;
+  if (!label || !start || !end) { err.textContent = 'Label, first day and last day are required'; err.style.display = 'block'; return false; }
+
+  btn.disabled = true; btn.textContent = 'Creating…';
+  sb.from('falah_school_years').insert({ label: label, start_date: start, end_date: end, quarters: quarters }).select().single()
+    .then(function (res) {
+      if (res.error) throw res.error;
+      var newYear = res.data;
+      if (!copyFromId) return newYear;
+      var srcYear = schoolYears.find(function (y) { return y.id === copyFromId; });
+      return sb.from('falah_calendar_events').select('*').eq('school_year_id', copyFromId).then(function (evRes) {
+        if (evRes.error) throw evRes.error;
+        var srcEvents = evRes.data || [];
+        if (!srcEvents.length) return newYear;
+        var shift = srcYear ? daysBetween(srcYear.start_date, start) : 0;
+        var rows = srcEvents.map(function (ev) {
+          return {
+            school_year_id: newYear.id,
+            start_date: shiftDateStr(ev.start_date, shift),
+            end_date: ev.end_date ? shiftDateStr(ev.end_date, shift) : null,
+            title: ev.title, note: ev.note, category: ev.category
+          };
+        });
+        return sb.from('falah_calendar_events').insert(rows).then(function (insRes) {
+          if (insRes.error) throw insRes.error;
+          return newYear;
+        });
+      });
+    })
+    .then(function (newYear) {
+      document.getElementById('yc-setup-card').style.display = 'none';
+      document.getElementById('yc-new-label').value = '';
+      document.getElementById('yc-new-start').value = '';
+      document.getElementById('yc-new-end').value = '';
+      document.getElementById('yc-new-quarters').value = '4';
+      document.getElementById('yc-new-copyfrom').value = '';
+      selectedYearId = newYear.id;
+      loadSchoolYears();
+    })
+    .catch(function (e) {
+      err.textContent = e.message || 'Failed to create school year';
+      err.style.display = 'block';
+    })
+    .finally(function () {
+      btn.disabled = false; btn.textContent = 'Create school year';
+    });
+  return false;
+}
+
+function toggleYearPublish() {
+  var year = schoolYears.find(function (y) { return y.id === selectedYearId; });
+  if (!year) return;
+  if (year.is_published) {
+    if (!confirm('Unpublish "' + year.label + '"? Families will see no academic calendar until another year is published.')) return;
+    sb.from('falah_school_years').update({ is_published: false, updated_at: new Date().toISOString() }).eq('id', year.id)
+      .then(function (res) {
+        if (res.error) { alert('Failed: ' + res.error.message); return; }
+        loadSchoolYears();
+      });
+    return;
+  }
+  var currentlyPublished = schoolYears.find(function (y) { return y.is_published; });
+  var msg = 'Publish "' + year.label + '"?' + (currentlyPublished
+    ? ' This replaces "' + currentlyPublished.label + '" as the calendar families see.'
+    : ' This calendar becomes visible to families immediately.');
+  if (!confirm(msg)) return;
+  var chain = currentlyPublished
+    ? sb.from('falah_school_years').update({ is_published: false, updated_at: new Date().toISOString() }).eq('id', currentlyPublished.id)
+    : Promise.resolve({ error: null });
+  chain.then(function (res) {
+    if (res.error) throw res.error;
+    return sb.from('falah_school_years').update({ is_published: true, updated_at: new Date().toISOString() }).eq('id', year.id);
+  }).then(function (res) {
+    if (res.error) throw res.error;
+    loadSchoolYears();
+  }).catch(function (e) { alert('Publish failed: ' + e.message); });
+}
+
+function deleteYear() {
+  var year = schoolYears.find(function (y) { return y.id === selectedYearId; });
+  if (!year) return;
+  if (!confirm('Delete "' + year.label + '" and all its events? This can\'t be undone.')) return;
+  sb.from('falah_school_years').delete().eq('id', year.id).then(function (res) {
+    if (res.error) { alert('Delete failed: ' + res.error.message); return; }
+    selectedYearId = null;
+    loadSchoolYears();
+  });
+}
+
+function loadYearEvents(yearId) {
+  sb.from('falah_calendar_events').select('*').eq('school_year_id', yearId).order('start_date').then(function (res) {
+    yearEvents = res.data || [];
+    renderEvents();
+  });
+}
+
+function catOptionsHtml(selected) {
+  return CAL_CATEGORIES.map(function (c) {
+    return '<option value="' + c + '"' + (c === selected ? ' selected' : '') + '>' + CAL_CATEGORY_LABELS[c] + '</option>';
+  }).join('');
+}
+
+function renderEvents() {
+  var list = document.getElementById('yc-events-list');
+  if (!selectedYearId) { list.innerHTML = ''; return; }
+  list.innerHTML = yearEvents.map(function (ev) {
+    return '<div class="row-card" id="ycev-card-' + ev.id + '">' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;align-items:end">' +
+        '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Start date' +
+          '<input id="ycev-start-' + ev.id + '" type="date" class="field" value="' + ev.start_date + '"></label>' +
+        '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">End date (optional)' +
+          '<input id="ycev-end-' + ev.id + '" type="date" class="field" value="' + (ev.end_date || '') + '"></label>' +
+        '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996;grid-column:span 2">Title' +
+          '<input id="ycev-title-' + ev.id + '" class="field" value="' + esc(ev.title) + '"></label>' +
+        '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Category' +
+          '<select id="ycev-cat-' + ev.id + '" class="field">' + catOptionsHtml(ev.category) + '</select></label>' +
+        '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996;grid-column:1/-1">Note (shown to families, optional)' +
+          '<input id="ycev-note-' + ev.id + '" class="field" value="' + esc(ev.note || '') + '"></label>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;margin-top:12px">' +
+        '<button class="btn-quiet" onclick="saveCalendarEvent(\'' + ev.id + '\')">Save</button>' +
+        '<button class="btn-quiet" onclick="removeCalendarEvent(\'' + ev.id + '\')">Delete</button>' +
+      '</div>' +
+      '<div id="ycev-error-' + ev.id + '" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 \'Nunito\',sans-serif;padding:10px 16px;border-radius:14px"></div>' +
+    '</div>';
+  }).join('') || '<div class="row-card" style="text-align:center;color:#93A996;font:700 15px \'Nunito\',sans-serif">No events yet for this school year.</div>';
+}
+
+function saveCalendarEvent(id) {
+  var errBox = document.getElementById('ycev-error-' + id);
+  errBox.style.display = 'none';
+  var patch = {
+    start_date: document.getElementById('ycev-start-' + id).value,
+    end_date: document.getElementById('ycev-end-' + id).value || null,
+    title: document.getElementById('ycev-title-' + id).value.trim(),
+    category: document.getElementById('ycev-cat-' + id).value,
+    note: document.getElementById('ycev-note-' + id).value.trim() || null,
+    updated_at: new Date().toISOString()
+  };
+  if (!patch.start_date || !patch.title) { errBox.textContent = 'Start date and title are required'; errBox.style.display = 'block'; return; }
+  sb.from('falah_calendar_events').update(patch).eq('id', id).then(function (res) {
+    if (res.error) { errBox.textContent = res.error.message; errBox.style.display = 'block'; return; }
+    loadYearEvents(selectedYearId);
+  });
+}
+
+function removeCalendarEvent(id) {
+  if (!confirm('Delete this calendar event?')) return;
+  sb.from('falah_calendar_events').delete().eq('id', id).then(function (res) {
+    if (res.error) { alert('Delete failed: ' + res.error.message); return; }
+    loadYearEvents(selectedYearId);
+  });
+}
+
+function addCalendarEvent() {
+  var btn = document.getElementById('yc-add-btn');
+  var err = document.getElementById('yc-add-error');
+  err.style.display = 'none';
+  if (!selectedYearId) { err.textContent = 'Create or select a school year first'; err.style.display = 'block'; return false; }
+  var row = {
+    school_year_id: selectedYearId,
+    start_date: document.getElementById('yc-new-start-date').value,
+    end_date: document.getElementById('yc-new-end-date').value || null,
+    title: document.getElementById('yc-new-title').value.trim(),
+    category: document.getElementById('yc-new-cat').value,
+    note: document.getElementById('yc-new-note').value.trim() || null
+  };
+  if (!row.start_date || !row.title) { err.textContent = 'Start date and title are required'; err.style.display = 'block'; return false; }
+
+  btn.disabled = true; btn.textContent = 'Adding…';
+  sb.from('falah_calendar_events').insert(row).then(function (res) {
+    if (res.error) throw res.error;
+    document.getElementById('yc-new-start-date').value = '';
+    document.getElementById('yc-new-end-date').value = '';
+    document.getElementById('yc-new-title').value = '';
+    document.getElementById('yc-new-note').value = '';
+    loadYearEvents(selectedYearId);
+  }).catch(function (e) {
+    err.textContent = e.message || 'Failed to add event';
+    err.style.display = 'block';
+  }).finally(function () {
+    btn.disabled = false; btn.textContent = 'Add event';
+  });
+  return false;
+}
+
+document.getElementById('yc-new-cat').innerHTML = catOptionsHtml('event');
 
 /* ===== Applications ===== */
 function renderApps() {

@@ -189,6 +189,102 @@ create policy "master can delete directory entries"
   to authenticated
   using (public.is_fan26_master());
 
+-- ===== Academic calendar =====
+-- Powers both Calendar.html (public) and Admin.html's "Academic calendar"
+-- tab (staff). A school year's events aren't visible to the public until
+-- that year is marked is_published — lets staff build out next year's
+-- calendar in Calendar Setup before it goes live. Any signed-in staff can
+-- fully manage both tables (create years, publish, add/edit/delete events)
+-- — this isn't master-gated like Staff access / Directory.
+
+create table public.falah_school_years (
+  id uuid primary key default gen_random_uuid(),
+  label text not null unique,
+  start_date date not null,
+  end_date date not null,
+  quarters integer not null default 4,
+  is_published boolean not null default false,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- at most one published school year at a time
+create unique index falah_school_years_one_published
+  on public.falah_school_years (is_published)
+  where is_published;
+
+create table public.falah_calendar_events (
+  id uuid primary key default gen_random_uuid(),
+  school_year_id uuid not null references public.falah_school_years(id) on delete cascade,
+  start_date date not null,
+  end_date date,
+  title text not null,
+  note text,
+  category text not null check (category in ('event','closed','holiday','conference','halfday','grades','term','staff')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index falah_calendar_events_year_idx on public.falah_calendar_events(school_year_id, start_date);
+
+alter table public.falah_school_years enable row level security;
+alter table public.falah_calendar_events enable row level security;
+
+create policy "public can view published school years"
+  on public.falah_school_years for select
+  to anon, authenticated
+  using (is_published);
+
+create policy "public can view events of published years"
+  on public.falah_calendar_events for select
+  to anon, authenticated
+  using (exists (
+    select 1 from public.falah_school_years y
+    where y.id = school_year_id and y.is_published
+  ));
+
+create policy "staff can view all school years"
+  on public.falah_school_years for select
+  to authenticated
+  using (public.is_fan26_staff());
+
+create policy "staff can insert school years"
+  on public.falah_school_years for insert
+  to authenticated
+  with check (public.is_fan26_staff());
+
+create policy "staff can update school years"
+  on public.falah_school_years for update
+  to authenticated
+  using (public.is_fan26_staff())
+  with check (public.is_fan26_staff());
+
+create policy "staff can delete school years"
+  on public.falah_school_years for delete
+  to authenticated
+  using (public.is_fan26_staff());
+
+create policy "staff can view all calendar events"
+  on public.falah_calendar_events for select
+  to authenticated
+  using (public.is_fan26_staff());
+
+create policy "staff can insert calendar events"
+  on public.falah_calendar_events for insert
+  to authenticated
+  with check (public.is_fan26_staff());
+
+create policy "staff can update calendar events"
+  on public.falah_calendar_events for update
+  to authenticated
+  using (public.is_fan26_staff())
+  with check (public.is_fan26_staff());
+
+create policy "staff can delete calendar events"
+  on public.falah_calendar_events for delete
+  to authenticated
+  using (public.is_fan26_staff());
+
 -- ===== Profile photo storage =====
 
 insert into storage.buckets (id, name, public)
