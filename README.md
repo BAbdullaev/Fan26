@@ -8,6 +8,7 @@ All seven public pages are built as static HTML and implemented from the Claude 
 - `About.html` — story, principal's welcome, mission & mantra, pillars, teacher bios, family commitments
 - `Programs.html` — PreK/K curriculum, both real daily schedules, classroom rules, home routines
 - `Admissions.html` — 3-step process, key dates, tuition, FAQ accordion
+- `Calendar.html` — interactive 2026–27 academic calendar (month grid + full-year list, filterable by category)
 - `Contact.html` — tour request form
 - `Apply.html` — full enrollment application with DOB-based eligibility checking
 - `Directory.html` — public staff directory (name, role, photo, email, phone/extension), populated live from Supabase; content is entirely managed by master accounts through `Admin.html`
@@ -26,7 +27,7 @@ Shared nav/footer and hover states are implemented in plain CSS across all pages
 All public-page copy is sourced from the client email of Aug 2026, the PreK/KG schedule screenshots, and the Parent Orientation 2026 deck. No placeholder or invented figures remain on the public pages.
 
 - **Tuition:** $8,000/year, or 10 monthly payments of $800. Same rate for PreK and KG. No other fees have been confirmed — the old application/registration fees and sibling discount were removed.
-- **First day of school:** Monday, August 24, 2026. The rest of the 2026–27 calendar (breaks, holidays, open house) is still being finalized and was removed from `Admissions.html` rather than guessed.
+- **First day of school:** Monday, August 24, 2026; last day Wednesday, June 2, 2027. The full 2026–27 calendar is on `Calendar.html`, transcribed from the printed *FALAH ACADEMY OF NASHVILLE Calendar 26_27* PDF. Event data lives in the `EVENTS` array at the bottom of that file — edit it there and the grid, month list and full-year list all follow.
 - **Daily schedules:** real PreK and Kindergarten schedules are on `Programs.html`. Staff break times and the aide's name were omitted at the client's request.
 - **Staff:** Dr. Rashid Abdus-Salaam (Founding Principal), Mrs. Maha Jabbary (Lead PreK), Mrs. Sara Sofi (Lead Kindergarten).
 - **Email:** the site uses `admissions@fan2026.org` and `rashid@fan2026.org`. Mrs. Maha's classroom address (`mahabad.Jabbary@fan2026.org`) is in the deck but is deliberately not published on the site.

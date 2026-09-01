@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Academic Calendar — Falah Academy of Nashville</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="The full 2026–27 academic calendar for Falah Academy of Nashville — term dates, holidays, breaks, half days, report cards and family events.">
+<style>
+html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
+a{color:#1B7A40}
+a:hover{color:#E07C00}
+::selection{background:#FBD79E}
+details summary{cursor:pointer;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details[open] .faq-plus{transform:rotate(45deg)}
+
+.nav-link{text-decoration:none;font:800 15px 'Nunito',sans-serif;color:#1F3D2B;padding:9px 16px;border-radius:999px;transition:background .15s,color .15s}
+.nav-link:hover{background:#E9F3EB;color:#1F3D2B}
+.nav-link.active{color:#fff;background:#1B7A40}
+.nav-link.active:hover{background:#1B7A40;color:#fff}
+
+.cta-pill{text-decoration:none;font:800 15px 'Nunito',sans-serif;color:#153A26;background:#F7941D;padding:11px 20px;border-radius:999px;box-shadow:0 3px 0 #C9720A;white-space:nowrap;display:inline-block;transition:transform .15s,box-shadow .15s}
+.cta-pill:hover{transform:translateY(-2px);box-shadow:0 5px 0 #C9720A;color:#153A26}
+
+.cta-pill-lg{text-decoration:none;font:800 16px 'Nunito',sans-serif;color:#153A26;background:#F7941D;padding:14px 26px;border-radius:999px;box-shadow:0 4px 0 #C9720A;display:inline-block;transition:transform .15s}
+.cta-pill-lg:hover{transform:translateY(-2px);color:#153A26}
+
+.btn-outline{text-decoration:none;font:800 16px 'Nunito',sans-serif;color:#fff;border:3px solid #4C9A66;padding:11px 24px;border-radius:999px;display:inline-block;transition:background .15s,color .15s}
+.btn-outline:hover{background:#1B7A40;color:#fff}
+
+.footer-link{color:#EAF3EC;text-decoration:none;transition:color .15s}
+.footer-link:hover{color:#F7941D}
+
+.footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
+.footer-muted-link:hover{color:#F7941D}
+</style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
+<style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}</style>
+<style>
+/* ---------- Calendar ---------- */
+.cal-shell{max-width:1180px;margin:0 auto;padding:0 24px 8px}
+.cal-card{background:#fff;border-radius:30px;padding:28px;box-shadow:0 6px 20px rgba(20,60,35,.10)}
+
+.cal-toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+#cal-title{font:600 28px 'Fredoka',sans-serif;color:#153A26;margin:0;min-width:210px}
+.cal-arrow{border:none;cursor:pointer;width:40px;height:40px;border-radius:50%;background:#E9F3EB;color:#166B38;font:800 20px 'Nunito',sans-serif;line-height:1;transition:background .15s}
+.cal-arrow:hover:not(:disabled){background:#D8EBDC}
+.cal-arrow:disabled{opacity:.35;cursor:default}
+.cal-jump{border:2px solid #D5E5D9;border-radius:999px;padding:9px 14px;font:800 13px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB;cursor:pointer;box-sizing:border-box;max-width:100%}
+.cal-viewbtn{border:none;cursor:pointer;font:800 13px 'Nunito',sans-serif;color:#1F3D2B;background:transparent;padding:9px 16px;border-radius:999px;transition:background .15s,color .15s}
+.cal-viewbtn:hover{background:#E9F3EB}
+.cal-viewbtn.active{background:#1B7A40;color:#fff}
+.cal-views{display:flex;gap:4px;background:#F6FAF4;border-radius:999px;padding:4px}
+
+.cal-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.cal-chip{border:2px solid transparent;cursor:pointer;font:800 12px 'Nunito',sans-serif;padding:7px 13px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;transition:opacity .15s,border-color .15s}
+.cal-chip .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.cal-chip[aria-pressed="false"]{opacity:.4}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-grid>*{min-width:0}
+.cal-dow{font:800 11px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#93A996;text-align:center;padding:6px 0}
+.cal-day{box-sizing:border-box;min-width:0;background:#FDFDFB;border:2px solid #EDF3EA;border-radius:14px;min-height:104px;padding:8px;display:flex;flex-direction:column;gap:5px;text-align:left;font-family:'Nunito',sans-serif;cursor:pointer;transition:border-color .15s,background .15s}
+.cal-day:hover{border-color:#9CC3A6}
+.cal-day.empty{background:transparent;border-color:transparent;cursor:default}
+.cal-day.empty:hover{border-color:transparent}
+.cal-day.weekend{background:#FBFCFA}
+.cal-day.today{border-color:#F7941D;background:#FFFBF2}
+.cal-day.selected{border-color:#1B7A40;box-shadow:0 0 0 3px #D8EBDC}
+.cal-daynum{font:600 15px 'Fredoka',sans-serif;color:#41573F}
+.cal-day.today .cal-daynum{color:#E07C00}
+.cal-ev{font:800 10px/1.25 'Nunito',sans-serif;padding:4px 6px;border-radius:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal-more{font:800 10px 'Nunito',sans-serif;color:#93A996;padding-left:2px}
+.cal-dots{display:none;gap:3px;flex-wrap:wrap}
+.cal-dots i{width:7px;height:7px;border-radius:50%;display:block}
+
+.day-detail{margin-top:20px;background:#F6FAF4;border:2px dashed #C9DECD;border-radius:20px;padding:20px 22px}
+.day-detail h3{font:600 20px 'Fredoka',sans-serif;color:#153A26;margin:0 0 12px}
+.ev-row{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed #DCE8DE}
+.ev-row:last-child{border-bottom:none}
+.ev-pill{flex-shrink:0;font:800 11px 'Nunito',sans-serif;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.ev-title{display:block;font:700 15px/1.45 'Nunito',sans-serif;color:#1F3D2B}
+.ev-when{display:block;font:700 12px/1.4 'Nunito',sans-serif;color:#93A996;margin-top:3px}
+
+.month-head{font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:28px 0 10px}
+.year-month{margin-bottom:26px}
+.cal-empty{font:600 15px 'Nunito',sans-serif;color:#93A996;margin:0}
+
+@media(max-width:860px){
+  #cal-title{font-size:24px;min-width:0}
+  .cal-day{min-height:82px}
+}
+@media(max-width:640px){
+  .cal-shell{padding:0 16px 8px}
+  .cal-card{padding:18px 14px;border-radius:24px}
+  .cal-toolbar{gap:8px}
+  /* prev / title / next stay on one row; the rest wraps beneath */
+  #cal-title{font-size:20px;flex:1;min-width:0;text-align:center}
+  .cal-jump{flex:1 1 100%;order:3}
+  .cal-views{width:100%;order:4}
+  .cal-viewbtn{flex:1}
+  .cal-grid{gap:3px}
+  .cal-day{min-height:52px;padding:4px;border-radius:10px;border-width:1px;gap:3px}
+  .cal-daynum{font-size:12px}
+  .cal-dow{font-size:9px;letter-spacing:.04em}
+  /* event labels cannot render in a ~44px cell — show dots, and let the
+     month list below carry the detail */
+  .cal-ev,.cal-more{display:none}
+  .cal-dots{display:flex}
+  .day-detail{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
+      <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
+      <span style="display:flex;flex-direction:column;line-height:1.05">
+        <span style="font:600 21px 'Fredoka',sans-serif;color:#166B38">Falah Academy</span>
+        <span style="font:800 11px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#E07C00">of Nashville</span>
+      </span>
+    </a>
+    <nav id="site-nav" style="margin-left:auto;display:flex;align-items:center;gap:4px">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="About.html" class="nav-link">About</a>
+      <a href="Programs.html" class="nav-link">Programs</a>
+      <a href="Admissions.html" class="nav-link">Admissions</a>
+      <a href="Calendar.html" class="nav-link active">Calendar</a>
+      <a href="Contact.html" class="nav-link">Contact</a>
+      <a href="Directory.html" class="nav-link">Directory</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <a href="Apply.html" class="cta-pill">Enroll now</a>
+  </div>
+</header>
+
+<section style="max-width:1180px;margin:0 auto;padding:56px 24px 32px;text-align:center">
+  <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:12px">2026&ndash;27 school year</div>
+  <h1 style="font:600 52px/1.1 'Fredoka',sans-serif;color:#153A26;margin:0 0 16px">Academic <span style="background:linear-gradient(transparent 62%, #FBD79E 62%);padding:0 4px">calendar</span></h1>
+  <p style="font:600 17px/1.65 'Nunito',sans-serif;color:#41573F;max-width:620px;margin:0 auto 26px;text-wrap:pretty">Every term date, holiday, break, half day and report card for the year. Tap any day to see what is happening.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+    <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">First day &middot; Aug 24, 2026</span>
+    <span style="background:#FDEBD2;color:#B36405;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">Last day &middot; June 2, 2027</span>
+    <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">4 quarters</span>
+  </div>
+</section>
+
+<div class="cal-shell">
+  <div class="cal-card">
+
+    <div class="cal-toolbar">
+      <button class="cal-arrow" id="cal-prev" type="button" aria-label="Previous month">&lsaquo;</button>
+      <h2 id="cal-title" aria-live="polite">August 2026</h2>
+      <button class="cal-arrow" id="cal-next" type="button" aria-label="Next month">&rsaquo;</button>
+      <label class="sr-only" for="cal-jump">Jump to month</label>
+      <select class="cal-jump" id="cal-jump"></select>
+      <div class="cal-views" role="tablist" aria-label="Calendar view">
+        <button class="cal-viewbtn active" id="view-btn-month" type="button" role="tab" aria-selected="true">Month</button>
+        <button class="cal-viewbtn" id="view-btn-list" type="button" role="tab" aria-selected="false">Full year</button>
+      </div>
+    </div>
+
+    <div class="cal-filters" id="cal-filters"></div>
+
+    <div id="view-month">
+      <div class="cal-grid" id="cal-dows" aria-hidden="true"></div>
+      <div class="cal-grid" id="cal-days" style="margin-top:6px"></div>
+      <div class="day-detail" id="day-detail"></div>
+      <h3 class="month-head" id="month-list-head">Everything in August</h3>
+      <div id="month-list"></div>
+    </div>
+
+    <div id="view-list" hidden>
+      <div id="year-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<section style="max-width:1180px;margin:0 auto;padding:40px 24px 8px">
+  <div style="background:#fff;border:2px dashed #C9DECD;border-radius:22px;padding:22px 28px">
+    <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Dates follow the printed 2026&ndash;27 Falah Academy calendar. If a date ever changes, families are notified by email first &mdash; and this page is updated the same day. Questions? Email <a href="mailto:admissions@fan2026.org" style="font-weight:800">admissions@fan2026.org</a>.</p>
+  </div>
+</section>
+
+<section style="max-width:1180px;margin:0 auto;padding:40px 24px 8px">
+  <div style="background:#153A26;border-radius:36px;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <div>
+      <h2 style="font:600 32px 'Fredoka',sans-serif;color:#fff;margin:0 0 8px">Ready to join us this year?</h2>
+      <p style="font:600 16px 'Nunito',sans-serif;color:#CFE5D4;margin:0">Enroll now, or come walk the halls with us first.</p>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+      <a href="Contact.html" class="btn-outline">Schedule a Tour</a>
+      <a href="Apply.html" class="cta-pill-lg">Enroll now</a>
+    </div>
+  </div>
+</section>
+
+<footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">
+        <div style="line-height:1.1"><div style="font:600 20px 'Fredoka',sans-serif;color:#fff">Falah Academy</div><div style="font:800 10px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F7941D">of Nashville</div></div>
+      </div>
+      <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#B9D4C0;margin:0;max-width:280px">Educating the whole child through high-quality early education, rooted in Islamic values.</p>
+    </div>
+    <div>
+      <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Explore</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:700 14px 'Nunito',sans-serif">
+        <a href="About.html" class="footer-link">About us</a>
+        <a href="Programs.html" class="footer-link">Programs</a>
+        <a href="Admissions.html" class="footer-link">Admissions</a>
+        <a href="Directory.html" class="footer-link">Staff Directory</a>
+        <a href="Apply.html" class="footer-link">Enroll now</a>
+      </div>
+    </div>
+    <div>
+      <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Visit</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:600 14px/1.5 'Nunito',sans-serif;color:#B9D4C0">
+        <span>2311 Murfreesboro Pike Suite B</span>
+        <span>Nashville, TN 37217</span>
+        <span>Mon – Fri · 8 AM – 4 PM</span>
+      </div>
+    </div>
+    <div>
+      <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Say hello</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:600 14px/1.5 'Nunito',sans-serif">
+        <a href="mailto:admissions@fan2026.org" class="footer-muted-link">admissions@fan2026.org</a>
+        <span style="color:#B9D4C0">629-629-0234</span>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid #24543A;text-align:center;padding:18px 24px;font:700 13px 'Nunito',sans-serif;color:#7FA98B">© 2026 Falah Academy of Nashville · PreK &amp; Kindergarten · <a href="Admin.html" class="footer-muted-link" style="color:#7FA98B">Staff sign in</a></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Dates transcribed from the printed 2026-27 Falah Academy calendar.
+     Multi-day items use an inclusive `end`. */
+  var EVENTS = [
+    { s: '2026-08-05', e: '2026-08-21', t: 'Teachers in-service',                 c: 'staff'   },
+    { s: '2026-08-11',                  t: 'Parent orientation',  w: 'Half day, 10:00 AM - 12:00 PM', c: 'event' },
+    { s: '2026-08-24',                  t: 'First day of school',                 c: 'event'   },
+    { s: '2026-09-07',                  t: 'Labor Day',           w: 'School closed', c: 'closed' },
+    { s: '2026-09-17',                  t: 'Progress reports issued',             c: 'grades'  },
+    { s: '2026-10-08',                  t: 'Quarter 1 ends',                      c: 'term'    },
+    { s: '2026-10-09',                  t: 'Quarter 2 begins',                    c: 'term'    },
+    { s: '2026-10-12',                  t: 'National holiday',    w: 'School closed', c: 'closed' },
+    { s: '2026-10-22',                  t: 'Report cards',                        c: 'grades'  },
+    { s: '2026-11-03',                  t: 'Parent conferences',  w: '8:00 AM - 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'event' },
+    { s: '2026-11-11',                  t: 'Veterans Day',        w: 'School closed', c: 'closed' },
+    { s: '2026-11-20',                  t: 'Progress reports issued',             c: 'grades'  },
+    { s: '2026-11-26', e: '2026-11-27', t: 'Thanksgiving break',  w: 'School closed', c: 'closed' },
+    { s: '2026-12-23',                  t: 'Half day',            w: '8:00 AM - 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'halfday' },
+    { s: '2026-12-24', e: '2027-01-01', t: 'Winter break',        w: 'School closed', c: 'closed' },
+    { s: '2026-12-31',                  t: 'Quarter 2 ends',                      c: 'term'    },
+    { s: '2027-01-01',                  t: 'New Year’s Day', w: 'School closed', c: 'closed' },
+    { s: '2027-01-01',                  t: 'Quarter 3 begins',                    c: 'term'    },
+    { s: '2027-01-14',                  t: 'Report cards',                        c: 'grades'  },
+    { s: '2027-01-18',                  t: 'Martin Luther King Jr. Day', w: 'School closed', c: 'closed' },
+    { s: '2027-02-15',                  t: 'Half day',            w: 'Until 12:00 PM, then teacher PD 12:00 - 3:00 PM', c: 'halfday' },
+    { s: '2027-03-05',                  t: 'Quarter 3 ends',                      c: 'term'    },
+    { s: '2027-03-06',                  t: 'Quarter 4 begins',                    c: 'term'    },
+    { s: '2027-03-10', e: '2027-03-12', t: 'Eid break',           w: 'School closed', c: 'closed' },
+    { s: '2027-03-25',                  t: 'Report cards',                        c: 'grades'  },
+    { s: '2027-04-15',                  t: 'Progress reports issued',             c: 'grades'  },
+    { s: '2027-05-17', e: '2027-05-19', t: 'Eid break',           w: 'School closed', c: 'closed' },
+    { s: '2027-05-21',                  t: 'Half day',            w: '9:00 AM - 12:00 PM', c: 'halfday' },
+    { s: '2027-05-31',                  t: 'Memorial Day',        w: 'School closed', c: 'closed' },
+    { s: '2027-06-02',                  t: 'Last day of school',  w: 'Half day, 8:00 AM - 12:00 PM', c: 'event' },
+    { s: '2027-06-03',                  t: 'Last day for teachers',               c: 'staff'   }
+  ];
+
+  var CATS = {
+    event:   { label: 'School events', fg: '#166B38', bg: '#E9F3EB' },
+    closed:  { label: 'School closed', fg: '#A33A30', bg: '#FBE7E4' },
+    halfday: { label: 'Half days',     fg: '#B36405', bg: '#FDEBD2' },
+    grades:  { label: 'Report cards',  fg: '#1D4E96', bg: '#E3EDFB' },
+    term:    { label: 'Quarters',      fg: '#6B2FA0', bg: '#F3E8FB' },
+    staff:   { label: 'Staff only',    fg: '#6E7A6C', bg: '#F1F1EC' }
+  };
+  var CAT_ORDER = ['event', 'closed', 'halfday', 'grades', 'term', 'staff'];
+
+  var FIRST = { y: 2026, m: 7 };   // August 2026
+  var LAST  = { y: 2027, m: 5 };   // June 2027
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOWS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  var off = {};                    // categories switched off
+  var cur = null;                  // {y, m} on screen
+  var selected = null;             // 'YYYY-MM-DD'
+
+  function el(id) { return document.getElementById(id); }
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function key(y, m, d) { return y + '-' + pad(m + 1) + '-' + pad(d); }
+  function parse(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function monthIndex(y, m) { return y * 12 + m; }
+  function inRange(y, m) {
+    var i = monthIndex(y, m);
+    return i >= monthIndex(FIRST.y, FIRST.m) && i <= monthIndex(LAST.y, LAST.m);
+  }
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+
+  /* date key -> events, expanded across multi-day ranges */
+  var BY_DAY = {};
+  EVENTS.forEach(function (ev) {
+    var d = parse(ev.s), stop = parse(ev.e || ev.s);
+    while (d <= stop) {
+      var k = key(d.getFullYear(), d.getMonth(), d.getDate());
+      (BY_DAY[k] = BY_DAY[k] || []).push(ev);
+      d.setDate(d.getDate() + 1);
+    }
+  });
+
+  function visible(list) {
+    return (list || []).filter(function (ev) { return !off[ev.c]; });
+  }
+  function spanLabel(ev) {
+    if (!ev.e || ev.e === ev.s) return longDate(parse(ev.s));
+    var a = parse(ev.s), b = parse(ev.e);
+    if (a.getMonth() === b.getMonth()) {
+      return MONTHS[a.getMonth()] + ' ' + a.getDate() + '–' + b.getDate() + ', ' + b.getFullYear();
+    }
+    return longDate(a) + ' – ' + longDate(b);
+  }
+  function longDate(d) {
+    return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  }
+
+  function evRow(ev) {
+    var cat = CATS[ev.c];
+    return '<div class="ev-row">' +
+      '<span class="ev-pill" style="background:' + cat.bg + ';color:' + cat.fg + '">' + esc(cat.label) + '</span>' +
+      '<span><span class="ev-title">' + esc(ev.t) + '</span>' +
+      '<span class="ev-when">' + esc(spanLabel(ev)) + (ev.w ? ' · ' + esc(ev.w) : '') + '</span></span>' +
+      '</div>';
+  }
+
+  /* ---------- filters ---------- */
+  function renderFilters() {
+    el('cal-filters').innerHTML = CAT_ORDER.map(function (c) {
+      var cat = CATS[c], on = !off[c];
+      return '<button type="button" class="cal-chip" data-cat="' + c + '" aria-pressed="' + on + '" ' +
+        'style="background:' + cat.bg + ';color:' + cat.fg + ';border-color:' + (on ? cat.fg : 'transparent') + '">' +
+        '<span class="dot" style="background:' + cat.fg + '"></span>' + esc(cat.label) + '</button>';
+    }).join('');
+  }
+  el('cal-filters').addEventListener('click', function (e) {
+    var btn = e.target.closest('.cal-chip');
+    if (!btn) return;
+    var c = btn.getAttribute('data-cat');
+    off[c] = !off[c];
+    renderFilters(); renderMonth(); renderYear();
+  });
+
+  /* ---------- month view ---------- */
+  function renderMonth() {
+    var y = cur.y, m = cur.m;
+    el('cal-title').textContent = MONTHS[m] + ' ' + y;
+    el('cal-prev').disabled = !inRange(m === 0 ? y - 1 : y, m === 0 ? 11 : m - 1);
+    el('cal-next').disabled = !inRange(m === 11 ? y + 1 : y, m === 11 ? 0 : m + 1);
+    el('cal-jump').value = y + '-' + m;
+
+    el('cal-dows').innerHTML = DOWS.map(function (d) {
+      return '<div class="cal-dow">' + d + '</div>';
+    }).join('');
+
+    var first = new Date(y, m, 1).getDay();
+    var days = new Date(y, m + 1, 0).getDate();
+    var today = new Date();
+    var todayKey = key(today.getFullYear(), today.getMonth(), today.getDate());
+    var cells = [];
+
+    for (var b = 0; b < first; b++) cells.push('<div class="cal-day empty"></div>');
+
+    for (var d = 1; d <= days; d++) {
+      var k = key(y, m, d);
+      var evs = visible(BY_DAY[k]);
+      var dow = new Date(y, m, d).getDay();
+      var cls = 'cal-day' + (dow === 0 || dow === 6 ? ' weekend' : '') +
+                (k === todayKey ? ' today' : '') + (k === selected ? ' selected' : '');
+      var label = evs.length
+        ? d + ': ' + evs.map(function (ev) { return ev.t; }).join(', ')
+        : String(d);
+
+      var chips = evs.slice(0, 2).map(function (ev) {
+        var cat = CATS[ev.c];
+        return '<span class="cal-ev" style="background:' + cat.bg + ';color:' + cat.fg + '">' + esc(ev.t) + '</span>';
+      }).join('');
+      if (evs.length > 2) chips += '<span class="cal-more">+' + (evs.length - 2) + ' more</span>';
+
+      var dots = evs.length
+        ? '<span class="cal-dots">' + evs.slice(0, 4).map(function (ev) {
+            return '<i style="background:' + CATS[ev.c].fg + '"></i>';
+          }).join('') + '</span>'
+        : '';
+
+      cells.push('<button type="button" class="' + cls + '" data-day="' + k + '" aria-label="' + esc(label) + '">' +
+        '<span class="cal-daynum">' + d + '</span>' + chips + dots + '</button>');
+    }
+
+    el('cal-days').innerHTML = cells.join('');
+    renderDayDetail();
+    renderMonthList();
+  }
+
+  function renderDayDetail() {
+    var box = el('day-detail');
+    if (!selected) {
+      box.innerHTML = '<p class="cal-empty">Select a day to see what is happening.</p>';
+      return;
+    }
+    var evs = visible(BY_DAY[selected]);
+    var d = parse(selected);
+    box.innerHTML = '<h3>' + esc(DOWS[d.getDay()] + ', ' + longDate(d)) + '</h3>' +
+      (evs.length ? evs.map(evRow).join('') : '<p class="cal-empty">A regular school day — nothing special on the calendar.</p>');
+  }
+
+  function monthEvents(y, m) {
+    return EVENTS.filter(function (ev) {
+      if (off[ev.c]) return false;
+      var a = parse(ev.s), b = parse(ev.e || ev.s);
+      return monthIndex(a.getFullYear(), a.getMonth()) <= monthIndex(y, m) &&
+             monthIndex(b.getFullYear(), b.getMonth()) >= monthIndex(y, m);
+    });
+  }
+
+  function renderMonthList() {
+    var evs = monthEvents(cur.y, cur.m);
+    el('month-list-head').textContent = 'Everything in ' + MONTHS[cur.m];
+    el('month-list').innerHTML = evs.length
+      ? evs.map(evRow).join('')
+      : '<p class="cal-empty">Nothing on the calendar this month.</p>';
+  }
+
+  /* ---------- full-year view ---------- */
+  function renderYear() {
+    var out = [], i = monthIndex(FIRST.y, FIRST.m), stop = monthIndex(LAST.y, LAST.m);
+    for (; i <= stop; i++) {
+      var y = Math.floor(i / 12), m = i % 12, evs = monthEvents(y, m);
+      if (!evs.length) continue;
+      out.push('<div class="year-month"><h3 class="month-head" style="margin-top:0">' +
+        MONTHS[m] + ' ' + y + '</h3>' + evs.map(evRow).join('') + '</div>');
+    }
+    el('year-list').innerHTML = out.length ? out.join('') : '<p class="cal-empty">Nothing matches those filters.</p>';
+  }
+
+  /* ---------- wiring ---------- */
+  el('cal-days').addEventListener('click', function (e) {
+    var cell = e.target.closest('.cal-day[data-day]');
+    if (!cell) return;
+    var k = cell.getAttribute('data-day');
+    selected = (selected === k) ? null : k;
+    renderMonth();
+  });
+
+  function step(n) {
+    var i = monthIndex(cur.y, cur.m) + n;
+    var y = Math.floor(i / 12), m = i % 12;
+    if (!inRange(y, m)) return;
+    cur = { y: y, m: m }; selected = null; renderMonth();
+  }
+  el('cal-prev').addEventListener('click', function () { step(-1); });
+  el('cal-next').addEventListener('click', function () { step(1); });
+
+  el('cal-jump').addEventListener('change', function () {
+    var p = this.value.split('-');
+    cur = { y: +p[0], m: +p[1] }; selected = null; renderMonth();
+  });
+
+  function setView(v) {
+    var isMonth = v === 'month';
+    el('view-month').hidden = !isMonth;
+    el('view-list').hidden = isMonth;
+    el('view-btn-month').classList.toggle('active', isMonth);
+    el('view-btn-list').classList.toggle('active', !isMonth);
+    el('view-btn-month').setAttribute('aria-selected', isMonth);
+    el('view-btn-list').setAttribute('aria-selected', !isMonth);
+  }
+  el('view-btn-month').addEventListener('click', function () { setView('month'); });
+  el('view-btn-list').addEventListener('click', function () { setView('list'); renderYear(); });
+
+  /* open on the current month when the visitor is inside the school year,
+     otherwise on the first month of it */
+  var now = new Date();
+  cur = inRange(now.getFullYear(), now.getMonth())
+    ? { y: now.getFullYear(), m: now.getMonth() }
+    : { y: FIRST.y, m: FIRST.m };
+
+  el('cal-jump').innerHTML = (function () {
+    var opts = [], i = monthIndex(FIRST.y, FIRST.m), stop = monthIndex(LAST.y, LAST.m);
+    for (; i <= stop; i++) {
+      var y = Math.floor(i / 12), m = i % 12;
+      opts.push('<option value="' + y + '-' + m + '">' + MONTHS[m] + ' ' + y + '</option>');
+    }
+    return opts.join('');
+  })();
+
+  renderFilters();
+  renderMonth();
+  renderYear();
+})();
+</script>
+
+
+</body>
+</html>
