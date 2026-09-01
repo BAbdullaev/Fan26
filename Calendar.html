@@ -42,77 +42,142 @@ details[open] .faq-plus{transform:rotate(45deg)}
 <script defer src="assets/site.js"></script>
 <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}</style>
 <style>
-/* ---------- Calendar ---------- */
-.cal-shell{max-width:1180px;margin:0 auto;padding:0 24px 8px}
-.cal-card{background:#fff;border-radius:30px;padding:28px;box-shadow:0 6px 20px rgba(20,60,35,.10)}
+/* ============ Calendar ============ */
+.cal-shell{max-width:1180px;margin:0 auto;padding:0 24px}
+.cal-card{background:#fff;border-radius:28px;padding:22px 24px 26px;box-shadow:0 6px 20px rgba(20,60,35,.08)}
 
-.cal-toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
-#cal-title{font:600 28px 'Fredoka',sans-serif;color:#153A26;margin:0;min-width:210px}
-.cal-arrow{border:none;cursor:pointer;width:40px;height:40px;border-radius:50%;background:#E9F3EB;color:#166B38;font:800 20px 'Nunito',sans-serif;line-height:1;transition:background .15s}
-.cal-arrow:hover:not(:disabled){background:#D8EBDC}
-.cal-arrow:disabled{opacity:.35;cursor:default}
-.cal-jump{border:2px solid #D5E5D9;border-radius:999px;padding:9px 14px;font:800 13px 'Nunito',sans-serif;color:#1F3D2B;background:#FDFDFB;cursor:pointer;box-sizing:border-box;max-width:100%}
-.cal-viewbtn{border:none;cursor:pointer;font:800 13px 'Nunito',sans-serif;color:#1F3D2B;background:transparent;padding:9px 16px;border-radius:999px;transition:background .15s,color .15s}
-.cal-viewbtn:hover{background:#E9F3EB}
+/* ---- toolbar ---- */
+.cal-bar{margin-bottom:20px}
+.cal-bar-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cal-monthnav{display:flex;align-items:center;gap:4px;min-width:0}
+#cal-title{font:600 26px/1.15 'Fredoka',sans-serif;color:#153A26;margin:0 6px;white-space:nowrap}
+.cal-arrow{border:none;cursor:pointer;width:38px;height:38px;flex-shrink:0;border-radius:50%;background:#F2F7F2;color:#166B38;font:800 19px/1 'Nunito',sans-serif;transition:background .15s}
+.cal-arrow:hover:not(:disabled){background:#E2EFE4}
+.cal-arrow:disabled{opacity:.3;cursor:default}
+.cal-actions{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cal-btn{border:1px solid #DDE9DE;cursor:pointer;font:800 13px 'Nunito',sans-serif;color:#166B38;background:#fff;padding:9px 15px;border-radius:999px;transition:background .15s,border-color .15s}
+.cal-btn:hover:not(:disabled){background:#F2F7F2;border-color:#C9DECD}
+.cal-btn:disabled{opacity:.4;cursor:default}
+.cal-jump{border:1px solid #DDE9DE;border-radius:999px;padding:9px 34px 9px 15px;font:800 13px 'Nunito',sans-serif;color:#1F3D2B;background:#fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23166B38' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center/14px;cursor:pointer;box-sizing:border-box;max-width:100%;-webkit-appearance:none;appearance:none}
+.cal-jump:disabled{opacity:.45;cursor:default}
+.cal-views{display:flex;gap:2px;background:#F2F7F2;border-radius:999px;padding:3px}
+.cal-viewbtn{border:none;cursor:pointer;font:800 13px 'Nunito',sans-serif;color:#41573F;background:transparent;padding:8px 16px;border-radius:999px;transition:background .15s,color .15s}
+.cal-viewbtn:hover{color:#153A26}
 .cal-viewbtn.active{background:#1B7A40;color:#fff}
-.cal-views{display:flex;gap:4px;background:#F6FAF4;border-radius:999px;padding:4px}
 
-.cal-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.cal-chip{border:2px solid transparent;cursor:pointer;font:800 12px 'Nunito',sans-serif;padding:7px 13px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;transition:opacity .15s,border-color .15s}
-.cal-chip .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.cal-chip[aria-pressed="false"]{opacity:.4}
+.cal-bar-bot{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #EEF3ED}
+.cal-filter-lbl{font:800 10px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#A3B3A6;margin-right:3px}
+.cal-chip{border:1px solid;cursor:pointer;font:800 12px 'Nunito',sans-serif;padding:6px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;transition:background .15s,border-color .15s,color .15s}
+.cal-chip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cal-chip[aria-pressed="false"]{background:#fff!important;color:#94A597!important;border-color:#E6EDE7!important}
+.cal-chip[aria-pressed="false"] .dot{opacity:.35}
+.cal-clear{border:none;background:transparent;cursor:pointer;font:800 12px 'Nunito',sans-serif;color:#166B38;text-decoration:underline;padding:6px 8px;border-radius:8px}
+.cal-clear[hidden]{display:none}
 
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+/* ---- shared event row ---- */
+.erow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px;align-items:center;width:100%;text-align:left;border:none;background:transparent;padding:9px 11px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;transition:background .15s}
+.erow:hover{background:#F4F8F3}
+.erow+.erow{box-shadow:inset 0 1px 0 #F2F6F1}
+.erow .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.erow .txt{min-width:0}
+.erow .t{display:block;font:700 13.5px/1.35 'Nunito',sans-serif;color:#26402F;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.erow .m{display:block;font:600 11.5px/1.35 'Nunito',sans-serif;color:#93A996;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.erow .d{font:700 11.5px 'Nunito',sans-serif;color:#8A9C8D;white-space:nowrap;flex-shrink:0}
+/* closed + half days change a family's plans, so they carry an accent bar */
+.erow.major{position:relative;padding-left:17px}
+.erow.major::before{content:"";position:absolute;left:6px;top:9px;bottom:9px;width:3px;border-radius:2px;background:var(--acc)}
+.erow.major .t{font-weight:800;color:#153A26}
+
+/* ---- month grid ---- */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cal-grid>*{min-width:0}
-.cal-dow{font:800 11px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#93A996;text-align:center;padding:6px 0}
-.cal-day{box-sizing:border-box;min-width:0;background:#FDFDFB;border:2px solid #EDF3EA;border-radius:14px;min-height:104px;padding:8px;display:flex;flex-direction:column;gap:5px;text-align:left;font-family:'Nunito',sans-serif;cursor:pointer;transition:border-color .15s,background .15s}
-.cal-day:hover{border-color:#9CC3A6}
-.cal-day.empty{background:transparent;border-color:transparent;cursor:default}
-.cal-day.empty:hover{border-color:transparent}
-.cal-day.weekend{background:#FBFCFA}
-.cal-day.today{border-color:#F7941D;background:#FFFBF2}
-.cal-day.selected{border-color:#1B7A40;box-shadow:0 0 0 3px #D8EBDC}
-.cal-daynum{font:600 15px 'Fredoka',sans-serif;color:#41573F}
+.cal-dow{font:800 10px 'Nunito',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#A3B3A6;text-align:center;padding:4px 0 8px}
+.cal-day{box-sizing:border-box;min-width:0;background:#fff;border:1px solid #EDF3EA;border-radius:12px;min-height:100px;padding:7px 7px 8px;display:flex;flex-direction:column;gap:4px;text-align:left;font-family:'Nunito',sans-serif;cursor:pointer;transition:border-color .15s,background .15s}
+.cal-day:hover{border-color:#A9CDB3;background:#FBFDFA}
+.cal-day.empty{background:transparent;border-color:transparent;cursor:default;min-height:0}
+.cal-day.empty:hover{border-color:transparent;background:transparent}
+.cal-day.weekend{background:#FCFDFB}
+.cal-day.is-closed{background:#FDF4F2;border-color:#F3DED9}
+.cal-day.is-half{background:#FEF8EF;border-color:#F5E4C9}
+.cal-day.today{border-color:#F7941D;box-shadow:0 0 0 1px #F7941D}
+.cal-daynum{font:600 14px 'Fredoka',sans-serif;color:#5A6E5E}
 .cal-day.today .cal-daynum{color:#E07C00}
-.cal-ev{font:800 10px/1.25 'Nunito',sans-serif;padding:4px 6px;border-radius:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cal-more{font:800 10px 'Nunito',sans-serif;color:#93A996;padding-left:2px}
+.cal-day.is-closed .cal-daynum,.cal-day.is-half .cal-daynum{color:#3D5344}
+.cal-ev{display:flex;align-items:center;gap:5px;min-width:0;font:700 10.5px/1.3 'Nunito',sans-serif;color:#41573F}
+.cal-ev i{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.cal-ev span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal-more{font:800 10px 'Nunito',sans-serif;color:#A3B3A6;padding-left:11px}
 .cal-dots{display:none;gap:3px;flex-wrap:wrap}
-.cal-dots i{width:7px;height:7px;border-radius:50%;display:block}
+.cal-dots i{width:6px;height:6px;border-radius:50%;display:block}
 
-.day-detail{margin-top:20px;background:#F6FAF4;border:2px dashed #C9DECD;border-radius:20px;padding:20px 22px}
-.day-detail h3{font:600 20px 'Fredoka',sans-serif;color:#153A26;margin:0 0 12px}
-.ev-row{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed #DCE8DE}
-.ev-row:last-child{border-bottom:none}
-.ev-pill{flex-shrink:0;font:800 11px 'Nunito',sans-serif;padding:5px 11px;border-radius:999px;white-space:nowrap}
-.ev-title{display:block;font:700 15px/1.45 'Nunito',sans-serif;color:#1F3D2B}
-.ev-when{display:block;font:700 12px/1.4 'Nunito',sans-serif;color:#93A996;margin-top:3px}
+/* ---- lists ---- */
+.list-head{display:flex;align-items:baseline;gap:10px;margin:26px 0 4px}
+.list-head h3{font:600 19px 'Fredoka',sans-serif;color:#153A26;margin:0}
+.list-count{font:800 11px 'Nunito',sans-serif;color:#A3B3A6}
+.cal-empty{font:600 14px 'Nunito',sans-serif;color:#93A996;margin:10px 11px}
 
-.month-head{font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:28px 0 10px}
-.year-month{margin-bottom:26px}
-.cal-empty{font:600 15px 'Nunito',sans-serif;color:#93A996;margin:0}
+/* ---- full year: month cards ---- */
+.year-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mcard{background:#FCFDFB;border:1px solid #EDF3EA;border-radius:18px;padding:14px 12px 10px}
+.mcard-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:0 6px 8px;border-bottom:1px solid #EEF3ED;margin-bottom:4px}
+.mcard-head h3{font:600 19px 'Fredoka',sans-serif;color:#153A26;margin:0}
+.mcard-head h3 em{font-style:normal;font-size:14px;color:#A3B3A6;margin-left:4px}
+.mcard-head .n{font:800 10px 'Nunito',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A3B3A6}
+.mcard .erow{padding:7px 8px}
+.mcard .erow.major{padding-left:15px}
+.mcard .erow .t{font-size:13px}
 
-@media(max-width:860px){
-  #cal-title{font-size:24px;min-width:0}
-  .cal-day{min-height:82px}
+/* ---- modal ---- */
+.cal-backdrop{position:fixed;inset:0;background:rgba(21,58,38,.38);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+.cal-backdrop.open{display:flex}
+.cal-modal{background:#fff;border-radius:24px;width:100%;max-width:420px;max-height:84vh;overflow:auto;padding:24px;box-shadow:0 18px 44px rgba(20,60,35,.22)}
+.cal-modal-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+.cal-modal-head h2{font:600 22px/1.25 'Fredoka',sans-serif;color:#153A26;margin:0}
+.cal-modal-head p{font:800 11px 'Nunito',sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#93A996;margin:5px 0 0}
+.cal-close{margin-left:auto;flex-shrink:0;border:none;cursor:pointer;width:34px;height:34px;border-radius:50%;background:#F2F7F2;color:#41573F;font:800 16px/1 'Nunito',sans-serif}
+.cal-close:hover{background:#E2EFE4}
+.mev{padding:14px 0;border-top:1px solid #EEF3ED}
+.mev:first-of-type{border-top:none;padding-top:0}
+.mev:only-child{padding-bottom:0}
+.mev .badge{display:inline-flex;align-items:center;gap:6px;font:800 10px 'Nunito',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;margin-bottom:8px}
+.mev .badge i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.mev h3{font:700 17px/1.35 'Nunito',sans-serif;color:#153A26;margin:0 0 4px;overflow-wrap:anywhere}
+.mev .when{font:700 13px/1.45 'Nunito',sans-serif;color:#5A6E5E;margin:0}
+.mev .note{font:600 13px/1.5 'Nunito',sans-serif;color:#41573F;margin:6px 0 0}
+
+/* ---- responsive ---- */
+@media(max-width:980px){
+  .year-grid{gap:12px}
+  #cal-title{font-size:23px}
+  .cal-day{min-height:86px}
+}
+@media(max-width:760px){
+  .year-grid{grid-template-columns:1fr}
+  .cal-shell{padding:0 16px}
+  .cal-card{padding:18px 14px 20px;border-radius:22px}
 }
 @media(max-width:640px){
-  .cal-shell{padding:0 16px 8px}
-  .cal-card{padding:18px 14px;border-radius:24px}
-  .cal-toolbar{gap:8px}
-  /* prev / title / next stay on one row; the rest wraps beneath */
-  #cal-title{font-size:20px;flex:1;min-width:0;text-align:center}
-  .cal-jump{flex:1 1 100%;order:3}
-  .cal-views{width:100%;order:4}
+  .cal-bar-top{gap:8px}
+  .cal-monthnav{flex:1 1 100%;justify-content:space-between}
+  #cal-title{font-size:21px;margin:0;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis}
+  .cal-actions{margin-left:0;width:100%;gap:8px}
+  .cal-jump{flex:1 1 auto;min-width:0}
+  .cal-btn{flex:0 0 auto}
+  .cal-views{width:100%}
   .cal-viewbtn{flex:1}
+  .cal-bar-bot{gap:6px}
+  .cal-filter-lbl{flex:1 1 100%;margin:0 0 2px}
   .cal-grid{gap:3px}
-  .cal-day{min-height:52px;padding:4px;border-radius:10px;border-width:1px;gap:3px}
+  .cal-day{min-height:54px;padding:4px;border-radius:9px;gap:3px}
   .cal-daynum{font-size:12px}
-  .cal-dow{font-size:9px;letter-spacing:.04em}
-  /* event labels cannot render in a ~44px cell — show dots, and let the
-     month list below carry the detail */
+  .cal-dow{font-size:9px;letter-spacing:.04em;padding-bottom:5px}
+  /* a 44px cell cannot hold a label — dots carry the signal, the list below
+     carries the detail */
   .cal-ev,.cal-more{display:none}
   .cal-dots{display:flex}
-  .day-detail{padding:16px}
+  .erow{grid-template-columns:auto minmax(0,1fr);row-gap:2px;padding:9px 9px}
+  .erow .d{grid-column:2;font-size:11px}
+  .cal-modal{padding:20px;border-radius:20px}
 }
 </style>
 </head>
@@ -143,10 +208,10 @@ details[open] .faq-plus{transform:rotate(45deg)}
   </div>
 </header>
 
-<section style="max-width:1180px;margin:0 auto;padding:56px 24px 32px;text-align:center">
+<section style="max-width:1180px;margin:0 auto;padding:56px 24px 30px;text-align:center">
   <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:12px">2026&ndash;27 school year</div>
   <h1 style="font:600 52px/1.1 'Fredoka',sans-serif;color:#153A26;margin:0 0 16px">Academic <span style="background:linear-gradient(transparent 62%, #FBD79E 62%);padding:0 4px">calendar</span></h1>
-  <p style="font:600 17px/1.65 'Nunito',sans-serif;color:#41573F;max-width:620px;margin:0 auto 26px;text-wrap:pretty">Every term date, holiday, break, half day and report card for the year. Tap any day to see what is happening.</p>
+  <p style="font:600 17px/1.65 'Nunito',sans-serif;color:#41573F;max-width:600px;margin:0 auto 26px;text-wrap:pretty">Every term date, holiday, break, half day and report card for the year. Tap any day or event for the details.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
     <span style="background:#E9F3EB;color:#166B38;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">First day &middot; Aug 24, 2026</span>
     <span style="background:#FDEBD2;color:#B36405;font:800 13px 'Nunito',sans-serif;padding:9px 16px;border-radius:999px">Last day &middot; June 2, 2027</span>
@@ -157,42 +222,64 @@ details[open] .faq-plus{transform:rotate(45deg)}
 <div class="cal-shell">
   <div class="cal-card">
 
-    <div class="cal-toolbar">
-      <button class="cal-arrow" id="cal-prev" type="button" aria-label="Previous month">&lsaquo;</button>
-      <h2 id="cal-title" aria-live="polite">August 2026</h2>
-      <button class="cal-arrow" id="cal-next" type="button" aria-label="Next month">&rsaquo;</button>
-      <label class="sr-only" for="cal-jump">Jump to month</label>
-      <select class="cal-jump" id="cal-jump"></select>
-      <div class="cal-views" role="tablist" aria-label="Calendar view">
-        <button class="cal-viewbtn active" id="view-btn-month" type="button" role="tab" aria-selected="true">Month</button>
-        <button class="cal-viewbtn" id="view-btn-list" type="button" role="tab" aria-selected="false">Full year</button>
+    <div class="cal-bar">
+      <div class="cal-bar-top">
+        <div class="cal-monthnav">
+          <button class="cal-arrow" id="cal-prev" type="button" aria-label="Previous month">&lsaquo;</button>
+          <h2 id="cal-title" aria-live="polite">August 2026</h2>
+          <button class="cal-arrow" id="cal-next" type="button" aria-label="Next month">&rsaquo;</button>
+        </div>
+        <div class="cal-actions">
+          <button class="cal-btn" id="cal-today" type="button">Today</button>
+          <label class="sr-only" for="cal-jump">Jump to month</label>
+          <select class="cal-jump" id="cal-jump"></select>
+          <div class="cal-views" role="tablist" aria-label="Calendar view">
+            <button class="cal-viewbtn active" id="view-btn-month" type="button" role="tab" aria-selected="true" aria-controls="view-month">Month</button>
+            <button class="cal-viewbtn" id="view-btn-list" type="button" role="tab" aria-selected="false" aria-controls="view-list">Full year</button>
+          </div>
+        </div>
+      </div>
+      <div class="cal-bar-bot">
+        <span class="cal-filter-lbl" id="filter-lbl">Show</span>
+        <div id="cal-filters" style="display:contents" role="group" aria-labelledby="filter-lbl"></div>
+        <button class="cal-clear" id="cal-clear" type="button" hidden>Clear filters</button>
       </div>
     </div>
 
-    <div class="cal-filters" id="cal-filters"></div>
-
-    <div id="view-month">
+    <div id="view-month" role="tabpanel" aria-labelledby="view-btn-month">
       <div class="cal-grid" id="cal-dows" aria-hidden="true"></div>
-      <div class="cal-grid" id="cal-days" style="margin-top:6px"></div>
-      <div class="day-detail" id="day-detail"></div>
-      <h3 class="month-head" id="month-list-head">Everything in August</h3>
+      <div class="cal-grid" id="cal-days"></div>
+      <div class="list-head"><h3 id="month-list-head">Everything in August</h3><span class="list-count" id="month-list-count"></span></div>
       <div id="month-list"></div>
     </div>
 
-    <div id="view-list" hidden>
-      <div id="year-list"></div>
+    <div id="view-list" role="tabpanel" aria-labelledby="view-btn-list" hidden>
+      <div class="year-grid" id="year-grid"></div>
     </div>
 
   </div>
 </div>
 
-<section style="max-width:1180px;margin:0 auto;padding:40px 24px 8px">
-  <div style="background:#fff;border:2px dashed #C9DECD;border-radius:22px;padding:22px 28px">
+<div class="cal-backdrop" id="cal-backdrop">
+  <div class="cal-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" id="cal-modal">
+    <div class="cal-modal-head">
+      <div>
+        <h2 id="modal-title"></h2>
+        <p id="modal-sub"></p>
+      </div>
+      <button class="cal-close" id="modal-close" type="button" aria-label="Close">&times;</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<section style="max-width:1180px;margin:0 auto;padding:36px 24px 8px">
+  <div style="background:#fff;border:1px solid #E4EDE5;border-radius:20px;padding:20px 26px">
     <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Dates follow the printed 2026&ndash;27 Falah Academy calendar. If a date ever changes, families are notified by email first &mdash; and this page is updated the same day. Questions? Email <a href="mailto:admissions@fan2026.org" style="font-weight:800">admissions@fan2026.org</a>.</p>
   </div>
 </section>
 
-<section style="max-width:1180px;margin:0 auto;padding:40px 24px 8px">
+<section style="max-width:1180px;margin:0 auto;padding:36px 24px 8px">
   <div style="background:#153A26;border-radius:36px;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
     <div>
       <h2 style="font:600 32px 'Fredoka',sans-serif;color:#fff;margin:0 0 8px">Ready to join us this year?</h2>
@@ -297,11 +384,14 @@ details[open] .faq-plus{transform:rotate(45deg)}
   var FIRST = { y: 2026, m: 7 };   // August 2026
   var LAST  = { y: 2027, m: 5 };   // June 2027
   var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var SHORT  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var DOWS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MAJOR = { closed: 1, halfday: 1 };   // these change a family's plans
 
-  var off = {};                    // categories switched off
-  var cur = null;                  // {y, m} on screen
-  var selected = null;             // 'YYYY-MM-DD'
+  var off = {};        // categories switched off
+  var view = 'month';  // 'month' | 'list'
+  var cur = null;      // {y, m} on screen
+  var lastFocus = null;
 
   function el(id) { return document.getElementById(id); }
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
@@ -318,6 +408,8 @@ details[open] .faq-plus{transform:rotate(45deg)}
     });
   }
 
+  EVENTS.forEach(function (ev, i) { ev.id = i; });
+
   /* date key -> events, expanded across multi-day ranges */
   var BY_DAY = {};
   EVENTS.forEach(function (ev) {
@@ -329,28 +421,37 @@ details[open] .faq-plus{transform:rotate(45deg)}
     }
   });
 
-  function visible(list) {
-    return (list || []).filter(function (ev) { return !off[ev.c]; });
-  }
-  function spanLabel(ev) {
-    if (!ev.e || ev.e === ev.s) return longDate(parse(ev.s));
-    var a = parse(ev.s), b = parse(ev.e);
-    if (a.getMonth() === b.getMonth()) {
+  function visible(list) { return (list || []).filter(function (ev) { return !off[ev.c]; }); }
+  function anyFilterOff() { return CAT_ORDER.some(function (c) { return off[c]; }); }
+
+  function longDate(d) { return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); }
+  function fullSpan(ev) {
+    var a = parse(ev.s), b = parse(ev.e || ev.s);
+    if (!ev.e || ev.e === ev.s) return longDate(a);
+    if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
       return MONTHS[a.getMonth()] + ' ' + a.getDate() + '–' + b.getDate() + ', ' + b.getFullYear();
     }
     return longDate(a) + ' – ' + longDate(b);
   }
-  function longDate(d) {
-    return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  /* compact form for list rows, e.g. "Aug 5–21" or "Dec 24–Jan 1" */
+  function shortSpan(ev) {
+    var a = parse(ev.s), b = parse(ev.e || ev.s);
+    if (!ev.e || ev.e === ev.s) return SHORT[a.getMonth()] + ' ' + a.getDate();
+    if (a.getMonth() === b.getMonth()) return SHORT[a.getMonth()] + ' ' + a.getDate() + '–' + b.getDate();
+    return SHORT[a.getMonth()] + ' ' + a.getDate() + '–' + SHORT[b.getMonth()] + ' ' + b.getDate();
   }
 
-  function evRow(ev) {
-    var cat = CATS[ev.c];
-    return '<div class="ev-row">' +
-      '<span class="ev-pill" style="background:' + cat.bg + ';color:' + cat.fg + '">' + esc(cat.label) + '</span>' +
-      '<span><span class="ev-title">' + esc(ev.t) + '</span>' +
-      '<span class="ev-when">' + esc(spanLabel(ev)) + (ev.w ? ' · ' + esc(ev.w) : '') + '</span></span>' +
-      '</div>';
+  /* one compact, clickable row — used by the month list and the year cards */
+  function rowHtml(ev) {
+    var cat = CATS[ev.c], major = MAJOR[ev.c];
+    return '<button type="button" class="erow' + (major ? ' major' : '') + '" data-ev="' + ev.id + '"' +
+      (major ? ' style="--acc:' + cat.fg + '"' : '') +
+      ' aria-label="' + esc(ev.t + ', ' + fullSpan(ev) + (ev.w ? ', ' + ev.w : '')) + '">' +
+      '<span class="dot" style="background:' + cat.fg + '"></span>' +
+      '<span class="txt"><span class="t">' + esc(ev.t) + '</span>' +
+      (ev.w ? '<span class="m">' + esc(ev.w) + '</span>' : '') + '</span>' +
+      '<span class="d">' + esc(shortSpan(ev)) + '</span>' +
+      '</button>';
   }
 
   /* ---------- filters ---------- */
@@ -358,9 +459,10 @@ details[open] .faq-plus{transform:rotate(45deg)}
     el('cal-filters').innerHTML = CAT_ORDER.map(function (c) {
       var cat = CATS[c], on = !off[c];
       return '<button type="button" class="cal-chip" data-cat="' + c + '" aria-pressed="' + on + '" ' +
-        'style="background:' + cat.bg + ';color:' + cat.fg + ';border-color:' + (on ? cat.fg : 'transparent') + '">' +
+        'style="background:' + cat.bg + ';color:' + cat.fg + ';border-color:' + cat.fg + '33">' +
         '<span class="dot" style="background:' + cat.fg + '"></span>' + esc(cat.label) + '</button>';
     }).join('');
+    el('cal-clear').hidden = !anyFilterOff();
   }
   el('cal-filters').addEventListener('click', function (e) {
     var btn = e.target.closest('.cal-chip');
@@ -369,23 +471,27 @@ details[open] .faq-plus{transform:rotate(45deg)}
     off[c] = !off[c];
     renderFilters(); renderMonth(); renderYear();
   });
+  el('cal-clear').addEventListener('click', function () {
+    off = {}; renderFilters(); renderMonth(); renderYear();
+    el('cal-clear').hidden = true;
+  });
 
-  /* ---------- month view ---------- */
+  /* ---------- month grid ---------- */
   function renderMonth() {
     var y = cur.y, m = cur.m;
-    el('cal-title').textContent = MONTHS[m] + ' ' + y;
+    if (view === 'month') el('cal-title').textContent = MONTHS[m] + ' ' + y;
     el('cal-prev').disabled = !inRange(m === 0 ? y - 1 : y, m === 0 ? 11 : m - 1);
     el('cal-next').disabled = !inRange(m === 11 ? y + 1 : y, m === 11 ? 0 : m + 1);
     el('cal-jump').value = y + '-' + m;
 
     el('cal-dows').innerHTML = DOWS.map(function (d) {
-      return '<div class="cal-dow">' + d + '</div>';
+      return '<div class="cal-dow"><span aria-hidden="true">' + d + '</span></div>';
     }).join('');
 
     var first = new Date(y, m, 1).getDay();
     var days = new Date(y, m + 1, 0).getDate();
-    var today = new Date();
-    var todayKey = key(today.getFullYear(), today.getMonth(), today.getDate());
+    var now = new Date();
+    var todayKey = key(now.getFullYear(), now.getMonth(), now.getDate());
     var cells = [];
 
     for (var b = 0; b < first; b++) cells.push('<div class="cal-day empty"></div>');
@@ -394,17 +500,16 @@ details[open] .faq-plus{transform:rotate(45deg)}
       var k = key(y, m, d);
       var evs = visible(BY_DAY[k]);
       var dow = new Date(y, m, d).getDay();
-      var cls = 'cal-day' + (dow === 0 || dow === 6 ? ' weekend' : '') +
-                (k === todayKey ? ' today' : '') + (k === selected ? ' selected' : '');
-      var label = evs.length
-        ? d + ': ' + evs.map(function (ev) { return ev.t; }).join(', ')
-        : String(d);
+      var cls = 'cal-day';
+      if (dow === 0 || dow === 6) cls += ' weekend';
+      if (evs.some(function (ev) { return ev.c === 'closed'; })) cls += ' is-closed';
+      else if (evs.some(function (ev) { return ev.c === 'halfday'; })) cls += ' is-half';
+      if (k === todayKey) cls += ' today';
 
-      var chips = evs.slice(0, 2).map(function (ev) {
-        var cat = CATS[ev.c];
-        return '<span class="cal-ev" style="background:' + cat.bg + ';color:' + cat.fg + '">' + esc(ev.t) + '</span>';
+      var labels = evs.slice(0, 2).map(function (ev) {
+        return '<span class="cal-ev"><i style="background:' + CATS[ev.c].fg + '"></i><span>' + esc(ev.t) + '</span></span>';
       }).join('');
-      if (evs.length > 2) chips += '<span class="cal-more">+' + (evs.length - 2) + ' more</span>';
+      if (evs.length > 2) labels += '<span class="cal-more">+' + (evs.length - 2) + ' more</span>';
 
       var dots = evs.length
         ? '<span class="cal-dots">' + evs.slice(0, 4).map(function (ev) {
@@ -412,25 +517,16 @@ details[open] .faq-plus{transform:rotate(45deg)}
           }).join('') + '</span>'
         : '';
 
-      cells.push('<button type="button" class="' + cls + '" data-day="' + k + '" aria-label="' + esc(label) + '">' +
-        '<span class="cal-daynum">' + d + '</span>' + chips + dots + '</button>');
+      var aria = evs.length
+        ? MONTHS[m] + ' ' + d + ': ' + evs.map(function (ev) { return ev.t; }).join(', ')
+        : MONTHS[m] + ' ' + d + ', nothing scheduled';
+
+      cells.push('<button type="button" class="' + cls + '" data-day="' + k + '" aria-label="' + esc(aria) + '">' +
+        '<span class="cal-daynum">' + d + '</span>' + labels + dots + '</button>');
     }
 
     el('cal-days').innerHTML = cells.join('');
-    renderDayDetail();
     renderMonthList();
-  }
-
-  function renderDayDetail() {
-    var box = el('day-detail');
-    if (!selected) {
-      box.innerHTML = '<p class="cal-empty">Select a day to see what is happening.</p>';
-      return;
-    }
-    var evs = visible(BY_DAY[selected]);
-    var d = parse(selected);
-    box.innerHTML = '<h3>' + esc(DOWS[d.getDay()] + ', ' + longDate(d)) + '</h3>' +
-      (evs.length ? evs.map(evRow).join('') : '<p class="cal-empty">A regular school day — nothing special on the calendar.</p>');
   }
 
   function monthEvents(y, m) {
@@ -445,47 +541,117 @@ details[open] .faq-plus{transform:rotate(45deg)}
   function renderMonthList() {
     var evs = monthEvents(cur.y, cur.m);
     el('month-list-head').textContent = 'Everything in ' + MONTHS[cur.m];
+    el('month-list-count').textContent = evs.length ? evs.length + (evs.length === 1 ? ' date' : ' dates') : '';
     el('month-list').innerHTML = evs.length
-      ? evs.map(evRow).join('')
+      ? evs.map(rowHtml).join('')
       : '<p class="cal-empty">Nothing on the calendar this month.</p>';
   }
 
-  /* ---------- full-year view ---------- */
+  /* ---------- full year: a card per month ---------- */
   function renderYear() {
     var out = [], i = monthIndex(FIRST.y, FIRST.m), stop = monthIndex(LAST.y, LAST.m);
     for (; i <= stop; i++) {
       var y = Math.floor(i / 12), m = i % 12, evs = monthEvents(y, m);
-      if (!evs.length) continue;
-      out.push('<div class="year-month"><h3 class="month-head" style="margin-top:0">' +
-        MONTHS[m] + ' ' + y + '</h3>' + evs.map(evRow).join('') + '</div>');
+      out.push('<article class="mcard">' +
+        '<div class="mcard-head"><h3>' + MONTHS[m] + '<em>' + y + '</em></h3>' +
+        '<span class="n">' + (evs.length ? evs.length + (evs.length === 1 ? ' date' : ' dates') : 'no dates') + '</span></div>' +
+        (evs.length ? evs.map(rowHtml).join('') : '<p class="cal-empty">No scheduled dates.</p>') +
+        '</article>');
     }
-    el('year-list').innerHTML = out.length ? out.join('') : '<p class="cal-empty">Nothing matches those filters.</p>';
+    el('year-grid').innerHTML = out.join('');
   }
 
-  /* ---------- wiring ---------- */
-  el('cal-days').addEventListener('click', function (e) {
-    var cell = e.target.closest('.cal-day[data-day]');
-    if (!cell) return;
-    var k = cell.getAttribute('data-day');
-    selected = (selected === k) ? null : k;
-    renderMonth();
+  /* ---------- detail modal ---------- */
+  function evDetailHtml(ev) {
+    var cat = CATS[ev.c];
+    return '<div class="mev">' +
+      '<span class="badge" style="background:' + cat.bg + ';color:' + cat.fg + '"><i></i>' + esc(cat.label) + '</span>' +
+      '<h3>' + esc(ev.t) + '</h3>' +
+      '<p class="when">' + esc(fullSpan(ev)) + '</p>' +
+      (ev.w ? '<p class="note">' + esc(ev.w) + '</p>' : '') +
+      '</div>';
+  }
+  function openModal(title, sub, bodyHtml, opener, accent) {
+    lastFocus = opener || document.activeElement;
+    el('modal-title').textContent = title;
+    el('modal-sub').textContent = sub || '';
+    el('modal-sub').style.color = accent || '';
+    el('modal-sub').style.display = sub ? '' : 'none';
+    el('modal-body').innerHTML = bodyHtml;
+    el('cal-backdrop').classList.add('open');
+    el('modal-close').focus();
+  }
+  function closeModal() {
+    el('cal-backdrop').classList.remove('open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    lastFocus = null;
+  }
+  el('modal-close').addEventListener('click', closeModal);
+  el('cal-backdrop').addEventListener('mousedown', function (e) {
+    if (e.target === el('cal-backdrop')) closeModal();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!el('cal-backdrop').classList.contains('open')) return;
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key === 'Tab') {                       // keep focus inside the dialog
+      var f = el('cal-modal').querySelectorAll('button, [href], select, input');
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
+  function openDay(k, opener) {
+    var evs = visible(BY_DAY[k]), d = parse(k);
+    openModal(DOWS[d.getDay()] + ', ' + longDate(d),
+      evs.length ? (evs.length === 1 ? '1 date' : evs.length + ' dates') : '',
+      evs.length ? evs.map(evDetailHtml).join('')
+                 : '<p class="cal-empty" style="margin:0">A regular school day — nothing on the calendar.</p>',
+      opener);
+  }
+  el('cal-days').addEventListener('click', function (e) {
+    var cell = e.target.closest('.cal-day[data-day]');
+    if (cell) openDay(cell.getAttribute('data-day'), cell);
+  });
+  function evSoloHtml(ev) {
+    return '<div class="mev"><p class="when">' + esc(fullSpan(ev)) + '</p>' +
+      (ev.w ? '<p class="note">' + esc(ev.w) + '</p>' : '') + '</div>';
+  }
+  function rowClick(e) {
+    var row = e.target.closest('.erow[data-ev]');
+    if (!row) return;
+    var ev = EVENTS[+row.getAttribute('data-ev')];
+    openModal(ev.t, CATS[ev.c].label, evSoloHtml(ev), row, CATS[ev.c].fg);
+  }
+  el('month-list').addEventListener('click', rowClick);
+  el('year-grid').addEventListener('click', rowClick);
+
+  /* ---------- navigation ---------- */
+  function goTo(y, m) { cur = { y: y, m: m }; renderMonth(); }
   function step(n) {
-    var i = monthIndex(cur.y, cur.m) + n;
-    var y = Math.floor(i / 12), m = i % 12;
-    if (!inRange(y, m)) return;
-    cur = { y: y, m: m }; selected = null; renderMonth();
+    var i = monthIndex(cur.y, cur.m) + n, y = Math.floor(i / 12), m = i % 12;
+    if (inRange(y, m)) goTo(y, m);
   }
   el('cal-prev').addEventListener('click', function () { step(-1); });
   el('cal-next').addEventListener('click', function () { step(1); });
-
   el('cal-jump').addEventListener('change', function () {
-    var p = this.value.split('-');
-    cur = { y: +p[0], m: +p[1] }; selected = null; renderMonth();
+    var p = this.value.split('-'); goTo(+p[0], +p[1]);
+  });
+
+  var now0 = new Date();
+  var todayInRange = inRange(now0.getFullYear(), now0.getMonth());
+  el('cal-today').disabled = !todayInRange;
+  el('cal-today').addEventListener('click', function () {
+    var t = new Date();
+    if (inRange(t.getFullYear(), t.getMonth())) {
+      setView('month');
+      goTo(t.getFullYear(), t.getMonth());
+    }
   });
 
   function setView(v) {
+    view = v;
     var isMonth = v === 'month';
     el('view-month').hidden = !isMonth;
     el('view-list').hidden = isMonth;
@@ -493,16 +659,19 @@ details[open] .faq-plus{transform:rotate(45deg)}
     el('view-btn-list').classList.toggle('active', !isMonth);
     el('view-btn-month').setAttribute('aria-selected', isMonth);
     el('view-btn-list').setAttribute('aria-selected', !isMonth);
+    // month-only controls are meaningless in the year list
+    el('cal-prev').style.display = isMonth ? '' : 'none';
+    el('cal-next').style.display = isMonth ? '' : 'none';
+    el('cal-jump').disabled = !isMonth;
+    el('cal-title').textContent = isMonth
+      ? MONTHS[cur.m] + ' ' + cur.y
+      : 'Aug 2026 – Jun 2027';
   }
-  el('view-btn-month').addEventListener('click', function () { setView('month'); });
+  el('view-btn-month').addEventListener('click', function () { setView('month'); renderMonth(); });
   el('view-btn-list').addEventListener('click', function () { setView('list'); renderYear(); });
 
-  /* open on the current month when the visitor is inside the school year,
-     otherwise on the first month of it */
-  var now = new Date();
-  cur = inRange(now.getFullYear(), now.getMonth())
-    ? { y: now.getFullYear(), m: now.getMonth() }
-    : { y: FIRST.y, m: FIRST.m };
+  /* open on the visitor's own month when they are inside the school year */
+  cur = todayInRange ? { y: now0.getFullYear(), m: now0.getMonth() } : { y: FIRST.y, m: FIRST.m };
 
   el('cal-jump').innerHTML = (function () {
     var opts = [], i = monthIndex(FIRST.y, FIRST.m), stop = monthIndex(LAST.y, LAST.m);
