@@ -390,3 +390,77 @@ create policy "staff can delete event flyers"
   on storage.objects for delete
   to authenticated
   using (bucket_id = 'event-flyers' and public.is_fan26_staff());
+
+-- ===== Events → school calendar sync =====
+-- Published falah_events are mirrored onto falah_calendar_events
+-- (category 'event', linked by source_event_id) in the school year whose
+-- date range contains the event's start date — preferring the published
+-- year, then the newest. Drafts and dates outside every school year get no
+-- calendar row. Deleting an event cascades to its calendar row. Adding,
+-- re-dating or (un)publishing a school year re-places every event.
+
+alter table public.falah_calendar_events
+  add column source_event_id uuid unique references public.falah_events(id) on delete cascade;
+
+create or replace function public.sync_falah_event_to_calendar(p_event_id uuid)
+returns void language plpgsql security definer set search_path = public as $$
+declare
+  ev public.falah_events;
+  yr uuid;
+  v_note text;
+begin
+  select * into ev from public.falah_events where id = p_event_id;
+  if not found then
+    delete from public.falah_calendar_events where source_event_id = p_event_id;
+    return;
+  end if;
+  if ev.is_published then
+    select y.id into yr from public.falah_school_years y
+    where ev.event_date between y.start_date and y.end_date
+    order by y.is_published desc, y.start_date desc limit 1;
+  end if;
+  if yr is null then
+    delete from public.falah_calendar_events where source_event_id = ev.id;
+    return;
+  end if;
+  v_note := nullif(concat_ws(' · ', nullif(ev.time_text, ''), nullif(ev.location, '')), '');
+  insert into public.falah_calendar_events
+    (school_year_id, start_date, end_date, title, note, category, source_event_id)
+  values (yr, ev.event_date, ev.end_date, ev.title, v_note, 'event', ev.id)
+  on conflict (source_event_id) do update set
+    school_year_id = excluded.school_year_id, start_date = excluded.start_date,
+    end_date = excluded.end_date, title = excluded.title, note = excluded.note,
+    category = 'event', updated_at = now();
+end;
+$$;
+
+create or replace function public.trg_falah_events_calendar_sync()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  perform public.sync_falah_event_to_calendar(new.id);
+  return new;
+end;
+$$;
+
+create trigger falah_events_calendar_sync
+  after insert or update on public.falah_events
+  for each row execute function public.trg_falah_events_calendar_sync();
+
+create or replace function public.trg_school_years_resync_events()
+returns trigger language plpgsql security definer set search_path = public as $$
+declare r record;
+begin
+  for r in select id from public.falah_events loop
+    perform public.sync_falah_event_to_calendar(r.id);
+  end loop;
+  return null;
+end;
+$$;
+
+create trigger falah_school_years_resync_events
+  after insert or update or delete on public.falah_school_years
+  for each statement execute function public.trg_school_years_resync_events();
+
+revoke execute on function public.sync_falah_event_to_calendar(uuid) from public, anon, authenticated;
+revoke execute on function public.trg_falah_events_calendar_sync() from public, anon, authenticated;
+revoke execute on function public.trg_school_years_resync_events() from public, anon, authenticated;

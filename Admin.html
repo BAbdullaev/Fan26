@@ -263,7 +263,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
   <div id="events-panel" style="display:none;flex-direction:column;gap:14px">
     <div class="row-card">
       <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Post an event</h2>
-      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Shows on the public <a href="Events.html" target="_blank">Events page</a>. Attach a flyer as an image (JPG/PNG — best) or a PDF, up to 10&nbsp;MB.</p>
+      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Shows on the public <a href="Events.html" target="_blank">Events page</a>, and published events are added to the school calendar automatically. Attach a flyer as an image (JPG/PNG — best) or a PDF, up to 10&nbsp;MB.</p>
       <form onsubmit="return addEvent()" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end">
         <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26;grid-column:1/-1">Event title
           <input id="ev-new-title" class="field" placeholder="Fall Family Fun Day" required>
@@ -824,10 +824,17 @@ function addDirectoryEntry() {
 
 /* ===== Events & flyers (any staff) ===== */
 var eventsList = [];
+var eventCalendarPlacement = {};   // event id -> { label, is_published } of the school year it's on
 var FLYER_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
 
 function loadEvents() {
-  sb.from('falah_events').select('*').order('event_date', { ascending: false }).then(function (res) {
+  Promise.all([
+    sb.from('falah_events').select('*').order('event_date', { ascending: false }),
+    sb.from('falah_calendar_events').select('source_event_id, falah_school_years(label, is_published)').not('source_event_id', 'is', null)
+  ]).then(function (results) {
+    var res = results[0];
+    eventCalendarPlacement = {};
+    (results[1].data || []).forEach(function (r) { eventCalendarPlacement[r.source_event_id] = r.falah_school_years || {}; });
     if (res.error) {
       document.getElementById('events-list').innerHTML = '<div class="row-card" style="color:#B36405;font:700 14px \'Nunito\',sans-serif">Couldn’t load events: ' + esc(res.error.message) + '</div>';
       return;
@@ -880,6 +887,23 @@ function eventStatusPill(ev) {
   return '<span style="display:inline-block;background:' + bg + ';color:' + fg + ';font:800 11px \'Nunito\',sans-serif;padding:5px 10px;border-radius:999px">' + label + '</span>';
 }
 
+// Mirrors the DB trigger (sync_falah_event_to_calendar): published events are
+// copied onto the school calendar for whichever school year covers their date.
+function eventCalendarLine(ev) {
+  var y = eventCalendarPlacement[ev.id];
+  var text, color = '#7C8C7E';
+  if (y) {
+    text = '📅 On the ' + (y.label || '') + ' school calendar' + (y.is_published ? '' : ' (that year isn’t published yet)');
+    color = '#166B38';
+  } else if (!ev.is_published) {
+    text = '📅 Not on the school calendar while it’s a draft';
+  } else {
+    text = '📅 Not on the school calendar: no school year covers this date (add one under Academic calendar)';
+    color = '#B36405';
+  }
+  return '<div style="font:700 12px/1.5 \'Nunito\',sans-serif;color:' + color + ';margin:-4px 0 12px">' + text + '</div>';
+}
+
 function renderEventCards() {
   var lbl = 'style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996"';
   document.getElementById('events-list').innerHTML = eventsList.map(function (ev) {
@@ -894,7 +918,7 @@ function renderEventCards() {
     return '<div class="row-card" id="ev-card-' + ev.id + '">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">' +
         '<div style="font:600 19px \'Fredoka\',sans-serif;color:#153A26">' + esc(ev.title) + '</div>' + eventStatusPill(ev) +
-      '</div>' +
+      '</div>' + eventCalendarLine(ev) +
       '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
         '<div style="flex-shrink:0">' + thumb + '</div>' +
         '<div style="flex:1;min-width:240px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">' +
@@ -1011,7 +1035,7 @@ function removeEventFlyer(id) {
 
 function deleteEvent(id) {
   var ev = eventsList.find(function (r) { return r.id === id; }) || {};
-  if (!confirm('Delete “' + ev.title + '” and its flyer? This can’t be undone.\n\nTip: untick “Published” instead to just hide it.')) return;
+  if (!confirm('Delete “' + ev.title + '” and its flyer? It will also be removed from the school calendar. This can’t be undone.\n\nTip: untick “Published” instead to just hide it.')) return;
   sb.from('falah_events').delete().eq('id', id).then(function (res) {
     if (res.error) { alert('Delete failed: ' + res.error.message); return; }
     deleteFlyerByUrl(ev.flyer_url);
@@ -1377,6 +1401,7 @@ function renderEvents() {
   if (!selectedYearId) { list.innerHTML = ''; return; }
   list.innerHTML = yearEvents.map(function (ev) {
     return '<div class="row-card" id="ycev-card-' + ev.id + '">' +
+      (ev.source_event_id ? '<div style="font:700 12px/1.5 \'Nunito\',sans-serif;color:#B36405;background:#FDF3E3;border-radius:10px;padding:6px 12px;margin-bottom:10px">Added automatically from <a href="#" onclick="showTab(\'events\');return false">Events &amp; flyers</a>. Edit it there; changes made here are overwritten the next time that event is saved.</div>' : '') +
       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;align-items:end">' +
         '<label style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996">Start date' +
           '<input id="ycev-start-' + ev.id + '" type="date" class="field" value="' + ev.start_date + '"></label>' +
