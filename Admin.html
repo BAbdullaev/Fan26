@@ -833,7 +833,7 @@ function loadEvents() {
       return;
     }
     eventsList = res.data || [];
-    renderEvents();
+    renderEventCards();
   });
 }
 
@@ -880,7 +880,7 @@ function eventStatusPill(ev) {
   return '<span style="display:inline-block;background:' + bg + ';color:' + fg + ';font:800 11px \'Nunito\',sans-serif;padding:5px 10px;border-radius:999px">' + label + '</span>';
 }
 
-function renderEvents() {
+function renderEventCards() {
   var lbl = 'style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996"';
   document.getElementById('events-list').innerHTML = eventsList.map(function (ev) {
     var thumb;
