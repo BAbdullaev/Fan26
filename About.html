@@ -54,7 +54,13 @@ a:hover{color:#E07C00}
     </a>
     <nav id="site-nav" style="margin-left:auto;display:flex;align-items:center;gap:4px">
       <a href="index.html" class="nav-link">Home</a>
-      <a href="About.html" class="nav-link active">About</a>
+      <div class="nav-dd">
+        <a href="About.html" class="nav-link active" aria-haspopup="true">About <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dd-menu">
+          <a href="About.html" class="nav-dd-item current" aria-current="page">Our story</a>
+          <a href="Events.html" class="nav-dd-item">Events</a>
+        </div>
+      </div>
       <a href="Programs.html" class="nav-link">Programs</a>
       <a href="Admissions.html" class="nav-link">Admissions</a>
       <a href="Calendar.html" class="nav-link">Calendar</a>
@@ -275,6 +281,7 @@ a:hover{color:#E07C00}
       <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Explore</div>
       <div style="display:flex;flex-direction:column;gap:8px;font:700 14px 'Nunito',sans-serif">
         <a href="About.html" class="footer-link">About us</a>
+        <a href="Events.html" class="footer-link">Events</a>
         <a href="Programs.html" class="footer-link">Programs</a>
         <a href="Admissions.html" class="footer-link">Admissions</a>
         <a href="Calendar.html" class="footer-link">Calendar</a>

@@ -70,3 +70,26 @@ div[style*="box-shadow:0 4px 16px"]:hover{transform:translateY(-4px);box-shadow:
   /* Big rounded section corners feel oversized on small screens */
   section[style*="border-radius:60px"],footer[style*="border-radius:60px"]{border-radius:36px 36px 0 0!important}
 }
+
+/* ---------- About ▾ dropdown in the header nav ----------
+   Desktop: opens on hover or keyboard focus. ≤980px: the sub-links
+   are shown inline (indented) inside the hamburger panel. */
+.nav-dd{position:relative;display:flex}
+.nav-dd>.nav-link{display:inline-flex;align-items:center;gap:5px}
+.nav-caret{width:12px;height:12px;transition:transform .15s}
+.nav-dd:hover .nav-caret,.nav-dd:focus-within .nav-caret{transform:rotate(180deg)}
+.nav-dd-menu{position:absolute;top:100%;left:0;padding-top:8px;min-width:180px;display:none;flex-direction:column;z-index:70}
+.nav-dd-menu::before{content:"";position:absolute;inset:8px 0 0;background:#fff;border-radius:16px;box-shadow:0 14px 38px rgba(20,60,35,.20);z-index:-1}
+.nav-dd:hover .nav-dd-menu,.nav-dd:focus-within .nav-dd-menu{display:flex}
+.nav-dd-item{text-decoration:none;font:800 15px 'Nunito',sans-serif;color:#1F3D2B;padding:11px 16px;margin:0 6px;border-radius:12px;transition:background .15s,color .15s}
+.nav-dd-item:first-child{margin-top:6px}
+.nav-dd-item:last-child{margin-bottom:6px}
+.nav-dd-item:hover{background:#E9F3EB;color:#1F3D2B}
+.nav-dd-item.current{color:#166B38;background:#E9F3EB}
+@media(max-width:980px){
+  .nav-dd{flex-direction:column}
+  .nav-caret{display:none}
+  .nav-dd-menu{position:static;display:flex;padding:0 0 0 14px;min-width:0}
+  .nav-dd-menu::before{display:none}
+  .nav-dd-item{margin:0!important;padding:10px 14px;font-size:14px;color:#41573F}
+}

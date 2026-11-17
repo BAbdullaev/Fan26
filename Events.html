@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Events — Falah Academy of Nashville</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo.jpeg">
+<meta name="description" content="Upcoming events and community gatherings at Falah Academy of Nashville.">
+<style>
+html,body{margin:0;padding:0;background:#FDF8EE;color:#1F3D2B;font-family:'Nunito',sans-serif}
+a{color:#1B7A40}
+a:hover{color:#E07C00}
+::selection{background:#FBD79E}
+
+.nav-link{text-decoration:none;font:800 15px 'Nunito',sans-serif;color:#1F3D2B;padding:9px 16px;border-radius:999px;transition:background .15s,color .15s}
+.nav-link:hover{background:#E9F3EB;color:#1F3D2B}
+.nav-link.active{color:#fff;background:#1B7A40}
+.nav-link.active:hover{background:#1B7A40;color:#fff}
+
+.cta-pill{text-decoration:none;font:800 15px 'Nunito',sans-serif;color:#153A26;background:#F7941D;padding:11px 20px;border-radius:999px;box-shadow:0 3px 0 #C9720A;white-space:nowrap;display:inline-block;transition:transform .15s,box-shadow .15s}
+.cta-pill:hover{transform:translateY(-2px);box-shadow:0 5px 0 #C9720A;color:#153A26}
+
+.cta-pill-lg{text-decoration:none;font:800 16px 'Nunito',sans-serif;color:#153A26;background:#F7941D;padding:14px 26px;border-radius:999px;box-shadow:0 4px 0 #C9720A;display:inline-block;transition:transform .15s}
+.cta-pill-lg:hover{transform:translateY(-2px);color:#153A26}
+
+.btn-outline{text-decoration:none;font:800 16px 'Nunito',sans-serif;color:#fff;border:3px solid #4C9A66;padding:11px 24px;border-radius:999px;display:inline-block;transition:background .15s,color .15s}
+.btn-outline:hover{background:#1B7A40;color:#fff}
+
+.contact-cta{text-decoration:none;font:800 14px 'Nunito',sans-serif;color:#153A26;background:#F7941D;padding:11px 20px;border-radius:999px;box-shadow:0 3px 0 #C9720A;display:inline-block;transition:transform .15s}
+.contact-cta:hover{transform:translateY(-2px);color:#153A26}
+
+.footer-link{color:#EAF3EC;text-decoration:none;transition:color .15s}
+.footer-link:hover{color:#F7941D}
+
+.footer-muted-link{color:#B9D4C0;text-decoration:none;transition:color .15s}
+.footer-muted-link:hover{color:#F7941D}
+
+.ev-card{background:#fff;border-radius:30px;box-shadow:0 6px 20px rgba(20,60,35,.10);padding:28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:start}
+.ev-card.noflyer{grid-template-columns:1fr}
+.ev-flyer{display:block;border-radius:20px;overflow:hidden;background:#F4F8F4;border:3px solid #E9F3EB;transition:transform .2s,box-shadow .2s}
+.ev-flyer:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(20,60,35,.16)}
+.ev-flyer img{display:block;width:100%;height:auto}
+.ev-date{display:inline-flex;align-items:center;gap:8px;background:#F7941D;color:#153A26;font:800 14px 'Nunito',sans-serif;padding:8px 16px;border-radius:999px;transform:rotate(-1.5deg);margin-bottom:14px}
+.ev-meta{display:flex;flex-direction:column;gap:8px;margin:0 0 16px;font:700 15px 'Nunito',sans-serif;color:#41573F}
+.ev-meta span b{color:#E07C00;margin-right:6px}
+.ev-btn{text-decoration:none;font:800 14px 'Nunito',sans-serif;color:#166B38;background:#E9F3EB;padding:10px 18px;border-radius:999px;display:inline-block;transition:background .15s}
+.ev-btn:hover{background:#D8EBDC;color:#166B38}
+.ev-past{background:#fff;border-radius:22px;box-shadow:0 4px 14px rgba(20,60,35,.07);overflow:hidden;display:flex;flex-direction:column}
+.ev-past img{width:100%;height:200px;object-fit:cover;object-position:top;display:block}
+@media(max-width:860px){.ev-card{grid-template-columns:1fr;padding:20px;gap:22px}}
+</style>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
+</head>
+<body>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(253,248,238,.94);backdrop-filter:blur(8px);border-bottom:2px dashed #D5E5D9">
+  <div class="hdr" style="max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#153A26">
+      <img src="assets/logo.jpeg" alt="Falah Academy of Nashville crest" style="width:52px;height:52px;border-radius:50%;background:#fff;object-fit:cover;box-shadow:0 2px 8px rgba(20,60,35,.18)">
+      <span style="display:flex;flex-direction:column;line-height:1.05">
+        <span style="font:600 21px 'Fredoka',sans-serif;color:#166B38">Falah Academy</span>
+        <span style="font:800 11px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#E07C00">of Nashville</span>
+      </span>
+    </a>
+    <nav id="site-nav" style="margin-left:auto;display:flex;align-items:center;gap:4px">
+      <a href="index.html" class="nav-link">Home</a>
+      <div class="nav-dd">
+        <a href="About.html" class="nav-link active" aria-haspopup="true">About <svg class="nav-caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav-dd-menu">
+          <a href="About.html" class="nav-dd-item">Our story</a>
+          <a href="Events.html" class="nav-dd-item current" aria-current="page">Events</a>
+        </div>
+      </div>
+      <a href="Programs.html" class="nav-link">Programs</a>
+      <a href="Admissions.html" class="nav-link">Admissions</a>
+      <a href="Calendar.html" class="nav-link">Calendar</a>
+      <a href="Contact.html" class="nav-link">Contact</a>
+      <a href="Directory.html" class="nav-link">Directory</a>
+    </nav>
+    <button class="nav-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <a href="https://app.schoolpro.us/Application/StudentRegistration/38708" target="_blank" rel="noopener" class="cta-pill">Enroll now</a>
+  </div>
+</header>
+
+<section style="max-width:1180px;margin:0 auto;padding:64px 24px 40px;text-align:center">
+  <div style="font:800 13px 'Nunito',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#E07C00;margin-bottom:12px">Join us</div>
+  <h1 style="font:600 56px/1.1 'Fredoka',sans-serif;color:#153A26;margin:0 0 18px">School <span style="background:linear-gradient(transparent 62%, #FBD79E 62%);padding:0 4px">events</span></h1>
+  <p style="font:600 19px/1.65 'Nunito',sans-serif;color:#41573F;max-width:640px;margin:0 auto;text-wrap:pretty">Gatherings, celebrations and family days at Falah Academy. We'd love to see you there.</p>
+</section>
+
+<section style="max-width:1180px;margin:0 auto;padding:0 24px 32px">
+  <div id="ev-loading" style="text-align:center;font:700 16px 'Nunito',sans-serif;color:#7FA98B;padding:32px 0">Loading events…</div>
+  <div id="ev-empty" style="display:none;text-align:center;background:#fff;border-radius:30px;padding:44px 28px;box-shadow:0 6px 20px rgba(20,60,35,.08)">
+    <h2 style="font:600 26px 'Fredoka',sans-serif;color:#153A26;margin:0 0 8px">No upcoming events right now</h2>
+    <p style="font:600 16px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">Check back soon. New events and flyers are posted here as they're announced.</p>
+  </div>
+  <div id="ev-upcoming" style="display:flex;flex-direction:column;gap:32px"></div>
+  <div id="ev-past-wrap" style="display:none;margin-top:56px">
+    <h2 style="font:600 28px 'Fredoka',sans-serif;color:#153A26;margin:0 0 18px">Past events</h2>
+    <div id="ev-past" class="rg3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px"></div>
+  </div>
+</section>
+
+<section style="max-width:1180px;margin:0 auto;padding:16px 24px 32px">
+  <div style="background:#E9F3EB;border-radius:30px;padding:36px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px">
+    <div>
+      <h2 style="font:600 28px 'Fredoka',sans-serif;color:#153A26;margin:0 0 6px">Looking for school days and holidays?</h2>
+      <p style="font:600 16px/1.6 'Nunito',sans-serif;color:#41573F;margin:0">The full 2026–27 academic calendar has every no-school day, break and quarter date.</p>
+    </div>
+    <a href="Calendar.html" class="cta-pill-lg">View the calendar</a>
+  </div>
+</section>
+
+<footer style="background:#143A26;color:#EAF3EC;margin-top:72px;border-radius:60px 60px 0 0">
+  <div class="fgrid" style="max-width:1180px;margin:0 auto;padding:56px 24px 28px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <img src="assets/logo.jpeg" alt="" style="width:54px;height:54px;border-radius:50%;background:#fff">
+        <div style="line-height:1.1"><div style="font:600 20px 'Fredoka',sans-serif;color:#fff">Falah Academy</div><div style="font:800 10px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#F7941D">of Nashville</div></div>
+      </div>
+      <p style="font:600 14px/1.6 'Nunito',sans-serif;color:#B9D4C0;margin:0;max-width:280px">Educating the whole child through high-quality early education, rooted in Islamic values.</p>
+    </div>
+    <div>
+      <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Explore</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:700 14px 'Nunito',sans-serif">
+        <a href="About.html" class="footer-link">About us</a>
+        <a href="Events.html" class="footer-link">Events</a>
+        <a href="Programs.html" class="footer-link">Programs</a>
+        <a href="Admissions.html" class="footer-link">Admissions</a>
+        <a href="Calendar.html" class="footer-link">Calendar</a>
+        <a href="Directory.html" class="footer-link">Staff Directory</a>
+        <a href="https://app.schoolpro.us/Application/StudentRegistration/38708" target="_blank" rel="noopener" class="footer-link">Enroll now</a>
+      </div>
+    </div>
+    <div>
+      <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Visit</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:600 14px/1.5 'Nunito',sans-serif;color:#B9D4C0">
+        <span>2311 Murfreesboro Pike Suite B</span>
+        <span>Nashville, TN 37217</span>
+        <span>Mon – Fri · 8 AM – 4 PM</span>
+      </div>
+    </div>
+    <div>
+      <div style="font:600 16px 'Fredoka',sans-serif;color:#F7941D;margin-bottom:12px">Say hello</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font:600 14px/1.5 'Nunito',sans-serif">
+        <a href="mailto:admissions@fan2026.org" class="footer-muted-link">admissions@fan2026.org</a>
+        <span style="color:#B9D4C0">629-629-0234</span>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid #24543A;text-align:center;padding:18px 24px;font:700 13px 'Nunito',sans-serif;color:#7FA98B">© 2026 Falah Academy of Nashville · PreK &amp; Kindergarten · <a href="Admin.html" class="footer-muted-link" style="color:#7FA98B">Staff sign in</a></div>
+</footer>
+
+
+<script>
+var EV_URL = 'https://kjuuipvyqqjlxmmlrlhy.supabase.co';
+var EV_KEY = 'sb_publishable_Dqw1ds-3LFQdC2k8YSZBQg_no3HfNA4';
+
+function evEsc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function evParse(d) { var p = d.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function evFmt(d, opts) { return evParse(d).toLocaleDateString('en-US', opts); }
+function evDateLabel(ev) {
+  var long = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+  if (!ev.end_date || ev.end_date === ev.event_date) return evFmt(ev.event_date, long);
+  return evFmt(ev.event_date, { month: 'long', day: 'numeric' }) + ' – ' + evFmt(ev.end_date, { month: 'long', day: 'numeric', year: 'numeric' });
+}
+function evToday() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function evParas(t) {
+  return String(t).split(/\n\s*\n/).map(function (p) {
+    return '<p style="font:600 16px/1.7 \'Nunito\',sans-serif;color:#41573F;margin:0 0 12px">' + evEsc(p).replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+}
+function evAlt(ev) { return ev.flyer_alt || ('Flyer for ' + ev.title); }
+
+function evCard(ev) {
+  var flyer = '';
+  if (ev.flyer_url && ev.flyer_type === 'image') {
+    flyer = '<a class="ev-flyer" href="' + evEsc(ev.flyer_url) + '" target="_blank" rel="noopener" title="Open full-size flyer"><img src="' + evEsc(ev.flyer_url) + '" alt="' + evEsc(evAlt(ev)) + '" loading="lazy"></a>';
+  } else if (ev.flyer_url) {
+    flyer = '<a class="ev-flyer" href="' + evEsc(ev.flyer_url) + '" target="_blank" rel="noopener" style="height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-decoration:none;background:#FDF3E3"><span style="font:600 44px \'Fredoka\',sans-serif;color:#E07C00">PDF</span><span style="font:800 15px \'Nunito\',sans-serif;color:#153A26">Open the flyer ↗</span></a>';
+  }
+  var meta = [];
+  if (ev.time_text) meta.push('<span><b>Time</b>' + evEsc(ev.time_text) + '</span>');
+  if (ev.location) meta.push('<span><b>Where</b>' + evEsc(ev.location) + '</span>');
+  var actions = ev.flyer_url
+    ? '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><a class="ev-btn" href="' + evEsc(ev.flyer_url) + '" target="_blank" rel="noopener">' + (ev.flyer_type === 'pdf' ? 'View flyer (PDF)' : 'View full-size flyer') + '</a></div>'
+    : '';
+  return '<article class="ev-card' + (flyer ? '' : ' noflyer') + '">' +
+    (flyer ? '<div>' + flyer + '</div>' : '') +
+    '<div>' +
+      '<div class="ev-date">' + evEsc(evDateLabel(ev)) + '</div>' +
+      '<h2 style="font:600 34px/1.15 \'Fredoka\',sans-serif;color:#153A26;margin:0 0 14px">' + evEsc(ev.title) + '</h2>' +
+      (meta.length ? '<div class="ev-meta">' + meta.join('') + '</div>' : '') +
+      (ev.description ? evParas(ev.description) : '') +
+      actions +
+    '</div>' +
+  '</article>';
+}
+
+function evPastCard(ev) {
+  var img = ev.flyer_url && ev.flyer_type === 'image'
+    ? '<a href="' + evEsc(ev.flyer_url) + '" target="_blank" rel="noopener"><img src="' + evEsc(ev.flyer_url) + '" alt="' + evEsc(evAlt(ev)) + '" loading="lazy"></a>'
+    : '';
+  return '<div class="ev-past">' + img +
+    '<div style="padding:16px 18px">' +
+      '<div style="font:800 12px \'Nunito\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#E07C00;margin-bottom:4px">' + evEsc(evDateLabel(ev)) + '</div>' +
+      '<div style="font:600 18px \'Fredoka\',sans-serif;color:#153A26">' + evEsc(ev.title) + '</div>' +
+    '</div></div>';
+}
+
+fetch(EV_URL + '/rest/v1/falah_events?select=*&is_published=eq.true&order=event_date.asc', {
+  headers: { 'apikey': EV_KEY, 'Authorization': 'Bearer ' + EV_KEY }
+}).then(function (res) {
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}).then(function (events) {
+  document.getElementById('ev-loading').style.display = 'none';
+  var today = evToday();
+  var upcoming = events.filter(function (e) { return (e.end_date || e.event_date) >= today; });
+  var past = events.filter(function (e) { return (e.end_date || e.event_date) < today; }).reverse().slice(0, 6);
+  if (!upcoming.length) document.getElementById('ev-empty').style.display = 'block';
+  document.getElementById('ev-upcoming').innerHTML = upcoming.map(evCard).join('');
+  if (past.length) {
+    document.getElementById('ev-past-wrap').style.display = 'block';
+    document.getElementById('ev-past').innerHTML = past.map(evPastCard).join('');
+  }
+}).catch(function () {
+  document.getElementById('ev-loading').textContent = 'Couldn’t load events right now. Please try again shortly.';
+});
+</script>
+</body>
+</html>

@@ -311,3 +311,82 @@ create policy "master can delete directory photos"
   on storage.objects for delete
   to authenticated
   using (bucket_id = 'directory-photos' and public.is_fan26_master());
+
+-- ===== Events & flyers =====
+-- Powers Events.html (public) and Admin.html's "Events & flyers" tab.
+-- Any signed-in staff can create/edit/remove events and upload flyers
+-- (same access level as the Academic calendar, not master-gated).
+-- Drafts (is_published = false) are visible to staff only.
+
+create table public.falah_events (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  event_date date not null,
+  end_date date,
+  time_text text,
+  location text,
+  description text,
+  flyer_url text,
+  flyer_type text check (flyer_type in ('image','pdf')),
+  flyer_alt text,
+  is_published boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index falah_events_date_idx on public.falah_events(event_date);
+
+alter table public.falah_events enable row level security;
+
+create policy "public can view published events"
+  on public.falah_events for select
+  to anon, authenticated
+  using (is_published);
+
+create policy "staff can view all events"
+  on public.falah_events for select
+  to authenticated
+  using (public.is_fan26_staff());
+
+create policy "staff can insert events"
+  on public.falah_events for insert
+  to authenticated
+  with check (public.is_fan26_staff());
+
+create policy "staff can update events"
+  on public.falah_events for update
+  to authenticated
+  using (public.is_fan26_staff())
+  with check (public.is_fan26_staff());
+
+create policy "staff can delete events"
+  on public.falah_events for delete
+  to authenticated
+  using (public.is_fan26_staff());
+
+-- Flyer storage: public bucket, images or PDF, 10 MB max per file.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('event-flyers', 'event-flyers', true, 10485760,
+        array['image/jpeg','image/png','image/webp','image/gif','application/pdf'])
+on conflict (id) do nothing;
+
+create policy "anyone can view event flyers"
+  on storage.objects for select
+  to anon, authenticated
+  using (bucket_id = 'event-flyers');
+
+create policy "staff can upload event flyers"
+  on storage.objects for insert
+  to authenticated
+  with check (bucket_id = 'event-flyers' and public.is_fan26_staff());
+
+create policy "staff can update event flyers"
+  on storage.objects for update
+  to authenticated
+  using (bucket_id = 'event-flyers' and public.is_fan26_staff())
+  with check (bucket_id = 'event-flyers' and public.is_fan26_staff());
+
+create policy "staff can delete event flyers"
+  on storage.objects for delete
+  to authenticated
+  using (bucket_id = 'event-flyers' and public.is_fan26_staff());

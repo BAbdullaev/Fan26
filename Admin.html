@@ -151,6 +151,7 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
         <button id="tab-tours" class="menu-item" role="menuitem" onclick="showTab('tours')">Tour bookings</button>
         <button id="tab-cal" class="menu-item" role="menuitem" onclick="showTab('cal')">Tour calendar</button>
         <button id="tab-yearcal" class="menu-item" style="display:none" role="menuitem" onclick="showTab('yearcal')">Academic calendar</button>
+        <button id="tab-events" class="menu-item" style="display:none" role="menuitem" onclick="showTab('events')">Events &amp; flyers</button>
         <button id="tab-staff" class="menu-item" style="display:none" role="menuitem" onclick="showTab('staff')">Staff access</button>
         <button id="tab-directory" class="menu-item" style="display:none" role="menuitem" onclick="showTab('directory')">Staff directory</button>
         <div class="menu-sep"></div>
@@ -258,6 +259,44 @@ input:focus,select:focus,textarea:focus{outline:3px solid #FBD79E;border-color:#
       <div id="dir-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
     </div>
     <div id="directory-list"></div>
+  </div>
+  <div id="events-panel" style="display:none;flex-direction:column;gap:14px">
+    <div class="row-card">
+      <h2 style="font:600 22px 'Fredoka',sans-serif;color:#153A26;margin:0 0 4px">Post an event</h2>
+      <p style="font:600 13px/1.5 'Nunito',sans-serif;color:#93A996;margin:0 0 16px">Shows on the public <a href="Events.html" target="_blank">Events page</a>. Attach a flyer as an image (JPG/PNG — best) or a PDF, up to 10&nbsp;MB.</p>
+      <form onsubmit="return addEvent()" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end">
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26;grid-column:1/-1">Event title
+          <input id="ev-new-title" class="field" placeholder="Fall Family Fun Day" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Date
+          <input id="ev-new-date" type="date" class="field" required>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">End date (optional)
+          <input id="ev-new-end" type="date" class="field">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Time
+          <input id="ev-new-time" class="field" placeholder="10 AM – 1 PM">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Location
+          <input id="ev-new-loc" class="field" placeholder="Falah Academy">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26;grid-column:1/-1">Description
+          <textarea id="ev-new-desc" class="field" rows="3" placeholder="What families should know: what to bring, who it's for, RSVP details…"></textarea>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Flyer
+          <input id="ev-new-flyer" type="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" class="field">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:6px;font:800 12px 'Nunito',sans-serif;color:#153A26">Flyer text for screen readers
+          <input id="ev-new-alt" class="field" placeholder="Flyer: Fall Family Fun Day, Nov 22, 10 AM–1 PM">
+        </label>
+        <label style="display:flex;flex-direction:row;align-items:center;gap:8px;font:800 13px 'Nunito',sans-serif;color:#153A26;padding-bottom:12px">
+          <input id="ev-new-pub" type="checkbox" checked style="width:18px;height:18px"> Publish now
+        </label>
+        <button id="ev-add-btn" type="submit" class="btn">Post event</button>
+      </form>
+      <div id="ev-error" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 'Nunito',sans-serif;padding:10px 16px;border-radius:14px"></div>
+    </div>
+    <div id="events-list"></div>
   </div>
   <div id="cal-panel" style="display:none">
     <div class="row-card">
@@ -373,7 +412,8 @@ var SECTION_HEADINGS = {
   cal:       ['Tour calendar', 'Scheduled tours, month by month.'],
   yearcal:   ['Academic calendar', 'The school-year calendar families see on the public Calendar page.'],
   staff:     ['Staff access', 'Who can sign in to this dashboard.'],
-  directory: ['Staff directory', 'What families see on the public directory page.']
+  directory: ['Staff directory', 'What families see on the public directory page.'],
+  events:    ['Events & flyers', 'Upcoming events and flyers families see on the public Events page.']
 };
 
 function toggleMenu(e) {
@@ -464,6 +504,7 @@ if (DEMO_MODE) {
     myEmail = authed ? session.user.email.toLowerCase() : null;
     myRole = null;
     document.getElementById('tab-yearcal').style.display = authed ? '' : 'none';
+    document.getElementById('tab-events').style.display = authed ? '' : 'none';
     document.getElementById('tab-staff').style.display = 'none';
     document.getElementById('staff-add-card').style.display = 'none';
     document.getElementById('tab-directory').style.display = 'none';
@@ -525,6 +566,8 @@ function showTab(tab) {
   document.getElementById('tab-apps').className = 'menu-item' + (tab === 'apps' ? ' active' : '');
   document.getElementById('tab-cal').className = 'menu-item' + (tab === 'cal' ? ' active' : '');
   document.getElementById('tab-yearcal').className = 'menu-item' + (tab === 'yearcal' ? ' active' : '');
+  document.getElementById('tab-events').className = 'menu-item' + (tab === 'events' ? ' active' : '');
+  document.getElementById('events-panel').style.display = tab === 'events' ? 'flex' : 'none';
   document.getElementById('tab-staff').className = 'menu-item' + (tab === 'staff' ? ' active' : '');
   document.getElementById('tab-directory').className = 'menu-item' + (tab === 'directory' ? ' active' : '');
   document.getElementById('tours-panel').style.display = tab === 'tours' ? 'flex' : 'none';
@@ -543,6 +586,7 @@ function showTab(tab) {
   if (tab === 'yearcal') loadSchoolYears();
   if (tab === 'staff') loadStaff();
   if (tab === 'directory') loadDirectory();
+  if (tab === 'events') loadEvents();
 }
 
 /* ===== Staff access (master only) ===== */
@@ -775,6 +819,204 @@ function addDirectoryEntry() {
     btn.disabled = false; btn.textContent = 'Add to directory';
   });
   return false;
+}
+
+
+/* ===== Events & flyers (any staff) ===== */
+var eventsList = [];
+var FLYER_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
+
+function loadEvents() {
+  sb.from('falah_events').select('*').order('event_date', { ascending: false }).then(function (res) {
+    if (res.error) {
+      document.getElementById('events-list').innerHTML = '<div class="row-card" style="color:#B36405;font:700 14px \'Nunito\',sans-serif">Couldn’t load events: ' + esc(res.error.message) + '</div>';
+      return;
+    }
+    eventsList = res.data || [];
+    renderEvents();
+  });
+}
+
+function todayStr() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function checkFlyer(file) {
+  if (!file) return null;
+  if (FLYER_TYPES.indexOf(file.type) === -1) return 'Flyer must be a JPG, PNG, WebP, GIF or PDF file.';
+  if (file.size > 10 * 1024 * 1024) return 'Flyer is larger than 10 MB — please export a smaller copy.';
+  return null;
+}
+
+function uploadFlyer(id, file) {
+  var safeName = file.name.replace(/[^a-zA-Z0-9.\-]/g, '_');
+  var path = id + '/' + Date.now() + '-' + safeName;
+  return sb.storage.from('event-flyers').upload(path, file, { contentType: file.type }).then(function (res) {
+    if (res.error) throw res.error;
+    return {
+      flyer_url: sb.storage.from('event-flyers').getPublicUrl(path).data.publicUrl,
+      flyer_type: file.type === 'application/pdf' ? 'pdf' : 'image'
+    };
+  });
+}
+
+// Best-effort cleanup so replaced/removed flyers don't pile up in storage.
+function deleteFlyerByUrl(url) {
+  if (!url) return;
+  var marker = '/event-flyers/';
+  var idx = url.indexOf(marker);
+  if (idx === -1) return;
+  sb.storage.from('event-flyers').remove([decodeURIComponent(url.slice(idx + marker.length))]);
+}
+
+function eventStatusPill(ev) {
+  var today = todayStr();
+  var last = ev.end_date || ev.event_date;
+  var label, bg, fg;
+  if (!ev.is_published) { label = 'Draft — hidden'; bg = '#F1EFE8'; fg = '#7A7466'; }
+  else if (last < today) { label = 'Past'; bg = '#EEF1ED'; fg = '#7C8C7E'; }
+  else { label = 'Live · upcoming'; bg = '#E9F3EB'; fg = '#166B38'; }
+  return '<span style="display:inline-block;background:' + bg + ';color:' + fg + ';font:800 11px \'Nunito\',sans-serif;padding:5px 10px;border-radius:999px">' + label + '</span>';
+}
+
+function renderEvents() {
+  var lbl = 'style="display:flex;flex-direction:column;gap:4px;font:800 11px \'Nunito\',sans-serif;color:#93A996"';
+  document.getElementById('events-list').innerHTML = eventsList.map(function (ev) {
+    var thumb;
+    if (ev.flyer_url && ev.flyer_type === 'image') {
+      thumb = '<a href="' + esc(ev.flyer_url) + '" target="_blank" rel="noopener"><img src="' + esc(ev.flyer_url) + '" alt="" style="width:110px;height:140px;object-fit:cover;border-radius:12px;border:2px solid #E9F3EB;display:block"></a>';
+    } else if (ev.flyer_url) {
+      thumb = '<a href="' + esc(ev.flyer_url) + '" target="_blank" rel="noopener" style="width:110px;height:140px;border-radius:12px;background:#FDEBD2;display:flex;align-items:center;justify-content:center;text-decoration:none;font:800 14px \'Nunito\',sans-serif;color:#B36405">PDF ↗</a>';
+    } else {
+      thumb = '<div style="width:110px;height:140px;border-radius:12px;border:2px dashed #D5E5D9;display:flex;align-items:center;justify-content:center;text-align:center;font:700 12px \'Nunito\',sans-serif;color:#93A996;padding:8px;box-sizing:border-box">No flyer</div>';
+    }
+    return '<div class="row-card" id="ev-card-' + ev.id + '">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">' +
+        '<div style="font:600 19px \'Fredoka\',sans-serif;color:#153A26">' + esc(ev.title) + '</div>' + eventStatusPill(ev) +
+      '</div>' +
+      '<div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">' +
+        '<div style="flex-shrink:0">' + thumb + '</div>' +
+        '<div style="flex:1;min-width:240px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">' +
+          '<label ' + lbl.replace('"', '"grid-column:1/-1;') + '>Title<input id="ev-title-' + ev.id + '" class="field" value="' + esc(ev.title) + '"></label>' +
+          '<label ' + lbl + '>Date<input id="ev-date-' + ev.id + '" type="date" class="field" value="' + esc(ev.event_date) + '"></label>' +
+          '<label ' + lbl + '>End date<input id="ev-end-' + ev.id + '" type="date" class="field" value="' + esc(ev.end_date || '') + '"></label>' +
+          '<label ' + lbl + '>Time<input id="ev-time-' + ev.id + '" class="field" value="' + esc(ev.time_text || '') + '"></label>' +
+          '<label ' + lbl + '>Location<input id="ev-loc-' + ev.id + '" class="field" value="' + esc(ev.location || '') + '"></label>' +
+          '<label ' + lbl.replace('"', '"grid-column:1/-1;') + '>Description<textarea id="ev-desc-' + ev.id + '" class="field" rows="3">' + esc(ev.description || '') + '</textarea></label>' +
+          '<label ' + lbl + '>' + (ev.flyer_url ? 'Replace flyer' : 'Add flyer') + '<input id="ev-flyer-' + ev.id + '" type="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" class="field"></label>' +
+          '<label ' + lbl + '>Flyer text for screen readers<input id="ev-alt-' + ev.id + '" class="field" value="' + esc(ev.flyer_alt || '') + '"></label>' +
+          '<label style="display:flex;align-items:center;gap:8px;font:800 13px \'Nunito\',sans-serif;color:#153A26"><input id="ev-pub-' + ev.id + '" type="checkbox"' + (ev.is_published ? ' checked' : '') + ' style="width:18px;height:18px"> Published</label>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px">' +
+          '<button class="btn-quiet" id="ev-save-' + ev.id + '" onclick="saveEvent(\'' + ev.id + '\')">Save changes</button>' +
+          (ev.flyer_url ? '<button class="btn-quiet" onclick="removeEventFlyer(\'' + ev.id + '\')">Remove flyer</button>' : '') +
+          '<button class="btn-quiet" onclick="deleteEvent(\'' + ev.id + '\')">Delete event</button>' +
+        '</div>' +
+      '</div>' +
+      '<div id="ev-error-' + ev.id + '" style="display:none;margin-top:12px;background:#FDEBD2;border:2px dashed #F0B45B;color:#B36405;font:700 13px/1.5 \'Nunito\',sans-serif;padding:10px 16px;border-radius:14px"></div>' +
+    '</div>';
+  }).join('') || '<div class="row-card" style="text-align:center;color:#93A996;font:700 15px \'Nunito\',sans-serif">No events yet. Post the first one above.</div>';
+}
+
+function eventFields(prefix, suffix) {
+  var v = function (k) { return document.getElementById(prefix + k + suffix).value.trim(); };
+  return {
+    title: v('title'),
+    event_date: v('date'),
+    end_date: v('end') || null,
+    time_text: v('time') || null,
+    location: v('loc') || null,
+    description: v('desc') || null,
+    flyer_alt: v('alt') || null,
+    is_published: document.getElementById(prefix + 'pub' + suffix).checked
+  };
+}
+
+function validateEvent(row) {
+  if (!row.title) return 'Event title is required.';
+  if (!row.event_date) return 'Date is required.';
+  if (row.end_date && row.end_date < row.event_date) return 'End date can’t be before the start date.';
+  return null;
+}
+
+function addEvent() {
+  var btn = document.getElementById('ev-add-btn');
+  var err = document.getElementById('ev-error');
+  err.style.display = 'none';
+  var row = eventFields('ev-new-', '');
+  var file = document.getElementById('ev-new-flyer').files[0];
+  var problem = validateEvent(row) || checkFlyer(file);
+  if (problem) { err.textContent = problem; err.style.display = 'block'; return false; }
+
+  btn.disabled = true; btn.textContent = file ? 'Uploading…' : 'Posting…';
+  var newId = null;
+  sb.from('falah_events').insert(row).select().single().then(function (res) {
+    if (res.error) throw res.error;
+    newId = res.data.id;
+    if (file) {
+      return uploadFlyer(newId, file).then(function (f) {
+        return sb.from('falah_events').update(f).eq('id', newId).then(function (upd) { if (upd.error) throw upd.error; });
+      });
+    }
+  }).then(function () {
+    ['title', 'date', 'end', 'time', 'loc', 'desc', 'alt', 'flyer'].forEach(function (k) { document.getElementById('ev-new-' + k).value = ''; });
+    document.getElementById('ev-new-pub').checked = true;
+    loadEvents();
+  }).catch(function (e) {
+    err.textContent = (newId ? 'The event was saved, but the flyer didn’t upload: ' : '') + (e.message || 'Failed to post event');
+    err.style.display = 'block';
+    if (newId) loadEvents();
+  }).finally(function () {
+    btn.disabled = false; btn.textContent = 'Post event';
+  });
+  return false;
+}
+
+function saveEvent(id) {
+  var errBox = document.getElementById('ev-error-' + id);
+  var btn = document.getElementById('ev-save-' + id);
+  errBox.style.display = 'none';
+  var patch = eventFields('ev-', '-' + id);
+  var file = document.getElementById('ev-flyer-' + id).files[0];
+  var problem = validateEvent(patch) || checkFlyer(file);
+  if (problem) { errBox.textContent = problem; errBox.style.display = 'block'; return; }
+  patch.updated_at = new Date().toISOString();
+  var previousUrl = (eventsList.find(function (r) { return r.id === id; }) || {}).flyer_url;
+
+  btn.disabled = true; btn.textContent = 'Saving…';
+  (file ? uploadFlyer(id, file) : Promise.resolve(null)).then(function (f) {
+    if (f) { patch.flyer_url = f.flyer_url; patch.flyer_type = f.flyer_type; }
+    return sb.from('falah_events').update(patch).eq('id', id);
+  }).then(function (res) {
+    if (res.error) throw res.error;
+    if (file && previousUrl) deleteFlyerByUrl(previousUrl);
+    loadEvents();
+  }).catch(function (e) {
+    errBox.textContent = e.message || 'Save failed';
+    errBox.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Save changes';
+  });
+}
+
+function removeEventFlyer(id) {
+  var ev = eventsList.find(function (r) { return r.id === id; }) || {};
+  if (!confirm('Remove the flyer from “' + ev.title + '”? The event itself stays posted.')) return;
+  sb.from('falah_events').update({ flyer_url: null, flyer_type: null, updated_at: new Date().toISOString() }).eq('id', id).then(function (res) {
+    if (res.error) { alert('Remove failed: ' + res.error.message); return; }
+    deleteFlyerByUrl(ev.flyer_url);
+    loadEvents();
+  });
+}
+
+function deleteEvent(id) {
+  var ev = eventsList.find(function (r) { return r.id === id; }) || {};
+  if (!confirm('Delete “' + ev.title + '” and its flyer? This can’t be undone.\n\nTip: untick “Published” instead to just hide it.')) return;
+  sb.from('falah_events').delete().eq('id', id).then(function (res) {
+    if (res.error) { alert('Delete failed: ' + res.error.message); return; }
+    deleteFlyerByUrl(ev.flyer_url);
+    loadEvents();
+  });
 }
 
 /* ===== Calendar ===== */
